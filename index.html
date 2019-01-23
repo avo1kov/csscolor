@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<title>Color Picker</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="default.css">
+
+<div class="whole" id="whole">
+  <div class="wrap">
+    <div id="raster-stack" class="wrap raster-stack"></div>
+    <svg id="svg" class="svg"></svg>
+    <div id="draw-cursor" class="draw-cursor"></div>
+  </div>
+  <div class="tool">
+    <div class="center">
+      <div class="palette" id="palette">
+        <div class="picker-color" id="picker-color">
+          <svg class="color-background">
+            <defs>
+              <linearGradient id="color-gradient-black" x1="0%" x2="0%" y1="0%" y2="100%">
+                <stop offset="0%" stop-color="rgb(0,0,0)" stop-opacity="0" />
+                <stop offset="100%" stop-color="rgb(0,0,0)" stop-opacity="1" />
+              </linearGradient>
+              <linearGradient id="color-gradient-white" x1="0%" x2="100%" y1="0%" y2="0%">
+                <stop offset="0%" stop-color="rgb(255,255,255)" stop-opacity="1" />
+                <stop offset="100%" stop-color="rgb(255,255,255)" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="#f00" id="picker-color-tone" />
+            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#color-gradient-white)" />
+            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#color-gradient-black)" />
+          </svg>
+        </div>
+        <div class="picker-color-cursor" id="picker-color-cursor">
+          <div class="white-border"></div>
+        </div>
+        <div class="picker-tone" id="picker-tone">
+          <svg class="tone-background">
+            <defs>
+              <linearGradient id="tone-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                <stop offset="0%" stop-color="rgb(255,0,0)" stop-opacity="1" />
+                <stop offset="16.6%" stop-color="rgb(255,0,255)" stop-opacity="1" />
+                <stop offset="33.2%" stop-color="rgb(0,0,255)" stop-opacity="1" />
+                <stop offset="49.8%" stop-color="rgb(0,255,255)" stop-opacity="1" />
+                <stop offset="66.4%" stop-color="rgb(0,255,0)" stop-opacity="1" />
+                <stop offset="83%" stop-color="rgb(255,255,0)" stop-opacity="1" />
+                <stop offset="100%" stop-color="rgb(255,0,0)" stop-opacity="1" />
+              </linearGradient>
+            </defs>
+            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#tone-gradient)" />
+          </svg>
+        </div>
+        <div class="box-picker-tone-cursor" id="picker-tone-cursor">
+          <div class="picker-tone-cursor" id="picker-tone-cursor-background">
+            <div class="white-border"></div>
+          </div>
+        </div>
+        <div class="info">
+          <div class="color-disp-box" id="color-disp-box">
+            <svg class="color-disp-background">
+              <defs></defs>
+              <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent)" />
+              <rect shape-rendering="crispEdges" class="color-disp" id="color-disp" x="0" y="0" width=100% height=100% fill="rgb(255, 0, 0)" />
+            </svg>
+          </div>
+          <div class="inputs">
+            HSV<input type="text" id="hsv-input" /><br /><br />
+            HEX<input type="text" id="hex-input" /><br /><br />
+            <span id="label-rgb-a">RGB</span><input type="text" id="rgb-input" />
+            <input type="text" id="rgb-percent-input" />
+          </div>
+        </div>
+        <div class="float-fix"></div>
+        <div class="picker-alpha" id="picker-alpha">
+          <svg class="alpha-background">
+            <defs>
+              <pattern id="transparent" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <rect shape-rendering="geometricPrecision" x="0" y="0" width="10" height="10"
+												    fill= "#DBDBDB" />
+                        <rect shape-rendering="geometricPrecision" x="10" y="10" width="10" height="10"
+												    fill= "#DBDBDB" />
+                  </pattern>
+                  <linearGradient id="transparent-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                <stop id="transparent-gradient-color-start" offset="0%" stop-color="rgb(255,255,255)"
+								    stop-opacity="0" />
+                <stop id="transparent-gradient-color-end" offset="100%" stop-color="rgb(255,255,255)"
+								    stop-opacity="1" />
+              </linearGradient>
+            </defs>
+            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent)" />
+            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent-gradient)" />
+          </svg>
+        </div>
+        <div class="box-picker-alpha-cursor" id="picker-alpha-cursor">
+          <div class="picker-alpha-cursor">
+            <div class="white-border"></div>
+          </div>
+        </div>
+        <div class="text-example" id="text-example">
+          This text had written just for checking text color displaying.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
