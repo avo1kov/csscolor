@@ -1,1112 +1,1214 @@
-// 'use strict';
-/** @type {string} */
-var uri = "https://" + document.location.hostname + "/";
-/** @type {!Array<string>} */
-var uriSplit = document.location.pathname.split("/");
-/** @type {number} */
-i = 1;
-for (; i < uriSplit.length; i++) {
-  if (uriSplit[i] == "hex" || uriSplit[i] == "hexa" || uriSplit[i] == "rgb" || uriSplit[i] == "rgba" || uriSplit[i] == "hsv" || uriSplit[i] == "hsva") {
-    break;
-  } else {
-    /** @type {string} */
-    uri = uri + (uriSplit[i] + "/");
-  }
-}
-if (uri[uri.length - 2] == "/") {
-  /** @type {string} */
-  uri = uri.substr(0, uri.length - 1);
-}
-/** @type {(Element|null)} */
-var palette = document.getElementById("palette");
-/** @type {boolean} */
-var allowSelect = true;
-controlSelection(document);
-var hsv = {
-  h : 0,
-  s : 0,
-  v : 100,
-  a : 100
-};
-/** @type {(Element|null)} */
-var hsvInput = document.getElementById("hsv-input");
-/** @type {(Element|null)} */
-var hexInput = document.getElementById("hex-input");
-/** @type {(Element|null)} */
-var rgbInput = document.getElementById("rgb-input");
-/** @type {(Element|null)} */
-var rgbPercentInput = document.getElementById("rgb-percent-input");
-/** @type {(Element|null)} */
-var colorDisp = document.getElementById("color-disp");
-/** @type {(Element|null)} */
-var alphaGradientStart = document.getElementById("transparent-gradient-color-start");
-/** @type {(Element|null)} */
-var alphaGradientEnd = document.getElementById("transparent-gradient-color-end");
-/** @type {(Element|null)} */
-var textExample = document.getElementById("text-example");
-/** @type {(Element|null)} */
-var pickerColor = document.getElementById("picker-color");
-/** @type {(Element|null)} */
-var pickerColorCursor = document.getElementById("picker-color-cursor");
-/** @type {(Element|null)} */
-var pickerColorTone = document.getElementById("picker-color-tone");
-/** @type {boolean} */
-var pushColor = false;
-/** @type {(Element|null)} */
-var pickerTone = document.getElementById("picker-tone");
-/** @type {(Element|null)} */
-var pickerToneCursor = document.getElementById("picker-tone-cursor");
-/** @type {(Element|null)} */
-var pickerToneCursorBackground = document.getElementById("picker-tone-cursor-background");
-/** @type {boolean} */
-var pushTone = false;
-/** @type {(Element|null)} */
-var pickerAlpha = document.getElementById("picker-alpha");
-/** @type {(Element|null)} */
-var pickerAlphaCursor = document.getElementById("picker-alpha-cursor");
-/** @type {boolean} */
-var pushAlpha = false;
-/** @type {number} */
-var coefPicker = 10;
-/** @type {number} */
-var coefScroll = 8;
-var pickerColorPosition;
-var pickerTonePosition;
-var pickerAlphaPosition;
-/** @type {(Element|null)} */
-var labelRGBa = document.getElementById("label-rgb-a");
-/** @type {(Element|null)} */
-var selectInput = hexInput;
 
-var inputsBackup = {
-  hsv : hsvInput.value,
-  hex : hexInput.value,
-  rgb : rgbInput.value,
-  rgbPercent : rgbPercentInput.value
-};
 
-/** @type {(Element|null)} */
-var vk_comments = document.getElementById("vk_comments");
-windowResize();
-window.addEventListener("resize", windowResize);
-window.addEventListener("scroll", windowResize);
-/**
- * @return {undefined}
- */
-function windowResize() {
-  /** @type {string} */
-  pickerToneCursor.style.left = pickerTone.offsetLeft + "px";
-  /** @type {string} */
-  pickerAlphaCursor.style.left = pickerAlpha.offsetWidth - pickerAlphaCursor.offsetWidth + "px";
-  /** @type {string} */
-  pickerAlphaCursor.style.top = pickerAlpha.offsetTop + "px";
-  pickerColorPosition = getCoords(pickerColor);
-  pickerTonePosition = pickerTone.getBoundingClientRect();
-  pickerAlphaPosition = getCoords(pickerAlpha);
-  setCursorOnPickers();
-}
-/**
- * @param {!Element} elem
- * @return {?}
- */
-function getCoords(elem) {
-  var offset = elem.getBoundingClientRect();
-  /** @type {!HTMLBodyElement} */
-  var body = document.body;
-  /** @type {!Element} */
-  var docElem = document.documentElement;
-  /** @type {number} */
-  var dropOuterHeight = window.pageYOffset || docElem.scrollTop || body.scrollTop;
-  /** @type {number} */
-  var calendarWidth = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
-  /** @type {number} */
-  var comboTop = docElem.clientTop || body.clientTop || 0;
-  /** @type {number} */
-  var l = docElem.clientLeft || body.clientLeft || 0;
-  /** @type {number} */
-  var top = offset.top + dropOuterHeight - comboTop;
-  /** @type {number} */
-  var xPos = offset.left + calendarWidth - l;
-  return {
-    top : top,
-    left : xPos
-  };
-}
-getUriParams();
-
-/**
- * @param {number} b
- * @return {?}
- */
-function validSize(b) {
-  /** @type {number} */
-  b = b * 1;
-  if (b > 1 && b < 2E4) {
-    return true;
-  }
-  return false;
-}
-hsvInput.addEventListener("focus", function() {
-  selectInput = hsvInput;
-  setUriParams();
-});
-hexInput.addEventListener("focus", function() {
-  selectInput = hexInput;
-  setUriParams();
-});
-rgbInput.addEventListener("focus", function() {
-  selectInput = rgbInput;
-  setUriParams();
-});
-rgbPercentInput.addEventListener("focus", function() {
-  selectInput = rgbPercentInput;
-  setUriParams();
-});
-hsvInput.addEventListener("keyup", function() {
-  if (hsvInput.value != inputsBackup.hsv) {
-    outColorFromInput("hsv");
-  }
-});
-hexInput.addEventListener("keyup", function() {
-  if (hexInput.value != inputsBackup.hex) {
-    outColorFromInput("hex");
-  }
-});
-rgbInput.addEventListener("keyup", function() {
-  if (rgbInput.value != inputsBackup.rgb) {
-    outColorFromInput("rgb");
-  }
-});
-rgbPercentInput.addEventListener("keyup", function() {
-  if (rgbPercentInput.value != inputsBackup.rgbPercent) {
-    outColorFromInput("rgbPercent");
-  }
-});
-/**
- * @return {undefined}
- */
-function setInputBackup() {
-  inputsBackup.hsv = hsvInput.value;
-  inputsBackup.hex = hexInput.value;
-  inputsBackup.rgb = rgbInput.value;
-  inputsBackup.rgbPercent = rgbPercentInput.value;
-}
-/**
- * @param {string} type
- * @return {undefined}
- */
-function outColorFromInput(type) {
-  var rgb = HSVtoRGB(hsv);
-  if (type == "rgb" || type == "rgbPercent") {
-    /** @type {string} */
-    var f = "";
-    if (type == "rgb") {
-      f = rgbInput.value.replace(/[^0-9., ]/g, "");
-    } else {
-      f = rgbPercentInput.value.replace(/[^0-9., ]/g, "");
-    }
-    rgbInput.value = f;
-    f = f.split(",");
-    if (f.length >= 3) {
-      if (type == "rgb") {
-        /** @type {number} */
-        rgb.r = f[0] * 1;
-        /** @type {number} */
-        rgb.g = f[1] * 1;
-        /** @type {number} */
-        rgb.b = f[2] * 1;
-      } else {
-        /** @type {number} */
-        rgb.r = f[0] * 255;
-        /** @type {number} */
-        rgb.g = f[1] * 255;
-        /** @type {number} */
-        rgb.b = f[2] * 255;
+// Logical model describing
+const palette = {
+  currentColor: {
+    percent: {
+      colorCursor: {
+        x: 0,
+        y: 0
+      },
+      toneCursor: {
+        x: 0
+      },
+      alphaCursor: {
+        x: 100
       }
-      rgb = validRGB(rgb);
-      if (f.length > 3) {
-        /** @type {number} */
-        hsv.a = f[3] * 100;
-      } else {
-        /** @type {number} */
-        hsv.a = 100;
+    },
+    hsv: {
+      h: 0,
+      s: 0,
+      v: 100
+    },
+    rgb: {
+      r: 255,
+      g: 255,
+      b: 255
+    },
+    rgbPercentage: {
+      r: 100,
+      g: 100,
+      b: 100
+    },
+    hex: 'fff',
+    cmyk: {
+      c: 0,
+      m: 0,
+      y: 0,
+      k: 0
+    },
+    alpha: 1
+  },
+
+  setColorFromPercent: function (percent) {
+    percent = this.validatePercent(percent);
+    if (percent) {
+
+      if (percent.hasOwnProperty('colorCursor')) {
+        this.currentColor.percent.colorCursor = percent.colorCursor;
       }
-      RGBtoHSV(rgb);
+      if (percent.hasOwnProperty('toneCursor')) {
+        this.currentColor.percent.toneCursor = percent.toneCursor;
+      }
+
+      this.currentColor.hsv = this.convertPercentToHsv(percent);
+      this.currentColor.rgb = this.convertHsvToRgb(this.currentColor.hsv);
+      this.currentColor.rgbPercentage = this.convertRgbToRgbPercentage(this.currentColor.rgb);
+      this.currentColor.hex = this.convertRgbToHex(this.currentColor.rgb);
+      this.currentColor.cmyk = this.convertRgbToCmyk(this.currentColor.rgb);
     }
-  }
-  if (type == "hsv") {
-    var a = hsvInput.value.replace(/[^0-9., ]/g, "");
-    hsvInput.value = a;
-    a = a.split(",");
-    if (a.length >= 3) {
-      /** @type {number} */
-      hsv.h = a[0] * 1;
-      /** @type {number} */
-      hsv.s = a[1] * 1;
-      /** @type {number} */
-      hsv.v = a[2] * 1;
+  },
+
+  setColorFromHsv: function (hsv) {
+    hsv = this.validateHsv(hsv);
+    if (hsv) {
+      this.currentColor.hsv = hsv;
+      this.currentColor.percent = this.convertHsvToPercent(hsv);
+      this.currentColor.rgb = this.convertHsvToRgb(this.currentColor.hsv);
+      this.currentColor.rgbPercentage = this.convertRgbToRgbPercentage(this.currentColor.rgb);
+      this.currentColor.hex = this.convertRgbToHex(this.currentColor.rgb);
+      this.currentColor.cmyk = this.convertRgbToCmyk(this.currentColor.rgb);
     }
-    hsv = validHSV(hsv);
-    if (a.length > 3) {
-      /** @type {number} */
-      hsv.a = a[3] * 100;
+  },
+
+  setColorFromRgb: function (rgb) {
+    rgb = this.validateRgb(rgb);
+    if (rgb) {
+      this.currentColor.hsv = this.convertRgbToHsv(rgb);
+      this.currentColor.percent = this.convertHsvToPercent(this.currentColor.hsv);
+      this.currentColor.rgb = rgb;
+      this.currentColor.rgbPercentage = this.convertRgbToRgbPercentage(this.currentColor.rgb);
+      this.currentColor.hex = this.convertRgbToHex(this.currentColor.rgb);
+      this.currentColor.cmyk = this.convertRgbToCmyk(this.currentColor.rgb);
+    }
+  },
+
+  setColorFromRgbPercentage: function (rgbPercentage) {
+    rgbPercentage = this.validateRgbPercentage(rgbPercentage);
+    if (rgbPercentage) {
+      this.currentColor.rgbPercentage = rgbPercentage;
+      this.currentColor.rgb = this.convertRgbPercentageToRgb(rgbPercentage);
+      this.currentColor.hex = this.convertRgbToHex(this.currentColor.rgb);
+      this.currentColor.hsv = this.convertRgbToHsv(this.currentColor.rgb);
+      this.currentColor.percent = this.convertHsvToPercent(this.currentColor.hsv);
+      this.currentColor.cmyk = this.convertRgbToCmyk(this.currentColor.rgb);
+    }
+  },
+
+  setColorFromHex: function (hex) {
+    if (this.validateHex(hex)) {
+      this.currentColor.hex = hex;
+      this.currentColor.rgb = this.convertHexToRgb(hex);
+      this.currentColor.rgbPercentage = this.convertRgbToRgbPercentage(this.currentColor.rgb);
+      this.currentColor.hsv = this.convertRgbToHsv(this.currentColor.rgb);
+      this.currentColor.percent = this.convertHsvToPercent(this.currentColor.hsv);
+      this.currentColor.cmyk = this.convertRgbToCmyk(this.currentColor.rgb);
+    }
+  },
+
+  setColorFromCmyk: function (cmyk) {
+    cmyk = this.validateCmyk(cmyk);
+    if (cmyk) {
+      this.currentColor.cmyk = cmyk;
+      this.currentColor.rgb = this.convertCmykToRgb(cmyk);
+      this.currentColor.rgbPercentage = this.convertRgbToRgbPercentage(this.currentColor.rgb);
+      this.currentColor.hex = this.convertRgbToHex(this.currentColor.rgb);
+      this.currentColor.hsv = this.convertRgbToHsv(this.currentColor.rgb);
+      this.currentColor.percent = this.convertHsvToPercent(this.currentColor.hsv);
+    }
+  },
+
+  setAlpha: function (alpha) {
+    alpha = this.validateAlpha(alpha);
+    if (alpha !== false) {
+      this.currentColor.alpha = alpha / 100;
+      this.currentColor.percent.alphaCursor.x = alpha;
+    }
+  },
+
+  // Validation functions below
+  validatePercent: function (percent) {
+    if (percent.hasOwnProperty('colorCursor')) {
+      if (percent.colorCursor.hasOwnProperty('x') && percent.colorCursor.hasOwnProperty('y')) {
+        if ((!this.isInt(percent.colorCursor.x) && !this.isFloat(percent.colorCursor.x)) ||
+            (!this.isInt(percent.colorCursor.y) && !this.isFloat(percent.colorCursor.y))) {
+          return false;
+        }
+
+        if (percent.colorCursor.x < 0) {
+          percent.colorCursor.x = 0;
+        }
+        if (percent.colorCursor.y < 0) {
+          percent.colorCursor.y = 0;
+        }
+
+
+        if (percent.colorCursor.x > 100) {
+          percent.colorCursor.x = 100;
+        }
+        if (percent.colorCursor.y > 100) {
+          percent.colorCursor.y = 100;
+        }
+      }
     } else {
-      /** @type {number} */
-      hsv.a = 100;
+      if (!percent.hasOwnProperty('toneCursor')) {
+        return false;
+      }
     }
-    rgb = HSVtoRGB(hsv);
-  }
-  if (type == "hex") {
-    var hex = hexInput.value.replace(/[^0-9a-fA-F]/g, "").substr(0, 6);
-    hexInput.value = hex;
-    rgb = HEXtoRGB(hex);
-    if (rgb != null) {
-      RGBtoHSV(rgb);
-    } else {
-      rgb = HSVtoRGB(hsv);
+
+    if (percent.hasOwnProperty('toneCursor')) {
+      if (percent.toneCursor.hasOwnProperty('x')) {
+        if (!this.isInt(percent.toneCursor.x) && !this.isFloat(percent.toneCursor.x)) {
+          return false;
+        }
+
+        percent.toneCursor.x = parseInt(percent.toneCursor.x);
+        if (isNaN(percent.toneCursor.x)) {
+          return false;
+        }
+
+        if (percent.toneCursor.x < 0) {
+          percent.toneCursor.x = 0;
+        }
+        if (percent.toneCursor.x > 100) {
+          percent.toneCursor.x = 100;
+        }
+      }
     }
-  }
-  if (type != "hsv") {
-    /** @type {string} */
-    hsvInput.value = Math.round(hsv.h) + ", " + Math.round(hsv.s) + ", " + Math.round(hsv.v);
-  }
-  if (type != "hex") {
-    hexInput.value = RGBtoHEX(rgb);
-  }
-  if (type != "rgb") {
-    rgbInput.value = Math.round(rgb.r) + ", " + Math.round(rgb.g) + ", " + Math.round(rgb.b) + supAlpha;
-  }
-  if (type != "rgbPercent") {
-    rgbPercentInput.value = Math.round(rgb.r / 2.55) / 100 + ", " + Math.round(rgb.g / 2.55) / 100 + ", " + Math.round(rgb.b / 2.55) / 100 + supAlpha;
-  }
-  setInputBackup();
-  setColorOnPickers();
-  setCursorOnPickers();
-  setUriParams();
-}
-/**
- * @param {!Object} from
- * @return {?}
- */
-function validRGB(from) {
-  if (from.r < 0) {
-    /** @type {number} */
-    from.r = 0;
-  }
-  if (from.g < 0) {
-    /** @type {number} */
-    from.g = 0;
-  }
-  if (from.b < 0) {
-    /** @type {number} */
-    from.b = 0;
-  }
-  if (hsv.a < 0) {
-    /** @type {number} */
-    hsv.a = 0;
-  }
-  if (from.r > 255) {
-    /** @type {number} */
-    from.r = 255;
-  }
-  if (from.g > 255) {
-    /** @type {number} */
-    from.g = 255;
-  }
-  if (from.b > 255) {
-    /** @type {number} */
-    from.b = 255;
-  }
-  if (hsv.a > 1) {
-    /** @type {number} */
-    hsv.a = 1;
-  }
-  return from;
-}
-/**
- * @param {?} dst
- * @return {?}
- */
-function validHSV(dst) {
-  if (hsv.h < 0) {
-    /** @type {number} */
-    hsv.h = 0;
-  }
-  if (hsv.s < 0) {
-    /** @type {number} */
-    hsv.s = 0;
-  }
-  if (hsv.v < 0) {
-    /** @type {number} */
-    hsv.v = 0;
-  }
-  if (hsv.a < 0) {
-    /** @type {number} */
-    hsv.a = 0;
-  }
-  if (hsv.h >= 360) {
-    /** @type {number} */
-    hsv.h = 0;
-  }
-  if (hsv.s > 100) {
-    /** @type {number} */
-    hsv.s = 100;
-  }
-  if (hsv.v > 100) {
-    /** @type {number} */
-    hsv.v = 100;
-  }
-  if (hsv.a > 1) {
-    /** @type {number} */
-    hsv.a = 1;
-  }
-  return hsv;
-}
-/**
- * @return {undefined}
- */
-function outColor() {
-  var rgb = HSVtoRGB(hsv);
-  setColorOnPickers();
-  if (hsv.a < 100) {
-    /** @type {string} */
-    supAlpha = ", " + Math.round(hsv.a) / 100;
-  } else {
-    /** @type {string} */
-    supAlpha = "";
-  }
-  /** @type {string} */
-  hsvInput.value = Math.round(hsv.h) + ", " + Math.round(hsv.s) + ", " + Math.round(hsv.v);
-  hexInput.value = RGBtoHEX(rgb);
-  /** @type {string} */
-  rgbInput.value = Math.round(rgb.r) + ", " + Math.round(rgb.g) + ", " + Math.round(rgb.b) + supAlpha;
-  /** @type {string} */
-  rgbPercentInput.value = Math.round(rgb.r / 2.55) / 100 + ", " + Math.round(rgb.g / 2.55) / 100 + ", " + Math.round(rgb.b / 2.55) / 100 + supAlpha;
-  setInputBackup();
-  sessionStorage.setItem("color", "rgba(" + Math.round(rgb.r) + "," + Math.round(rgb.g) + "," + Math.round(rgb.b) + "," + Math.round(hsv.a) / 100 + ")");
-}
-/**
- * @return {undefined}
- */
-function setColorOnPickers() {
-  var rgb = HSVtoRGB(hsv);
-  /** @type {string} */
-  var playheadSeconds = "rgb(" + Math.round(rgb.r) + ", " + Math.round(rgb.g) + ", " + Math.round(rgb.b) + ")";
-  colorDisp.setAttribute("fill", "rgba(" + Math.round(rgb.r) + ", " + Math.round(rgb.g) + ", " + Math.round(rgb.b) + ", " + hsv.a / 100 + ")");
-  /** @type {string} */
-  textExample.style.color = "rgba(" + Math.round(rgb.r) + ", " + Math.round(rgb.g) + ", " + Math.round(rgb.b) + ", " + hsv.a / 100 + ")";
-  alphaGradientStart.setAttribute("stop-color", playheadSeconds);
-  alphaGradientEnd.setAttribute("stop-color", playheadSeconds);
-  pickerColorTone.setAttribute("fill", "hsl(" + hsv.h + ", 100%, 50%)");
-  /** @type {string} */
-  pickerToneCursorBackground.style.backgroundColor = "hsl(" + hsv.h + ", 100%, 50%)";
-  /** @type {string} */
-  pickerColorCursor.style.backgroundColor = "rgb(" + Math.round(rgb.r) + ", " + Math.round(rgb.g) + ", " + Math.round(rgb.b) + ")";
-  /** @type {string} */
-  var mode = "RGB";
-  if (hsv.a < 100) {
-    /** @type {string} */
-    mode = "RGBA";
-  } else {
-    /** @type {string} */
-    mode = "RGB";
-  }
-  /** @type {string} */
-  labelRGBa.innerHTML = mode;
-}
-/**
- * @return {undefined}
- */
-function setCursorOnPickers() {
-  var b;
-  var r;
-  var h;
-  var g;
-  /** @type {number} */
-  h = pickerColor.offsetWidth - 1;
-  /** @type {number} */
-  g = pickerColor.offsetHeight - 1;
-  /** @type {number} */
-  b = hsv.s / 100 * h;
-  /** @type {number} */
-  r = (100 - hsv.v) / 100 * g;
-  /** @type {string} */
-  pickerColorCursor.style.left = (b - (pickerColorCursor.offsetWidth - 1) / 2) * (h - coefPicker) / h + (h - (h - coefPicker)) / 2 + "px";
-  /** @type {string} */
-  pickerColorCursor.style.top = (r - (pickerColorCursor.offsetHeight - 1) / 2) * (g - coefPicker) / g + (g - (g - coefPicker)) / 2 + "px";
-  /** @type {number} */
-  g = pickerTone.offsetHeight - 1;
-  if (hsv.h == 0) {
-    /** @type {number} */
-    r = 0;
-  } else {
-    /** @type {number} */
-    r = (360 - hsv.h) / 360 * g;
-  }
-  /** @type {string} */
-  pickerToneCursor.style.top = (r - (pickerToneCursor.offsetHeight - 1) / 2) * (g - coefScroll) / g + (g - (g - coefScroll)) / 2 + "px";
-  /** @type {number} */
-  h = pickerAlpha.offsetWidth - 1;
-  /** @type {number} */
-  b = hsv.a / 100 * h;
-  /** @type {string} */
-  pickerAlphaCursor.style.left = (b - (pickerAlphaCursor.offsetWidth - 1) / 2) * (h - coefScroll + 1) / h + (h - (h - coefScroll + 1)) / 2 + "px";
-}
-/**
- * @param {!Object} item
- * @return {?}
- */
-function RGBtoHEX(item) {
-  var rgb = {
-    r : 0,
-    g : 0,
-    b : 0
-  };
-  /** @type {number} */
-  rgb.r = Math.round(item.r);
-  /** @type {number} */
-  rgb.g = Math.round(item.g);
-  /** @type {number} */
-  rgb.b = Math.round(item.b);
-  if (rgb.r == 0) {
-    /** @type {string} */
-    rgb.r = "00";
-  } else {
-    /** @type {string} */
-    rgb.r = rgb.r.toString(16);
-  }
-  if (rgb.g == 0) {
-    /** @type {string} */
-    rgb.g = "00";
-  } else {
-    /** @type {string} */
-    rgb.g = rgb.g.toString(16);
-  }
-  if (rgb.b == 0) {
-    /** @type {string} */
-    rgb.b = "00";
-  } else {
-    /** @type {string} */
-    rgb.b = rgb.b.toString(16);
-  }
-  if (rgb.r.length < 2) {
-    /** @type {string} */
-    rgb.r = "0" + rgb.r;
-  }
-  if (rgb.g.length < 2) {
-    /** @type {string} */
-    rgb.g = "0" + rgb.g;
-  }
-  if (rgb.b.length < 2) {
-    /** @type {string} */
-    rgb.b = "0" + rgb.b;
-  }
-  if (rgb.r[0] == rgb.r[1] && rgb.g[0] == rgb.g[1] && rgb.b[0] == rgb.b[1]) {
-    rgb.r = rgb.r[0];
-    rgb.g = rgb.g[0];
-    rgb.b = rgb.b[0];
-  }
-  return rgb.r + rgb.g + rgb.b;
-}
-/**
- * @param {string} hex
- * @return {?}
- */
-function HEXtoRGB(hex) {
-  if (hex.length == 3) {
-    return {
-      r : parseInt(hex[0] + hex[0], 16),
-      g : parseInt(hex[1] + hex[1], 16),
-      b : parseInt(hex[2] + hex[2], 16)
+
+    return percent;
+  },
+
+  validateHsv: function (hsv) {
+    if (hsv.hasOwnProperty('h') && hsv.hasOwnProperty('s') && hsv.hasOwnProperty('v')) {
+      hsv.h = parseInt(hsv.h);
+      hsv.s = parseInt(hsv.s);
+      hsv.v = parseInt(hsv.v);
+      if ((isNaN(hsv.h)) || (isNaN(hsv.s)) || (isNaN(hsv.v))) {
+        return false;
+      }
+
+      if (hsv.h < 0) {
+        hsv.h = 0;
+      }
+      if (hsv.s < 0) {
+        hsv.s = 0;
+      }
+      if (hsv.v <= 0) {
+        hsv.v = 0;
+        hsv.s = 0;
+      }
+
+      if (hsv.h >= 360) {
+        hsv.h = 0;
+      }
+      if (hsv.s > 100) {
+        hsv.g = 100;
+      }
+      if (hsv.v > 100) {
+        hsv.v = 100;
+      }
+
+      return hsv;
+    }
+    return false;
+  },
+
+  validateRgb: function (rgb) {
+    if (rgb.hasOwnProperty('r') && rgb.hasOwnProperty('g') && rgb.hasOwnProperty('b')) {
+      rgb.r = parseInt(rgb.r);
+      rgb.g = parseInt(rgb.g);
+      rgb.b = parseInt(rgb.b);
+      if ((isNaN(rgb.r)) || (isNaN(rgb.g)) || (isNaN(rgb.b))) {
+        return false;
+      }
+
+      if (rgb.r < 0) {
+        rgb.r = 0;
+      }
+      if (rgb.g < 0) {
+        rgb.g = 0;
+      }
+      if (rgb.b < 0) {
+        rgb.b = 0;
+      }
+
+      if (rgb.r > 255) {
+        rgb.r = 255;
+      }
+      if (rgb.g > 255) {
+        rgb.g = 255;
+      }
+      if (rgb.b > 255) {
+        rgb.b = 255;
+      }
+
+      return rgb;
+    }
+    return false;
+  },
+
+  validateRgbPercentage: function (rgbPercentage) {
+    if (rgbPercentage.hasOwnProperty('r') && rgbPercentage.hasOwnProperty('g')
+        && rgbPercentage.hasOwnProperty('b')) {
+      rgbPercentage.r = parseInt(rgbPercentage.r);
+      rgbPercentage.g = parseInt(rgbPercentage.g);
+      rgbPercentage.b = parseInt(rgbPercentage.b);
+      if ((isNaN(rgbPercentage.r)) || (isNaN(rgbPercentage.g)) || (isNaN(rgbPercentage.b))) {
+        return false;
+      }
+
+      if (rgbPercentage.r < 0) {
+        rgbPercentage.r = 0;
+      }
+      if (rgbPercentage.g < 0) {
+        rgbPercentage.g = 0;
+      }
+      if (rgbPercentage.b < 0) {
+        rgbPercentage.b = 0;
+      }
+
+      if (rgbPercentage.r > 100) {
+        rgbPercentage.r = 100;
+      }
+      if (rgbPercentage.g > 100) {
+        rgbPercentage.g = 100;
+      }
+      if (rgbPercentage.b > 100) {
+        rgbPercentage.b = 100;
+      }
+
+      return rgbPercentage;
+    }
+    return false;
+  },
+
+  validateHex: function (hex) {
+    hex = hex.replace(/[^0-9a-fA-F]/g, '').substr(0, 6);
+    if (hex.length < 3) {
+      return false;
+    }
+    return hex;
+  },
+
+  validateCmyk: function (cmyk) {
+    if (cmyk.hasOwnProperty('c') && cmyk.hasOwnProperty('m')
+        && cmyk.hasOwnProperty('y') && cmyk.hasOwnProperty('k')) {
+      if ((!this.isInt(cmyk.c) && !this.isFloat(cmyk.c))
+          || (!this.isInt(cmyk.m) && !this.isFloat(cmyk.m))
+          || (!this.isInt(cmyk.y) && !this.isFloat(cmyk.y))
+          || (!this.isInt(cmyk.k) && !this.isFloat(cmyk.k))) {
+        return false;
+      }
+
+      if (cmyk.c < 0) {
+        cmyk.c = 0;
+      }
+      if (cmyk.m < 0) {
+        cmyk.m = 0;
+      }
+      if (cmyk.y < 0) {
+        cmyk.y = 0;
+      }
+      if (cmyk.k < 0) {
+        cmyk.k = 0;
+      }
+
+      if (cmyk.c > 100) {
+        cmyk.c = 100;
+      }
+      if (cmyk.m > 100) {
+        cmyk.m = 100;
+      }
+      if (cmyk.y > 100) {
+        cmyk.y = 100;
+      }
+      if (cmyk.k > 100) {
+        cmyk.k = 100;
+      }
+
+      return cmyk;
+    }
+    return false;
+  },
+
+  validateAlpha: function (alpha) {
+    if ((this.isInt(alpha) && this.isFloat(alpha))) {
+      return false;
+    }
+    if (alpha < 0) {
+      alpha = 0;
+    }
+    if (alpha > 100) {
+      alpha = 100;
+    }
+    return alpha;
+  },
+
+  // Conversion functions below
+  convertPercentToHsv: function (percent) {
+    if (!percent.hasOwnProperty('toneCursor')) {
+      percent.toneCursor = this.currentColor.percent.toneCursor;
+    }
+    if (!percent.hasOwnProperty('colorCursor')) {
+      percent.colorCursor = this.currentColor.percent.colorCursor;
+    }
+    const hsv = {
+      h: (360 - percent.toneCursor.x * 3.60),
+      s: percent.colorCursor.x,
+      v: (100 - percent.colorCursor.y)
     };
-  } else {
-    if (hex.length == 6) {
+
+    if (hsv.h === 360) hsv.h = 0;
+    if (hsv.v === 0) hsv.s = 0;
+
+    return hsv;
+  },
+
+  convertHsvToPercent: function (hsv) {
+    let toneCursorX = (360 - hsv.h) / 3.60;
+    if (toneCursorX === 100) {
+      toneCursorX = 0;
+    }
+
+    return {
+      toneCursor: {
+        x: toneCursorX
+      },
+      colorCursor: {
+        x: hsv.s,
+        y: 100 - hsv.v
+      },
+      alphaCursor: this.currentColor.percent.alphaCursor
+    }
+  },
+
+  convertRgbToHex: function (rgb) {
+    const hex = {
+      r: Math.round(rgb.r).toString(16),
+      g: Math.round(rgb.g).toString(16),
+      b: Math.round(rgb.b).toString(16)
+    };
+
+    if (hex.r.length < 2) {
+      hex.r = '0' + hex.r;
+    }
+    if (hex.g.length < 2) {
+      hex.g = '0' + hex.g;
+    }
+    if (hex.b.length < 2) {
+      hex.b = '0' + hex.b;
+    }
+
+    if ((hex.r[0] === hex.r[1]) && (hex.g[0] === hex.g[1]) && (hex.b[0] === hex.b[1])) {
+      hex.r = hex.r[0];
+      hex.g = hex.g[0];
+      hex.b = hex.b[0];
+    }
+
+    return hex.r + hex.g + hex.b;
+  },
+
+  convertHexToRgb: function (hex) {
+    if (hex.length === 3) {
       return {
-        r : parseInt(hex[0] + hex[1], 16),
-        g : parseInt(hex[2] + hex[3], 16),
-        b : parseInt(hex[4] + hex[5], 16)
+        r: parseInt(hex[0] + hex[0], 16),
+        g: parseInt(hex[1] + hex[1], 16),
+        b: parseInt(hex[2] + hex[2], 16)
+      };
+    } else if (hex.length === 6) {
+      return {
+        r: parseInt(hex[0] + hex[1], 16),
+        g: parseInt(hex[2] + hex[3], 16),
+        b: parseInt(hex[4] + hex[5], 16)
       };
     }
-  }
-  return null;
-}
-/**
- * @param {!Object} rgb
- * @return {?}
- */
-function RGBtoHSV(rgb) {
-  /** @type {number} */
-  r = rgb.r / 255;
-  /** @type {number} */
-  g = rgb.g / 255;
-  /** @type {number} */
-  b = rgb.b / 255;
-  /** @type {number} */
-  var maxColor = Math.max(r, g, b);
-  /** @type {number} */
-  var minColor = Math.min(r, g, b);
-  if (maxColor == minColor) {
-    /** @type {number} */
-    hsv.h = 0;
-  } else {
-    if (maxColor == r && g >= b) {
-      /** @type {number} */
-      hsv.h = 60 * ((g - b) / (maxColor - minColor));
-    } else {
-      if (maxColor == r && g < b) {
-        /** @type {number} */
-        hsv.h = 60 * ((g - b) / (maxColor - minColor)) + 360;
-      } else {
-        if (maxColor == g) {
-          /** @type {number} */
-          hsv.h = 60 * ((b - r) / (maxColor - minColor)) + 120;
-        } else {
-          if (maxColor == b) {
-            /** @type {number} */
-            hsv.h = 60 * ((r - g) / (maxColor - minColor)) + 240;
-          }
-        }
+  },
+
+  convertRgbToRgbPercentage: function (rgb) {
+    return {
+      r: rgb.r * 100 / 255,
+      g: rgb.g * 100 / 255,
+      b: rgb.b * 100 / 255
+    };
+  },
+
+  convertRgbPercentageToRgb: function (rgbPercentage) {
+    return {
+      r: rgbPercentage.r * 255 / 100,
+      g: rgbPercentage.g * 255 / 100,
+      b: rgbPercentage.b * 255 / 100
+    };
+  },
+
+  convertRgbToHsv: function (rgb) {
+    const r = rgb.r / 255;
+    const g = rgb.g / 255;
+    const b = rgb.b / 255;
+    const max = Math.max(r, g, b),
+        min = Math.min(r, g, b),
+        hsv = this.currentColor.hsv;
+
+    if (!((r === g) && (g === b))) {
+      if (max === min) {
+        hsv.h = 0;
+      } else if ((max === r) && (g >= b)) {
+        hsv.h = 60 * ((g - b) / (max - min));
+      } else if ((max === r) && (g < b)) {
+        hsv.h = 60 * ((g - b) / (max - min)) + 360;
+      } else if (max === g) {
+        hsv.h = 60 * ((b - r) / (max - min)) + 120;
+      } else if (max === b) {
+        hsv.h = 60 * ((r - g) / (max - min)) + 240;
       }
     }
+
+    if (max === 0) {
+      hsv.s = 0;
+    } else {
+      hsv.s = (1 - min / max) * 100;
+    }
+    hsv.v = max * 100;
+    return hsv;
+  },
+
+  convertHsvToRgb: function (hsv) {
+    let rgb = {r: 0, g: 0, b: 0},
+        h = Math.round(hsv.h),
+        s = Math.round(hsv.s),
+        v = Math.round(hsv.v),
+
+        h1 = Math.floor(h / 60) % 6,
+        vmin = (100 - s) * v / 100,
+        a = (v - vmin) * ((h % 60) / 60),
+        vinc = vmin + a,
+        vdec = v - a;
+
+    switch (h1) {
+      case 0:
+        rgb = {r: v, g: vinc, b: vmin};
+        break;
+      case 1:
+        rgb = {r: vdec, g: v, b: vmin};
+        break;
+      case 2:
+        rgb = {r: vmin, g: v, b: vinc};
+        break;
+      case 3:
+        rgb = {r: vmin, g: vdec, b: v};
+        break;
+      case 4:
+        rgb = {r: vinc, g: vmin, b: v};
+        break;
+      case 5:
+        rgb = {r: v, g: vmin, b: vdec};
+        break;
+    }
+
+    rgb.r *= 2.55;
+    rgb.g *= 2.55;
+    rgb.b *= 2.55;
+
+    return rgb;
+  },
+
+  convertRgbToCmyk: function (rgb) {
+    // Removing spaces from input RGB values and convert to int
+    let r = parseInt(('' + rgb.r).replace(/\s/g, ''), 10),
+        g = parseInt(('' + rgb.g).replace(/\s/g, ''), 10),
+        b = parseInt(('' + rgb.b).replace(/\s/g, ''), 10);
+
+    // Black
+    if (r === 0 && g === 0 && b === 0) {
+      return {c: 0, m: 0, y: 0, k: 100};
+    }
+
+    let computedC = 1 - (r / 255),
+        computedM = 1 - (g / 255),
+        computedY = 1 - (b / 255),
+        computedK;
+
+    const minCMY = Math.min(computedC, Math.min(computedM, computedY));
+
+    computedC = (computedC - minCMY) / (1 - minCMY);
+    computedM = (computedM - minCMY) / (1 - minCMY);
+    computedY = (computedY - minCMY) / (1 - minCMY);
+    computedK = minCMY;
+
+    const cmyk = {c: 0, m: 0, y: 0, k: 0};
+    cmyk.c = Math.round(computedC * 100);
+    cmyk.m = Math.round(computedM * 100);
+    cmyk.y = Math.round(computedY * 100);
+    cmyk.k = Math.round(computedK * 100);
+
+    return cmyk;
+  },
+
+  convertCmykToRgb: function (cmyk) {
+    let c = cmyk.c / 100,
+        m = cmyk.m / 100,
+        y = cmyk.y / 100,
+        k = cmyk.k / 100;
+
+    c *= 1 - k;
+    m *= 1 - k;
+    y *= 1 - k;
+
+    return {
+      r: Math.round((1 - c - k) * 255),
+      g: Math.round((1 - m - k) * 255),
+      b: Math.round((1 - y - k) * 255)
+    }
+  },
+
+  // Helpful functions
+  isInt: function (n) {
+    return Number(n) === n && n % 1 === 0;
+  },
+
+  isFloat: function (n) {
+    return Number(n) === n && n % 1 !== 0;
   }
-  if (maxColor == 0) {
-    /** @type {number} */
-    hsv.s = 0;
+};
+
+
+// UI describing
+
+let touchIntent = false,
+    wrapper = document.getElementById('wrapper'),
+
+    colorPicker = document.getElementById('colorPicker'),
+    tonePicker = document.getElementById('tonePicker'),
+    alphaPicker = document.getElementById('alphaPicker'),
+
+    // info = document.getElementById('info'),
+    // colorPreview = document.getElementById('colorPreview'),
+    toneColor = document.getElementById('toneColor'),
+    transparentGradientColorStart = document.getElementById('transparentGradientColorStart'),
+    transparentGradientColorEnd = document.getElementById('transparentGradientColorEnd'),
+    rectColor = document.getElementById('rectColor'),
+
+    hexInput = document.getElementById('hexInput'),
+    rgbInput = document.getElementById('rgbInput'),
+    rgbPercentageInput = document.getElementById('rgbPercentageInput'),
+    hsvInput = document.getElementById('hsvInput'),
+    cmykInput = document.getElementById('cmykInput'),
+
+    exampleText = document.getElementById('exampleText'),
+
+    // colorPickerCursorInnerRing = document.getElementById('colorPickerCursorInnerRing'),
+    // colorPickerCursorOuterRing = document.getElementById('colorPickerCursorOuterRing'),
+    colorPickerCursor = document.getElementById('colorPickerCursor');
+tonePickerCursor = document.getElementById('tonePickerCursor'),
+    tonePickerCursorVertical = document.getElementById('tonePickerCursorVertical'),
+    tonePickerCursorHorizontal = document.getElementById('tonePickerCursorHorizontal'),
+    alphaPickerCursor = document.getElementById('alphaPickerCursor'),
+
+    cursors = document.getElementsByClassName('cursor'),
+    mobileColorModelSelect = document.getElementById('mobileColorModelSelect'),
+    mobileBackground = document.getElementById('mobileBackground');
+
+const ui = {
+  selectedInput: hexInput,
+  deviceIsSmartPhoneOrTablet: !(navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)),
+  exampleText: 'Пример для <b>демонстрации</b>',
+  url: window.location.pathname,
+  portraitOrientation: window.matchMedia('(orientation: portrait)').matches
+};
+
+function updateUI(from) {
+  rectColor.setAttribute('fill', 'rgba(' + Math.round(palette.currentColor.rgb.r) + ', '
+      + Math.round(palette.currentColor.rgb.g) + ', '
+      + Math.round(palette.currentColor.rgb.b) + ', '
+      + palette.currentColor.alpha + ')');
+
+  const toneRgb = palette.convertHsvToRgb({
+    h: palette.currentColor.hsv.h,
+    s: 100,
+    v: 100
+  });
+
+  toneColor.setAttribute('fill', 'rgb('
+      + Math.round(toneRgb.r) + ', '
+      + Math.round(toneRgb.g) + ', '
+      + Math.round(toneRgb.b) + ')');
+
+  transparentGradientColorStart.setAttribute('stop-color', 'rgb('
+      + Math.round(palette.currentColor.rgb.r) + ', '
+      + Math.round(palette.currentColor.rgb.g) + ', '
+      + Math.round(palette.currentColor.rgb.b) + ')');
+
+  transparentGradientColorEnd.setAttribute('stop-color', 'rgb('
+      + Math.round(palette.currentColor.rgb.r) + ', '
+      + Math.round(palette.currentColor.rgb.g) + ', '
+      + Math.round(palette.currentColor.rgb.b) + ')');
+
+  let rgbInputString = Math.round(palette.currentColor.rgb.r) + ', '
+      + Math.round(palette.currentColor.rgb.g) + ', '
+      + Math.round(palette.currentColor.rgb.b),
+
+      rgbPercentageInputString = Math.round(palette.currentColor.rgbPercentage.r) / 100 + ', '
+          + Math.round(palette.currentColor.rgbPercentage.g) / 100 + ', '
+          + Math.round(palette.currentColor.rgbPercentage.b) / 100,
+
+      hsvInputString = Math.round(palette.currentColor.hsv.h) + ', '
+          + Math.round(palette.currentColor.hsv.s) + ', '
+          + Math.round(palette.currentColor.hsv.v),
+
+      cmykInputString = Math.round(palette.currentColor.cmyk.c) + ', '
+          + Math.round(palette.currentColor.cmyk.m) + ', '
+          + Math.round(palette.currentColor.cmyk.y) + ', '
+          + Math.round(palette.currentColor.cmyk.k);
+
+  if (palette.currentColor.alpha !== 1) {
+    const alpha = Math.round(palette.currentColor.alpha * 100) / 100;
+    rgbInputString += ', ' + alpha;
+    rgbPercentageInputString += ', ' + alpha;
+    hsvInputString += ', ' + alpha;
+    cmykInputString += ', ' + alpha;
+  }
+
+  if (hexInput !== from) { hexInput.value = palette.currentColor.hex; }
+  if (rgbInput !== from) { rgbInput.value = rgbInputString; }
+  if (rgbPercentageInput !== from) { rgbPercentageInput.value = rgbPercentageInputString; }
+  if (hsvInput !== from) { hsvInput.value = hsvInputString; }
+  if (cmykInput !== from) { cmykInput.value = cmykInputString; }
+
+  exampleText.innerHTML = ui.exampleText;
+  exampleText.style.color = 'rgba(' + Math.round(palette.currentColor.rgb.r) + ', '
+      + Math.round(palette.currentColor.rgb.g) + ', '
+      + Math.round(palette.currentColor.rgb.b) + ', '
+      + palette.currentColor.alpha + ')';
+
+  colorPickerCursor.setAttribute('transform', 'translate('
+      + (palette.currentColor.percent.colorCursor.x * colorPicker.clientWidth / 100) + ', '
+      + (palette.currentColor.percent.colorCursor.y * colorPicker.clientHeight / 100) + ')');
+
+  if (((palette.currentColor.hsv.s < 35) && (palette.currentColor.hsv.v > 65))
+      || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
+    colorPickerCursor.setAttribute('stroke', '#404040');
   } else {
-    /** @type {number} */
-    hsv.s = (1 - minColor / maxColor) * 100;
+    colorPickerCursor.setAttribute('stroke', '#fff');
   }
-  /** @type {number} */
-  hsv.v = maxColor * 100;
-  return hsv;
+
+  if (ui.portraitOrientation) {
+    tonePickerCursor.setAttribute('transform', 'translate('
+        + (palette.currentColor.percent.toneCursor.x * tonePicker.clientWidth / 100) + ', 0)');
+  } else {
+    tonePickerCursor.setAttribute('transform', 'translate(0, '
+        + (palette.currentColor.percent.toneCursor.x * tonePicker.clientHeight / 100) + ')');
+  }
+
+  if ((palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)) {
+    tonePickerCursorVertical.setAttribute('stroke', '#404040');
+    tonePickerCursorHorizontal.setAttribute('stroke', '#404040');
+  } else {
+    tonePickerCursorVertical.setAttribute('stroke', '#f5f5f5');
+    tonePickerCursorHorizontal.setAttribute('stroke', '#f5f5f5');
+  }
+
+  alphaPickerCursor.setAttribute('transform', 'translate('
+      + (palette.currentColor.percent.alphaCursor.x * alphaPicker.clientWidth / 100 - 4) + ', 0)');
+
+  if (((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
+      || (palette.currentColor.percent.alphaCursor.x < 50)
+      || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
+    alphaPickerCursor.setAttribute('stroke', '#404040');
+  } else {
+    alphaPickerCursor.setAttribute('stroke', '#f5f5f5');
+  }
+
+  mobileBackground.style.fill = '#' + palette.currentColor.hex;
+  mobileBackground.style.opacity = palette.currentColor.alpha;
 }
-/**
- * @param {!Object} hsv
- * @return {?}
- */
-function HSVtoRGB(hsv) {
-  var colour = {
-    r : 0,
-    g : 0,
-    b : 0
+
+
+// Changing color via pickers
+
+function colorChoosingActionStart(x, y) {
+  wrapper.classList.add('non-select');
+  colorPickerCursor.classList.add('scale-out-anim');
+  palette.setColorFromPercent({
+    colorCursor: {
+      x: (x - colorPicker.offsetLeft) * 100 / colorPicker.clientWidth,
+      y: (y - colorPicker.offsetTop) * 100 / colorPicker.clientHeight
+    }
+  });
+  touchIntent = 'color';
+  updateUI();
+}
+
+colorPicker.addEventListener('mousedown', function(event) {
+  colorChoosingActionStart(event.pageX, event.pageY);
+});
+
+colorPicker.addEventListener('touchstart', function(event) {
+  if (event.targetTouches.length > 0) {
+    const touch = event.targetTouches[0];
+    colorChoosingActionStart(touch.pageX, touch.pageY);
+  }
+});
+
+function toneChoosingActionStart(coordinate) {
+  wrapper.classList.add('non-select');
+  tonePickerCursor.classList.add('scale-out-anim');
+  let tonePercent = (coordinate.y - tonePicker.offsetTop) * 100 / tonePicker.clientHeight;
+  if (ui.portraitOrientation) {
+    tonePercent = (coordinate.x - tonePicker.offsetLeft) * 100 / tonePicker.clientWidth;
+  }
+  palette.setColorFromPercent({
+    toneCursor: {
+      x: tonePercent
+    }
+  });
+  touchIntent = 'tone';
+  updateUI();
+}
+
+tonePicker.addEventListener('mousedown', function(event) {
+  toneChoosingActionStart({
+    x: event.pageX,
+    y: event.pageY
+  });
+});
+
+tonePicker.addEventListener('touchstart', function(event) {
+  if (event.targetTouches.length > 0) {
+    const touch = event.targetTouches[0];
+    toneChoosingActionStart({
+      x: touch.pageX,
+      y: touch.pageY
+    });
+  }
+});
+
+function alphaChoosingActionStart(x) {
+  wrapper.classList.add('non-select');
+  alphaPickerCursor.classList.add('scale-out-anim');
+  palette.setAlpha((x - alphaPicker.offsetLeft) * 100 / alphaPicker.clientWidth);
+  touchIntent = 'alpha';
+  updateUI();
+}
+
+alphaPicker.addEventListener('mousedown', function(event) {
+  alphaChoosingActionStart(event.pageX);
+});
+
+alphaPicker.addEventListener('touchstart', function(event) {
+  if (event.targetTouches.length > 0) {
+    const touch = event.targetTouches[0];
+    alphaChoosingActionStart(touch.pageX);
+  }
+});
+
+document.addEventListener('touchmove', function(event) {
+  if (event.targetTouches.length > 0) {
+    const touch = event.targetTouches[0];
+
+    actionsHandler({
+      x: touch.pageX,
+      y: touch.pageY
+    });
+  }
+});
+
+document.addEventListener('mousemove', function(event) {
+  actionsHandler({
+    x: event.pageX,
+    y: event.pageY
+  });
+});
+
+function actionsHandler(coordinate) {
+  switch (touchIntent) {
+    case 'color':
+      palette.setColorFromPercent({
+        colorCursor: {
+          x: (coordinate.x - colorPicker.offsetLeft) * 100 / colorPicker.clientWidth,
+          y: (coordinate.y - colorPicker.offsetTop) * 100 / colorPicker.clientHeight
+        }
+      });
+      updateUI();
+      break;
+
+    case 'tone':
+      let tonePercent = (coordinate.y - tonePicker.offsetTop) * 100 / tonePicker.clientHeight;
+      if (ui.portraitOrientation) {
+        tonePercent = (coordinate.x - tonePicker.offsetLeft) * 100 / tonePicker.clientWidth;
+      }
+
+      palette.setColorFromPercent({
+        toneCursor: {
+          x: tonePercent
+        }
+      });
+      updateUI();
+      break;
+
+    case 'alpha':
+      palette.setAlpha((coordinate.x - alphaPicker.offsetLeft) * 100 / alphaPicker.clientWidth);
+      updateUI();
+      break;
+  }
+}
+
+document.addEventListener('mouseup', function() {
+  actionsEnd();
+});
+
+document.addEventListener('touchend', function() {
+  actionsEnd();
+});
+
+function changeUrl() {
+  // Changing url
+  let alphaUrlString = '';
+  if (palette.currentColor.alpha !== 1) {
+    alphaUrlString = '&alpha=' + (Math.round(palette.currentColor.alpha * 100) / 100);
+  }
+  window.history.pushState(null, '#' + palette.currentColor.hex, ui.url + '?hex=' + palette.currentColor.hex + alphaUrlString);
+  localStorage.setItem('currentHue', palette.currentColor.hsv.h);
+  localStorage.setItem('currentHex', palette.currentColor.hex);
+  localStorage.setItem('currentPercent', JSON.stringify(palette.currentColor.percent));
+}
+
+function actionsEnd() {
+  if ((touchIntent === 'color') || (touchIntent === 'tone') || (touchIntent === 'alpha')) {
+    if (ui.deviceIsSmartPhoneOrTablet) {
+      ui.selectedInput.select();
+    }
+    tonePickerCursor.classList.remove('scale-out-anim');
+    colorPickerCursor.classList.remove('scale-out-anim');
+    alphaPickerCursor.classList.remove('scale-out-anim');
+
+    // Changing url
+    changeUrl();
+  }
+  touchIntent = false;
+  wrapper.classList.remove('non-select');
+}
+
+
+// Changing color via inputs
+
+hexInput.addEventListener('input', function () {
+  const hexInputString = hexInput.value.replace(/[^0-9a-fA-F]/g, '').substr(0, 6);
+  // hexInput.value = hexInputString;
+  palette.setColorFromHex(hexInputString);
+  updateUI(hexInput);
+
+  changeUrl()
+});
+
+rgbInput.addEventListener('input', function () {
+  let rgbInputString = rgbInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
+  console.log(rgbInputString);
+  // rgbInput.value = rgbInputString;
+
+  const rgb = {
+    r: palette.currentColor.rgb.r,
+    g: palette.currentColor.rgb.g,
+    b: palette.currentColor.rgb.b
   };
-  /** @type {number} */
-  var candidatesWidth = Math.round(hsv.h);
-  /** @type {number} */
-  var m1 = Math.round(hsv.s);
-  /** @type {number} */
-  var h = Math.round(hsv.v);
-  /** @type {number} */
-  var k = Math.floor(candidatesWidth / 60) % 6;
-  /** @type {number} */
-  var a = (100 - m1) * h / 100;
-  /** @type {number} */
-  var c = (h - a) * (candidatesWidth % 60 / 60);
-  /** @type {number} */
-  var value = a + c;
-  /** @type {number} */
-  var t = h - c;
-  switch(k) {
-    case 0:
-      colour = {
-        r : h,
-        g : value,
-        b : a
-      };
-      break;
-    case 1:
-      colour = {
-        r : t,
-        g : h,
-        b : a
-      };
-      break;
-    case 2:
-      colour = {
-        r : a,
-        g : h,
-        b : value
-      };
-      break;
-    case 3:
-      colour = {
-        r : a,
-        g : t,
-        b : h
-      };
-      break;
-    case 4:
-      colour = {
-        r : value,
-        g : a,
-        b : h
-      };
-      break;
-    case 5:
-      colour = {
-        r : h,
-        g : a,
-        b : t
-      };
-      break;
-  }
-  colour.r *= 2.55;
-  colour.g *= 2.55;
-  colour.b *= 2.55;
-  return colour;
-}
-/**
- * @return {undefined}
- */
-function setAllowSelect() {
-  if (!allowSelect) {
-    /** @type {boolean} */
-    allowSelect = true;
-    selectInput.select();
-    setUriParams();
-  }
-  cursorHide(false);
-}
-pickerColor.addEventListener("mousedown", function(advform) {
-  pickerColorDown(advform);
-});
-pickerColorCursor.addEventListener("mousedown", function(advform) {
-  pickerColorDown(advform);
-});
-/**
- * @param {!Event} advform
- * @return {undefined}
- */
-function pickerColorDown(advform) {
-  /** @type {boolean} */
-  pushColor = true;
-  /** @type {boolean} */
-  allowSelect = false;
-  chooseColor(advform);
-}
-document.addEventListener("mousemove", function(advform) {
-  if (pushColor) {
-    chooseColor(advform);
-  }
-});
-document.addEventListener("mouseup", function() {
-  /** @type {boolean} */
-  pushColor = false;
-  setAllowSelect();
-});
-/**
- * @param {!Event} f
- * @return {undefined}
- */
-function chooseColor(f) {
-  /** @type {boolean} */
-  var e = false;
-  /** @type {number} */
-  var r = f.pageX - pickerColorPosition.left;
-  /** @type {number} */
-  var t = f.pageY - pickerColorPosition.top;
-  /** @type {number} */
-  var b = pickerColor.offsetWidth - 1;
-  /** @type {number} */
-  var d = pickerColor.offsetHeight - 1;
-  if (r < 0) {
-    /** @type {number} */
-    r = 0;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (t < 0) {
-    /** @type {number} */
-    t = 0;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (r > b) {
-    /** @type {number} */
-    r = b;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (t > d) {
-    /** @type {number} */
-    t = d;
-    /** @type {boolean} */
-    e = true;
-  }
-  cursorHide(!e);
-  /** @type {number} */
-  hsv.s = r / b * 100;
-  /** @type {number} */
-  hsv.v = 100 - t / d * 100;
-  if (hsv.v == 0) {
-    /** @type {number} */
-    hsv.s = 0;
-  }
-  /** @type {string} */
-  pickerColorCursor.style.left = (r - (pickerColorCursor.offsetWidth - 1) / 2) * (b - coefPicker) / b + (b - (b - coefPicker)) / 2 + "px";
-  /** @type {string} */
-  pickerColorCursor.style.top = (t - (pickerColorCursor.offsetHeight - 1) / 2) * (d - coefPicker) / d + (d - (d - coefPicker)) / 2 + "px";
-  outColor();
-}
-pickerTone.addEventListener("mousedown", function(advform) {
-  pickerToneDown(advform);
-});
-pickerToneCursor.addEventListener("mousedown", function(advform) {
-  pickerToneDown(advform);
-});
-/**
- * @param {!Event} f
- * @return {undefined}
- */
-function pickerToneDown(f) {
-  /** @type {boolean} */
-  pushTone = true;
-  /** @type {boolean} */
-  allowSelect = false;
-  chooseTone(f);
-}
-document.addEventListener("mousemove", function(webcal) {
-  if (pushTone) {
-    chooseTone(webcal);
-  }
-});
-document.addEventListener("mouseup", function() {
-  /** @type {boolean} */
-  pushTone = false;
-  setAllowSelect();
-});
-/**
- * @param {!Event} event
- * @return {undefined}
- */
-function chooseTone(event) {
-  /** @type {boolean} */
-  var e = false;
-  /** @type {number} */
-  var lastAvarage = event.clientX - pickerTonePosition.left;
-  /** @type {number} */
-  var r = event.clientY - pickerTonePosition.top;
-  /** @type {number} */
-  var avarage = pickerTone.offsetWidth - 1;
-  /** @type {number} */
-  var b = pickerTone.offsetHeight - 1;
-  if (lastAvarage < 0) {
-    /** @type {number} */
-    lastAvarage = 0;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (r < 0) {
-    /** @type {number} */
-    r = 0;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (lastAvarage > avarage) {
-    /** @type {number} */
-    lastAvarage = avarage;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (r > b) {
-    /** @type {number} */
-    r = b;
-    /** @type {boolean} */
-    e = true;
-  }
-  cursorHide(!e);
-  /** @type {number} */
-  hsv.h = 360 - r / b * 360;
-  if (hsv.h == 360) {
-    /** @type {number} */
-    hsv.h = 0;
-  }
-  /** @type {string} */
-  pickerToneCursor.style.top = (r - (pickerToneCursor.offsetHeight - 1) / 2) * (b - coefScroll) / b + (b - (b - coefScroll)) / 2 + "px";
-  outColor();
-}
-pickerAlpha.addEventListener("mousedown", function(advform) {
-  pickerAlphaDown(advform);
-});
-pickerAlphaCursor.addEventListener("mousedown", function(advform) {
-  pickerAlphaDown(advform);
-});
-/**
- * @param {!Event} f
- * @return {undefined}
- */
-function pickerAlphaDown(f) {
-  /** @type {boolean} */
-  pushAlpha = true;
-  /** @type {boolean} */
-  allowSelect = false;
-  chooseAlpha(f);
-}
-document.addEventListener("mousemove", function(webcal) {
-  if (pushAlpha) {
-    chooseAlpha(webcal);
-  }
-});
-document.addEventListener("mouseup", function() {
-  /** @type {boolean} */
-  pushAlpha = false;
-  setAllowSelect();
-});
-/**
- * @param {!Event} event
- * @return {undefined}
- */
-function chooseAlpha(event) {
-  /** @type {boolean} */
-  var e = false;
-  /** @type {number} */
-  var frame = event.clientX - pickerAlphaPosition.left;
-  /** @type {number} */
-  var lastAvarage = event.clientY - pickerAlphaPosition.top;
-  /** @type {number} */
-  var max = pickerAlpha.offsetWidth - 1;
-  /** @type {number} */
-  var avarage = pickerAlpha.offsetHeight - 1;
-  if (frame < 0) {
-    /** @type {number} */
-    frame = 0;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (lastAvarage < 0) {
-    /** @type {number} */
-    lastAvarage = 0;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (frame > max) {
-    /** @type {number} */
-    frame = max;
-    /** @type {boolean} */
-    e = true;
-  }
-  if (lastAvarage > avarage) {
-    /** @type {number} */
-    lastAvarage = avarage;
-    /** @type {boolean} */
-    e = true;
-  }
-  cursorHide(!e);
-  /** @type {number} */
-  hsv.a = frame / max * 100;
-  /** @type {string} */
-  pickerAlphaCursor.style.left = (frame - (pickerAlphaCursor.offsetWidth - 1) / 2) * (max - coefScroll + 1) / max + (max - (max - coefScroll + 1)) / 2 + "px";
-  outColor();
-}
-/**
- * @param {!Object} elem
- * @return {undefined}
- */
-function controlSelection(elem) {
-  /**
-   * @param {!Object} elem
-   * @param {string} type
-   * @param {!Function} fn
-   * @return {undefined}
-   */
-  function addEvent(elem, type, fn) {
-    if (elem.attachEvent) {
-      elem.attachEvent("on" + type, fn);
+
+  const splitString = rgbInputString.split(' ');
+  if (splitString.length >= 3) {
+    rgb.r = splitString[0] * 1;
+    rgb.g = splitString[1] * 1;
+    rgb.b = splitString[2] * 1;
+    if (splitString.length > 3) {
+      palette.setAlpha(splitString[3] * 100);
     } else {
-      if (elem.addEventListener) {
-        elem.addEventListener(type, fn, false);
-      }
+      palette.setAlpha(100);
     }
+    palette.setColorFromRgb(rgb);
   }
-  /**
-   * @return {undefined}
-   */
-  function clearBrowserSelection() {
-    if (window.getSelection) {
-      window.getSelection().removeAllRanges();
+
+  updateUI(rgbInput);
+  changeUrl()
+});
+
+rgbPercentageInput.addEventListener('input', function () {
+  let rgbPercentageInputString = rgbPercentageInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
+  // rgbPercentageInput.value = rgbPercentageInputString;
+
+  const rgbPercentage = {
+    r: palette.currentColor.rgbPercentage.r,
+    g: palette.currentColor.rgbPercentage.g,
+    b: palette.currentColor.rgbPercentage.b
+  };
+
+  const splitString = rgbPercentageInputString.split(' ');
+  if (splitString.length >= 3) {
+    rgbPercentage.r = splitString[0] * 100;
+    rgbPercentage.g = splitString[1] * 100;
+    rgbPercentage.b = splitString[2] * 100;
+    if (splitString.length > 3) {
+      palette.setAlpha(splitString[3] * 100);
     } else {
-      if (document.selection && document.selection.clear) {
-        document.selection.clear();
-      }
+      palette.setAlpha(100);
+    }
+    palette.setColorFromRgbPercentage(rgbPercentage);
+  }
+
+  updateUI(rgbPercentageInput);
+  changeUrl()
+});
+
+hsvInput.addEventListener('input', function () {
+  const hsvInputString = hsvInput.value.replace(',', ' ').replace(/ +/g, ' ').replace(/ +/g, ' ').trim();
+  // console.log(hsvInputString);
+  // hsvInput.value = hsvInputString;
+
+  const hsv = {
+    h: palette.currentColor.hsv.h,
+    s: palette.currentColor.hsv.s,
+    v: palette.currentColor.hsv.v
+  };
+
+  const splitString = hsvInputString.split(' ');
+  if (splitString.length >= 3) {
+    hsv.h = splitString[0] * 1;
+    hsv.s = splitString[1] * 1;
+    hsv.v = splitString[2] * 1;
+    if (splitString.length > 3) {
+      palette.setAlpha(splitString[3] * 100);
+    } else {
+      palette.setAlpha(100);
+    }
+    palette.setColorFromHsv(hsv);
+  }
+
+  updateUI(hsvInput);
+  changeUrl()
+});
+
+cmykInput.addEventListener('input', function () {
+  const cmykInputString = cmykInput.value.replace(',', ' ').replace(/[^0-9., ]/g, '').replace(/ +/g, ' ').trim();
+  // cmykInput.value = cmykInputString;
+
+  const cmyk = {
+    c: palette.currentColor.hsv.c,
+    m: palette.currentColor.hsv.m,
+    y: palette.currentColor.hsv.y,
+    k: palette.currentColor.hsv.k
+  };
+
+  const splitString = cmykInputString.split(' ');
+  if (splitString.length >= 4) {
+    cmyk.c = splitString[0] * 1;
+    cmyk.m = splitString[1] * 1;
+    cmyk.y = splitString[2] * 1;
+    cmyk.k = splitString[3] * 1;
+    if (splitString.length > 4) {
+      palette.setAlpha(splitString[4] * 100);
+    } else {
+      palette.setAlpha(100);
+    }
+    palette.setColorFromCmyk(cmyk);
+  }
+
+  updateUI(cmykInput);
+  changeUrl()
+});
+
+
+// Changing selected input
+
+function toSelectInput(input) {
+  ui.selectedInput.classList.remove('selected');
+  ui.selectedInput = input;
+  input.classList.add('selected');
+
+  localStorage.setItem('selectedInputId', input.id);
+
+  mobileColorModelSelect.classList.remove('percentage');
+  switch (input) {
+    case hexInput:
+      mobileColorModelSelect.value = 'HEX';
+      break;
+
+    case rgbInput:
+      mobileColorModelSelect.value = 'RGB';
+      break;
+
+    case rgbPercentageInput:
+      mobileColorModelSelect.value = 'RGB Percentage';
+      mobileColorModelSelect.classList.add('percentage');
+      break;
+
+    case hsvInput:
+      mobileColorModelSelect.value = 'HSV';
+      break;
+
+    case cmykInput:
+      mobileColorModelSelect.value = 'CMYK';
+      break;
+
+    default:
+      mobileColorModelSelect.value = ':)';
+  }
+}
+
+if (localStorage.getItem('selectedInputId') !== null) {
+  const input = document.getElementById(localStorage.getItem('selectedInputId'));
+  if (input !== null) {
+    toSelectInput(input);
+  }
+}
+
+hsvInput.addEventListener('focus', function () { toSelectInput(this); });
+hexInput.addEventListener('focus', function () { toSelectInput(this); });
+rgbInput.addEventListener('focus', function () { toSelectInput(this); });
+rgbPercentageInput.addEventListener('focus', function () { toSelectInput(this); });
+cmykInput.addEventListener('focus', function () { toSelectInput(this); });
+
+
+// Getting color from URL
+
+function recoveryColorFromUrl() {
+  const getParams = getJsonFromUrl();
+  if (getParams.hasOwnProperty('hex')) {
+    palette.setColorFromHex(getParams.hex);
+
+    if (palette.currentColor.hsv.s === 0) {
+      palette.currentColor.hsv.h = localStorage.getItem('currentHue');
+      palette.setColorFromHsv(palette.currentColor.hsv);
+    }
+
+    if (getParams.hex === localStorage.getItem('currentHex')) {
+      palette.currentColor.percent = JSON.parse(localStorage.getItem('currentPercent'));
     }
   }
-  /** @type {boolean} */
-  var d = false;
-  addEvent(elem, "mousemove", function() {
-    if (d && !allowSelect) {
-      clearBrowserSelection();
-    }
-  });
-  addEvent(elem, "mousedown", function(event) {
-    event = event || window.event;
-    var _targetObj = event.target || event.srcElement;
-    /** @type {boolean} */
-    d = !_targetObj.tagName.match(/INPUT|TEXTAREA/i);
+
+  if (getParams.hasOwnProperty('alpha')) {
+    palette.setAlpha(getParams.alpha * 100);
+  }
+
+  updateUI();
+
+  return true;
+}
+
+if (recoveryColorFromUrl()) {
+  Array.prototype.filter.call(cursors, function(cursor){
+    cursor.style.opacity = '1';
+    cursor.style.transition = 'all 0.1s linear 0s';
   });
 }
-/**
- * @return {undefined}
- */
-function getUriParams() {
-  /** @type {!Array<string>} */
-  var b = document.location.pathname.split("/");
-  /** @type {string} */
-  var type = b[b.length - 2];
-  /** @type {string} */
-  var e = b[b.length - 1];
-  if (type == "hsv" || type == "hsva") {
-    /** @type {!Array<string>} */
-    e = e.replace(/[^0-9.,]/g, "").split(",");
-    if (e.length >= 3) {
-      hsv = {
-        h : e[0] * 1,
-        s : e[1] * 1,
-        v : e[2] * 1,
-        a : 100
-      };
-      if (e.length > 3) {
-        /** @type {number} */
-        var a = e[3] * 1;
-        if (a > 1) {
-          if (a > 100) {
-            /** @type {number} */
-            a = 100;
-          }
-          /** @type {number} */
-          hsv.a = a;
-        } else {
-          if (a < 0) {
-            /** @type {number} */
-            a = 0;
-          }
-          /** @type {number} */
-          hsv.a = a * 100;
-        }
-      }
-    }
-    selectInput = hsvInput;
-  }
-  if (type == "rgb" || type == "rgba") {
-    /** @type {!Array<string>} */
-    e = e.replace(/[^0-9.,]/g, "").split(",");
-    if (e.length >= 3) {
-      var baseColor = {
-        r : e[0] * 1,
-        g : e[1] * 1,
-        b : e[2] * 1
-      };
-      if (e.length > 3) {
-        /** @type {number} */
-        a = e[3] * 1;
-        if (a > 1) {
-          if (a > 100) {
-            /** @type {number} */
-            a = 100;
-          }
-          /** @type {number} */
-          hsv.a = a;
-        } else {
-          if (a < 0) {
-            /** @type {number} */
-            a = 0;
-          }
-          /** @type {number} */
-          hsv.a = a * 100;
-        }
-      }
-      RGBtoHSV(baseColor);
-    }
-    selectInput = rgbInput;
-  }
-  if (type == "hex" || type == "hexa") {
-    if (e.length >= 3) {
-      /** @type {!Array<string>} */
-      e = e.replace(/[^0-9,.a-fA-F]/g, "").split(",");
-      /** @type {string} */
-      var UseBlood = e[0].substr(0, 6);
-      if (e.length > 1) {
-        /** @type {number} */
-        a = e[1] * 1;
-        if (a > 1) {
-          if (a > 100) {
-            /** @type {number} */
-            a = 100;
-          }
-          /** @type {number} */
-          hsv.a = a;
-        } else {
-          if (a < 0) {
-            /** @type {number} */
-            a = 0;
-          }
-          /** @type {number} */
-          hsv.a = a * 100;
-        }
-      }
-      baseColor = HEXtoRGB(UseBlood);
-      RGBtoHSV(baseColor);
-      selectInput = hexInput;
-    }
-  }
-  setCursorOnPickers();
-  outColor();
+
+function getJsonFromUrl() {
+  const query = location.search.substr(1);
+  let result = [];
+
+  query.split('&').forEach(function(part) {
+    const item = part.split('=');
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+
+  return result;
 }
-/**
- * @return {undefined}
- */
-function setUriParams() {
-  var rgb = HSVtoRGB(hsv);
-  var c = RGBtoHEX(rgb);
-  /** @type {string} */
-  var url = "";
-  if (selectInput == hexInput) {
-    /** @type {string} */
-    url = "hex/" + c;
-    if (hsv.a < 100) {
-      /** @type {string} */
-      c = c + ("," + Math.round(hsv.a));
-      /** @type {string} */
-      url = "hexa/" + c;
-    }
+
+
+// Window resize handler
+window.addEventListener('resize', function() {
+  ui.portraitOrientation = window.matchMedia('(orientation: portrait)').matches;
+  updateUI();
+});
+
+
+// Mobile color mobile select handler
+mobileColorModelSelect.addEventListener('input', function() {
+  switch (this.value) {
+    case 'HEX':
+      toSelectInput(hexInput);
+      break;
+
+    case 'RGB':
+      toSelectInput(rgbInput);
+      break;
+
+    case 'RGB Percentage':
+      toSelectInput(rgbPercentageInput);
+      break;
+
+    case 'HSV':
+      toSelectInput(hsvInput);
+      break;
+
+    case 'CMYK':
+      toSelectInput(cmykInput);
+      break;
+
+    default:
+      toSelectInput(hexInput);
   }
-  if (selectInput == rgbInput || selectInput == rgbPercentInput) {
-    rgb = HSVtoRGB(hsv);
-    /** @type {string} */
-    var c = Math.round(rgb.r) + "," + Math.round(rgb.g) + "," + Math.round(rgb.b);
-    /** @type {string} */
-    url = "rgb/" + c;
-    if (hsv.a < 100) {
-      /** @type {string} */
-      c = c + ("," + Math.round(hsv.a));
-      /** @type {string} */
-      url = "rgba/" + c;
-    }
-  }
-  if (selectInput == hsvInput) {
-    /** @type {string} */
-    var urlExtra = Math.round(hsv.h) + "," + Math.round(hsv.s) + "," + Math.round(hsv.v);
-    /** @type {string} */
-    url = "hsv/" + urlExtra;
-    if (hsv.a < 100) {
-      /** @type {string} */
-      urlExtra = urlExtra + ("," + Math.round(hsv.a));
-      /** @type {string} */
-      url = "hsva/" + urlExtra;
-    }
-  }
-  history.pushState(null, null, uri + url);
-}
-/**
- * @param {boolean} addedRenderer
- * @return {undefined}
- */
-function cursorHide(addedRenderer) {
-  if (addedRenderer) {
-    if (!palette.classList.contains("hide-cursor")) {
-      palette.classList.add("hide-cursor");
-    }
+});
+
+turnNightMode = () => {
+  document.body.style.transitionDuration = "0s";
+  nightModeSwitcher.classList.add('night');
+  document.body.classList.add('night');
+  document.body.style.transitionDuration = "0.1s";
+};
+
+turnLightMode = () => {
+  document.body.style.transitionDuration = "0s";
+  nightModeSwitcher.classList.remove('night');
+  document.body.classList.remove('night');
+  document.body.style.transitionDuration = "0.1s";
+};
+
+const nightModeSwitcher = document.getElementById('night-mode-switcher');
+function nightModeSwitch() {
+  if (nightModeSwitcher.classList.contains('night')) {
+    turnLightMode();
+    localStorage.setItem('night-mode', 'off');
   } else {
-    palette.classList.remove("hide-cursor");
+    turnNightMode();
+    localStorage.setItem('night-mode', 'on');
   }
 }
-;
+
+getDefaultTheme = () => {
+  const userTheme = localStorage.getItem('journalbook_theme');
+
+  if (userTheme !== null) {
+    return userTheme;
+  }
+
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    console.log('Dark theme enabled.');
+    return 'dark';
+  }
+  console.log('Bright theme enabled.');
+
+  return '';
+};
+
+autoThemeApply = () => {
+  const userDesktopTheme = getDefaultTheme();
+  if (userDesktopTheme !== localStorage.getItem('user-desktop-theme')) {
+    localStorage.setItem('user-desktop-theme', userDesktopTheme);
+
+    if (userDesktopTheme === 'dark') {
+      localStorage.setItem('night-mode', 'on');
+      turnNightMode();
+    } else {
+      localStorage.setItem('night-mode', 'off');
+      turnLightMode();
+    }
+  } else if (localStorage.getItem('night-mode') === 'on') {
+    localStorage.setItem('night-mode', 'on');
+    turnNightMode();
+  }
+};
+
+autoThemeApply();
+window.onfocus = autoThemeApply;

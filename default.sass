@@ -1,0 +1,482 @@
+*
+  padding: 0
+  margin: 0
+
+  //font-family: -apple-system, arial, sans-serif
+  font-family: arial, sans-serif
+
+body
+  transition: all 0.1s linear 0s
+  background: white
+
+body.night
+  transition: all 0.1s linear 0s
+  background: black
+
+
+.palette
+  display: grid
+  grid-template-rows: 80vh 40px auto
+  grid-template-columns: 90vh 40px 240px
+  grid-template-areas: "color-picker tone-picker info" "alpha-picker . info" "example-text example-text example-text"
+  grid-gap: 5px
+  justify-content: center
+
+  margin: 30px auto 0
+  width: 100vw
+
+  .info
+    grid-area: info
+    display: grid
+
+    grid-template-rows: 180px auto
+    grid-template-areas: "color-viewer" "inputs"
+    height: 100%
+
+  .inputs
+    grid-area: inputs
+    display: flex
+    flex-flow: column nowrap
+    align-items: center
+
+    margin-top: 20px
+
+    .caption
+      color: #616161
+
+
+    input
+      transition: all 0.1s linear 0s
+
+      padding: 5px 0
+
+      text-align: center
+      color: #616161
+      border: none
+      //border: #3d3d3d solid 1px
+      border-radius: 3px
+
+      width: 90%
+      font-size: 17pt
+      box-shadow: inset 0 3px 5px #d1d1d1
+
+      outline: none
+      background: white
+
+    .night input
+      transition: all 0.1s linear 0s
+      background-color: #242424
+
+
+    input:focus
+      background-color: white !important
+      border: 2px solid #00b3ff
+
+
+    .night input:focus
+      background-color: black !important
+      border: 2px solid #242424
+
+    input:hover
+      background-color: #f9f9f9
+
+    .night input:hover
+      background-color: #1c1c1c
+
+    #rgbPercentageInput
+      margin-top: 0.8vh
+
+    .hex-box
+      display: flex
+      flex-direction: row
+
+    .hex-input-lattice
+      color: #616161
+      line-height: 5vh
+
+    #hexInput
+      width: 100%
+
+  .color-preview
+    grid-area: color-viewer
+    overflow: hidden
+    width: 100%
+    height: 100%
+
+    border-radius: 3px
+
+    background-color: rgba(255, 255, 255, 1)
+
+  .night .color-preview
+    background-color: rgba(0, 0, 0, 1)
+
+  .color-picker
+    grid-area: color-picker
+    height: 100%
+
+
+  .tone-picker
+    grid-area: tone-picker
+    height: 100%
+
+
+  .alpha-picker
+    grid-area: alpha-picker
+    height: 100%
+
+
+  .transparent-fill
+    transition: all 0.1s linear 0s
+    fill: #DBDBDB
+
+
+  .night .transparent-fill
+    transition: all 0.1s linear 0s
+    fill: #404040
+
+
+  .color-picker-background, .tone-picker-background, .alpha-picker-background
+    overflow: visible
+
+    width: 100%
+    height: 100%
+
+    touch-action: none
+
+
+  .tone-picker-cursor-horizontal
+    display: none
+
+
+  .tone-gradient-horizontal
+    display: none
+
+.example-text
+  grid-area: example-text
+
+  margin-top: 1vh
+  font-size: 4vh
+
+
+.non-select
+  user-select: none
+  -moz-user-select: none
+  -webkit-user-select: none
+  -ms-user-select: none
+
+  cursor: default
+
+
+.scale-out-anim
+  -webkit-transition-property: none !important
+  -moz-transition-property: none !important
+  -o-transition-property: none !important
+  transition-property: none !important
+  opacity: 0 !important
+
+
+.cursor
+  opacity: 0
+  touch-action: none
+
+
+a
+  color: #00b3ff
+  font-size: 2vh
+
+  text-decoration: none
+
+
+a:hover
+  color: #36c3ff
+
+
+a:active
+  color: #0094d4
+
+
+.mobile-background
+  display: none
+
+
+.mobile-color-model-select
+  display: none
+
+
+.night-switcher
+  position: relative
+
+  margin: 1vw auto 0
+
+  /*width: 5vw*/
+  /*background: #f5f5f5*/
+
+  cursor: pointer
+
+
+.night-switcher:hover > .box
+  border-color: #919191
+
+.night-switcher:hover .svg-sun
+  fill: #919191
+
+
+.night .night-switcher:hover .moon
+  background: #3d3d3d
+
+.night-switcher > .box
+  transition: all 0.1s linear 0s
+  position: relative
+  overflow: hidden
+
+  margin: 10px auto 0
+
+  border-style: solid
+  border-color: #616161
+  border-width: 2px
+
+  width: 50px
+  height: 25px
+  border-radius: 25px
+  background: #fff
+
+
+.svg-sun
+  transition: all 0.1s linear 0s
+  position: absolute
+  top: 3px
+  right: 3px
+  height: 21px
+  /*display: none*/
+  fill: #616161
+/*fill: black*/
+/*transform: translate(4vw, 0.3vw) scale(0.16)*/
+
+
+.night .svg-sun
+  transition: all 0.1s linear 0s
+  right: 26px
+  opacity: 0
+  fill: #fff
+  transform: rotate(-90deg) scale(0.6)
+
+
+.moon
+  transition: all 0.1s linear 0s
+  position: absolute
+  top: 6px
+  right: 7px
+  width: 13px
+  height: 13px
+  border-radius: 13px
+  background: #fff
+  transform: scale(0.5)
+  opacity: 0
+
+
+.night .moon
+  transition: all 0.1s linear 0s
+  opacity: 1
+  right: 31px
+  transform: scale(1.2)
+  background: #616161
+
+
+.dark-side-of-moon
+  transition: all 0.1s linear 0s
+  position: absolute
+  top: 4px
+  left: 0
+  width: 13px
+  height: 13px
+  border-radius: 100%
+  background: white
+  transform: scale(1.2)
+
+.night .dark-side-of-moon
+  background: black
+
+
+.night-switcher.night .box
+  transition: all 0.1s linear 0s
+  background: #000
+  border-color: #616161
+
+
+.github
+  display: inline-block
+  margin-top: 4px
+
+
+/*.night-switcher.night > .box > .dark-side-of-moon */
+/*transition: all 1s linear 0s*/
+/*left: 1px*/
+/*background: #000*/
+/**/
+
+/* Only mobile elements */
+@media (orientation: portrait)
+  .night-switcher
+    display: none
+
+  .mobile-background
+    display: initial
+    position: fixed
+    z-index: 1
+
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+
+
+  .palette
+    box-sizing: border-box
+    position: absolute
+    z-index: 2
+
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+
+    width: 100vw
+    padding-left: 5vw
+
+    margin: 0
+
+    justify-content: flex-end
+    flex-direction: column
+    flex-wrap: nowrap
+
+
+  .tone-gradient-horizontal
+    display: initial
+
+
+  .tone-gradient-vertical
+    display: none
+
+
+  .info
+    order: 1
+    display: flex
+    align-items: flex-end
+    width: 90vw
+
+
+  .color-preview
+    display: none
+
+
+  .inputs
+    display: grid
+    grid-column-gap: 10px
+    grid-template-columns: 150px 1fr
+    grid-template-rows: auto
+    grid-template-areas: "select input"
+    align-items: flex-end
+    justify-content: flex-end
+    width: 100%
+  /*display: flex*/
+  /*flex-direction: row*/
+  /*justify-content: space-between*/
+  /*align-items: flex-end*/
+
+
+  .inputs .caption
+    display: none
+
+
+  .inputs input
+    grid-area: input
+    display: none
+
+    width: 100%
+    height: 50px
+
+    border-radius: 100vw
+
+    background: white
+
+
+  .hex-box, .hex-input-box
+    width: auto
+
+
+  .inputs input.selected
+    display: initial
+
+
+  select.mobile-color-model-select
+    grid-area: select
+    box-sizing: border-box
+
+    display: initial
+
+    width: 100%
+    height: 50px
+
+    padding: 0 1fr
+
+    outline: none
+
+    font-size: 4vw
+    font-weight: bold
+    color: white
+    text-align-last: center
+    text-align: center
+    border-radius: 33vw
+
+    background: black
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
+
+  .mobile-color-model-select.percentage
+    width: 40vw
+
+
+  .hex-input-lattice
+    display: none
+
+
+  .color-picker
+    order: 3
+
+    width: 90vw
+    height: 90vw
+
+    margin: 0
+
+
+  .tone-picker
+    order: 2
+    width: 90vw
+    height: 10vw
+
+    margin: 3vw 0
+
+
+  .alpha-picker
+    order: 4
+    width: 90vw
+    height: 10vw
+    margin: 3vw 0
+
+
+  .tone-picker-cursor-vertical
+    display: none
+
+
+  .tone-picker-cursor-horizontal
+    display: initial
+
+
+  .example-text
+    display: none
+
+
+  .github
+    display: none
+

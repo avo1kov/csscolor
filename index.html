@@ -1,105 +1,153 @@
 <!DOCTYPE html>
-<title>Color Picker</title>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="stylesheet" href="default.css">
+<html lang="en">
+<head>
+  <title>Палитра цветов</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,user-scalable=no" />
+  <meta name="author" content="Alexander Volkov">
+  <link rel="stylesheet" href="default.css" />
+</head>
+<body>
+<div class="mobile-background">
+  <svg width="100%" height="100%">
+    <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent)"></rect>
+    <rect id="mobileBackground" shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="#fff"></rect>
+  </svg>
+</div>
+<div class="wrapper" id="wrapper">
+  <div class="palette">
+    <div class="color-picker" id="colorPicker">
+      <svg class="color-picker-background">
+        <defs>
+          <linearGradient id="color-gradient-black" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="rgb(0,0,0)" stop-opacity="0"></stop>
+            <stop offset="100%" stop-color="rgb(0,0,0)" stop-opacity="1"></stop>
+          </linearGradient>
+          <linearGradient id="color-gradient-white" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" stop-color="rgb(255,255,255)" stop-opacity="1"></stop>
+            <stop offset="100%" stop-color="rgb(255,255,255)" stop-opacity="0"></stop>
+          </linearGradient>
+        </defs>
+        <rect shape-rendering="crispEdges" id="toneColor" x="0" y="0" rx="3px" ry="3px" width=100% height=100% fill="#f00" id="picker-color-tone"></rect>
+        <rect shape-rendering="crispEdges" x="0" y="0" rx="3px" ry="3px" width=100% height=100% fill="url(#color-gradient-white)"></rect>
+        <rect shape-rendering="crispEdges" x="0" y="0" rx="3px" ry="3px" width=100% height=100% fill="url(#color-gradient-black)"></rect>
+        <circle id="colorPickerCursor" class="cursor" cx="0" cy="0" r="6" stroke="#404040" stroke-width="2" fill="none"></circle>
+      </svg>
+    </div>
+    <div class="tone-picker" id="tonePicker">
+      <svg class="tone-picker-background">
+        <defs>
+          <linearGradient id="tone-gradient-vertical" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="rgb(255,0,0)" stop-opacity="1"></stop>
+            <stop offset="16.6%" stop-color="rgb(255,0,255)" stop-opacity="1"></stop>
+            <stop offset="33.2%" stop-color="rgb(0,0,255)" stop-opacity="1"></stop>
+            <stop offset="49.8%" stop-color="rgb(0,255,255)" stop-opacity="1"></stop>
+            <stop offset="66.4%" stop-color="rgb(0,255,0)" stop-opacity="1"></stop>
+            <stop offset="83%" stop-color="rgb(255,255,0)" stop-opacity="1"></stop>
+            <stop offset="100%" stop-color="rgb(255,0,0)" stop-opacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="tone-gradient-horizontal" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" stop-color="rgb(255,0,0)" stop-opacity="1"></stop>
+            <stop offset="16.6%" stop-color="rgb(255,0,255)" stop-opacity="1"></stop>
+            <stop offset="33.2%" stop-color="rgb(0,0,255)" stop-opacity="1"></stop>
+            <stop offset="49.8%" stop-color="rgb(0,255,255)" stop-opacity="1"></stop>
+            <stop offset="66.4%" stop-color="rgb(0,255,0)" stop-opacity="1"></stop>
+            <stop offset="83%" stop-color="rgb(255,255,0)" stop-opacity="1"></stop>
+            <stop offset="100%" stop-color="rgb(255,0,0)" stop-opacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <rect class="tone-gradient-vertical" shape-rendering="crispEdges" x="0" y="0" rx="3px" ry="3px" width=100% height=100% fill="url(#tone-gradient-vertical)"></rect>
+        <rect class="tone-gradient-horizontal" shape-rendering="crispEdges" x="0" y="0" rx="3px" ry="3px" width=100% height=100% fill="url(#tone-gradient-horizontal)"></rect>
+        <g id="tonePickerCursor" class="cursor">
+          <rect class="tone-picker-cursor-vertical" id="tonePickerCursorVertical" x="-2%" y="-3px" rx="3" ry="3" width="104%" height="6px" fill="none" stroke="#f5f5f5" stroke-width="2"></rect>
+          <rect class="tone-picker-cursor-horizontal" id="tonePickerCursorHorizontal" x="-3px" y="-2%" rx="3" ry="3" width="6px" height="104%" fill="none" stroke="#f5f5f5" stroke-width="2"></rect>
+        </g>
+      </svg>
+    </div>
+    <div class="info" id="info">
+      <svg class="color-preview" id="colorPreview">
+        <defs></defs>
+        <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent)"></rect>
+        <rect shape-rendering="crispEdges" id="rectColor" x="0" y="0" width=100% height=100% fill="rgb(255, 255, 255)"></rect>
+      </svg>
+      <div class="inputs">
+        <select class="mobile-color-model-select" id="mobileColorModelSelect">
+          <option>HEX</option>
+          <option>RGB</option>
+          <option>RGB Percentage</option>
+          <option>HSV</option>
+          <option>CMYK</option>
+        </select>
+        <div class="caption">HEX</div>
+        <div class="hex-box">
+          <div class="hex-input-lattice">#</div>
+          <div class="hex-input-box">
+            <input type="text" id="hexInput" class="selected" value="fff" />
+          </div>
+        </div>
 
-<div class="whole" id="whole">
-  <div class="wrap">
-    <div id="raster-stack" class="wrap raster-stack"></div>
-    <svg id="svg" class="svg"></svg>
-    <div id="draw-cursor" class="draw-cursor"></div>
-  </div>
-  <div class="tool">
-    <div class="center">
-      <div class="palette" id="palette">
-        <div class="picker-color" id="picker-color">
-          <svg class="color-background">
-            <defs>
-              <linearGradient id="color-gradient-black" x1="0%" x2="0%" y1="0%" y2="100%">
-                <stop offset="0%" stop-color="rgb(0,0,0)" stop-opacity="0" />
-                <stop offset="100%" stop-color="rgb(0,0,0)" stop-opacity="1" />
-              </linearGradient>
-              <linearGradient id="color-gradient-white" x1="0%" x2="100%" y1="0%" y2="0%">
-                <stop offset="0%" stop-color="rgb(255,255,255)" stop-opacity="1" />
-                <stop offset="100%" stop-color="rgb(255,255,255)" stop-opacity="0" />
-              </linearGradient>
-            </defs>
-            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="#f00" id="picker-color-tone" />
-            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#color-gradient-white)" />
-            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#color-gradient-black)" />
-          </svg>
+        <div class="caption">RGB</div>
+        <input type="text" id="rgbInput" value="255, 255, 255" />
+        <input type="text" id="rgbPercentageInput" value="1, 1, 1" />
+
+        <div class="caption">HSV</div>
+        <input type="text" id="hsvInput" value="0, 0, 100" />
+
+        <div class="caption">CMYK</div>
+        <input type="text" id="cmykInput" value="0, 0, 0, 0" />
+
+        <div class="caption">
+          Created by Alexander Volkov
         </div>
-        <div class="picker-color-cursor" id="picker-color-cursor">
-          <div class="white-border"></div>
-        </div>
-        <div class="picker-tone" id="picker-tone">
-          <svg class="tone-background">
-            <defs>
-              <linearGradient id="tone-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
-                <stop offset="0%" stop-color="rgb(255,0,0)" stop-opacity="1" />
-                <stop offset="16.6%" stop-color="rgb(255,0,255)" stop-opacity="1" />
-                <stop offset="33.2%" stop-color="rgb(0,0,255)" stop-opacity="1" />
-                <stop offset="49.8%" stop-color="rgb(0,255,255)" stop-opacity="1" />
-                <stop offset="66.4%" stop-color="rgb(0,255,0)" stop-opacity="1" />
-                <stop offset="83%" stop-color="rgb(255,255,0)" stop-opacity="1" />
-                <stop offset="100%" stop-color="rgb(255,0,0)" stop-opacity="1" />
-              </linearGradient>
-            </defs>
-            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#tone-gradient)" />
-          </svg>
-        </div>
-        <div class="box-picker-tone-cursor" id="picker-tone-cursor">
-          <div class="picker-tone-cursor" id="picker-tone-cursor-background">
-            <div class="white-border"></div>
-          </div>
-        </div>
-        <div class="info">
-          <div class="color-disp-box" id="color-disp-box">
-            <svg class="color-disp-background">
-              <defs></defs>
-              <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent)" />
-              <rect shape-rendering="crispEdges" class="color-disp" id="color-disp" x="0" y="0" width=100% height=100% fill="rgb(255, 0, 0)" />
+        <a href="https://github.com/agvolkov5/bigpicker" class="github">GitHub</a>
+        <div class="night-switcher" id="night-mode-switcher" onclick="nightModeSwitch()">
+          <div class="box">
+            <svg class="svg-sun" viewBox="0 0 560 560" preserveAspectRatio="none">
+              <path class="sun" d="M497.78,326.334l-51.395-70.808l51.395-70.804c1.711-2.475,2.088-5.232,1.14-8.276c-0.767-2.859-2.669-4.762-5.712-5.712
+										l-83.363-27.408V55.959c0-3.044-1.242-5.519-3.721-7.421c-2.85-1.902-5.615-2.284-8.274-1.143l-83.367,26.836L263.092,3.427
+										C261.378,1.143,258.905,0,255.667,0c-3.234,0-5.708,1.146-7.422,3.427l-51.394,70.805l-83.368-26.836
+										c-2.662-1.142-5.424-0.76-8.28,1.143c-2.474,1.903-3.711,4.377-3.711,7.421v87.366l-83.367,27.408
+										c-3.044,0.953-4.947,2.856-5.708,5.712c-0.95,3.044-0.571,5.802,1.143,8.276l51.391,70.804L13.56,326.334
+										c-1.714,2.282-2.093,5.041-1.143,8.278c0.76,2.847,2.664,4.753,5.708,5.712l83.367,27.407v87.364c0,3.043,1.237,5.521,3.711,7.423
+										c2.856,1.903,5.618,2.283,8.28,1.144l83.368-26.837l51.394,70.805c1.902,2.471,4.377,3.71,7.422,3.71s5.522-1.239,7.424-3.71
+										l51.391-70.805l83.371,26.837c2.659,1.143,5.421,0.76,8.271-1.144c2.479-1.902,3.721-4.38,3.721-7.423v-87.364l83.363-27.407
+										c3.043-0.955,4.945-2.861,5.712-5.712C499.875,331.375,499.491,328.616,497.78,326.334z M407.134,319.339
+										c-8.661,20.27-20.365,37.78-35.114,52.534c-14.753,14.749-32.261,26.456-52.534,35.118c-20.266,8.657-41.541,12.99-63.811,12.99
+										c-22.27,0-43.537-4.333-63.81-12.99c-20.27-8.665-37.782-20.369-52.532-35.118c-14.75-14.754-26.455-32.265-35.117-52.534
+										c-8.66-20.272-12.99-41.541-12.99-63.813c0-22.27,4.331-43.537,12.99-63.81c8.658-20.27,20.367-37.781,35.117-52.534
+										c14.753-14.749,32.262-26.457,52.532-35.115c20.27-8.663,41.54-12.99,63.81-12.99c22.266,0,43.545,4.327,63.811,12.99
+										c20.273,8.658,37.781,20.366,52.534,35.115c14.749,14.753,26.453,32.264,35.114,52.534c8.658,20.273,12.991,41.543,12.991,63.81
+										C420.125,277.798,415.789,299.066,407.134,319.339z">
+              </path>
             </svg>
+            <div class="moon"></div>
+            <div class="dark-side-of-moon"></div>
           </div>
-          <div class="inputs">
-            HSV<input type="text" id="hsv-input" /><br /><br />
-            HEX<input type="text" id="hex-input" /><br /><br />
-            <span id="label-rgb-a">RGB</span><input type="text" id="rgb-input" />
-            <input type="text" id="rgb-percent-input" />
-          </div>
-        </div>
-        <div class="float-fix"></div>
-        <div class="picker-alpha" id="picker-alpha">
-          <svg class="alpha-background">
-            <defs>
-              <pattern id="transparent" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <rect shape-rendering="geometricPrecision" x="0" y="0" width="10" height="10"
-												    fill= "#DBDBDB" />
-                        <rect shape-rendering="geometricPrecision" x="10" y="10" width="10" height="10"
-												    fill= "#DBDBDB" />
-                  </pattern>
-                  <linearGradient id="transparent-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
-                <stop id="transparent-gradient-color-start" offset="0%" stop-color="rgb(255,255,255)"
-								    stop-opacity="0" />
-                <stop id="transparent-gradient-color-end" offset="100%" stop-color="rgb(255,255,255)"
-								    stop-opacity="1" />
-              </linearGradient>
-            </defs>
-            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent)" />
-            <rect shape-rendering="crispEdges" x="0" y="0" width=100% height=100% fill="url(#transparent-gradient)" />
-          </svg>
-        </div>
-        <div class="box-picker-alpha-cursor" id="picker-alpha-cursor">
-          <div class="picker-alpha-cursor">
-            <div class="white-border"></div>
-          </div>
-        </div>
-        <div class="text-example" id="text-example">
-          This text had written just for checking text color displaying.
         </div>
       </div>
     </div>
+    <div class="alpha-picker" id="alphaPicker">
+      <svg class="alpha-picker-background">
+        <defs>
+          <linearGradient id="color-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop id="transparentGradientColorStart" offset="0%" stop-color="rgb(255,255,255)" stop-opacity="0"></stop>
+            <stop id="transparentGradientColorEnd" offset="100%" stop-color="rgb(255,255,255)" stop-opacity="1"></stop>
+          </linearGradient>
+          <pattern id="transparent" width="20" height="20" patternUnits="userSpaceOnUse">
+            <rect class="transparent-fill" shape-rendering="geometricPrecision" x="0" y="0" width="10" height="10"></rect>
+            <rect class="transparent-fill" shape-rendering="geometricPrecision" x="10" y="10" width="10" height="10"></rect>
+          </pattern>
+        </defs>
+        <rect shape-rendering="crispEdges" x="0" y="0" rx="3px" ry="3px" width=100% height=100% fill="url(#transparent)"></rect>
+        <rect shape-rendering="crispEdges" x="0" y="0" rx="3px" ry="3px" width=100% height=100% fill="url(#color-gradient)"></rect>
+        <rect id="alphaPickerCursor" class="cursor" x="0" y="-2%" rx="3" ry="3" width="6px" height="104%" stroke="#404040" stroke-width="2px" fill="none"></rect>
+      </svg>
+    </div>
+    <div class="example-text" id="exampleText"></div>
   </div>
 </div>
 <script src="script.js"></script>
+</body>
+</html>
