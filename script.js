@@ -40,6 +40,31 @@ const palette = {
     alpha: 1
   },
 
+  getReadableColorOverColor: () => {
+    if (((palette.currentColor.hsv.s < 35) && (palette.currentColor.hsv.v > 65))
+        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
+      return '#404040';
+    } else {
+      return '#fff';
+    }
+  },
+  getReadableColorOverTone: () => {
+    if ((palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)) {
+      return '#404040';
+    } else {
+      return '#fff';
+    }
+  },
+  getReadableColorOverAlpha: () => {
+    if (((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
+        || (palette.currentColor.percent.alphaCursor.x < 50)
+        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
+      return '#404040';
+    } else {
+      return '#fff';
+    }
+  },
+
   setColorFromPercent: function (percent) {
     percent = this.validatePercent(percent);
     if (percent) {
@@ -690,12 +715,10 @@ function updateUI(from) {
       + (palette.currentColor.percent.colorCursor.x * colorPicker.clientWidth / 100) + ', '
       + (palette.currentColor.percent.colorCursor.y * colorPicker.clientHeight / 100) + ')');
 
-  if (((palette.currentColor.hsv.s < 35) && (palette.currentColor.hsv.v > 65))
-      || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
-    colorPickerCursor.setAttribute('stroke', '#404040');
-  } else {
-    colorPickerCursor.setAttribute('stroke', '#fff');
-  }
+  colorPickerCursor.setAttribute('stroke', palette.getReadableColorOverColor());
+  tonePickerCursorVertical.setAttribute('stroke', palette.getReadableColorOverTone());
+  tonePickerCursorHorizontal.setAttribute('stroke', palette.getReadableColorOverTone());
+  alphaPickerCursor.setAttribute('stroke', palette.getReadableColorOverAlpha());
 
   if (ui.portraitOrientation) {
     tonePickerCursor.setAttribute('transform', 'translate('
@@ -705,24 +728,9 @@ function updateUI(from) {
         + (palette.currentColor.percent.toneCursor.x * tonePicker.clientHeight / 100) + ')');
   }
 
-  if ((palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)) {
-    tonePickerCursorVertical.setAttribute('stroke', '#404040');
-    tonePickerCursorHorizontal.setAttribute('stroke', '#404040');
-  } else {
-    tonePickerCursorVertical.setAttribute('stroke', '#f5f5f5');
-    tonePickerCursorHorizontal.setAttribute('stroke', '#f5f5f5');
-  }
 
   alphaPickerCursor.setAttribute('transform', 'translate('
       + (palette.currentColor.percent.alphaCursor.x * alphaPicker.clientWidth / 100 - 4) + ', 0)');
-
-  if (((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
-      || (palette.currentColor.percent.alphaCursor.x < 50)
-      || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
-    alphaPickerCursor.setAttribute('stroke', '#404040');
-  } else {
-    alphaPickerCursor.setAttribute('stroke', '#f5f5f5');
-  }
 
   mobileBackground.style.fill = '#' + palette.currentColor.hex;
   mobileBackground.style.opacity = palette.currentColor.alpha;
