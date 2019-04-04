@@ -57,8 +57,12 @@ $border-radius: 5px
         border-radius: $border-radius
         &::placeholder
           color: white
+        &.dark::placeholder
+          color: black
         &:focus::placeholder
           color: rgba(255, 255, 255, 0.6)
+        &.dark:focus::placeholder
+          color: rgba(0, 0, 0, 0.6)
         &:hover
           background: rgba(255, 255, 255, 0.4)
         &:focus
