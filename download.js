@@ -25,9 +25,9 @@ refreshLinks = () => {
 };
 
 $dwnldBtn.addEventListener('click', () => {
-    $rect.style.background = '#' + palette.currentColor.hex;
-    $rect.style.color = palette.getReadableColorOverColor();
-    if (palette.getReadableColorOverTone() !== '#fff') {
+    $rect.style.background = `rgba(${palette.currentColor.rgb.r}, ${palette.currentColor.rgb.g}, ${palette.currentColor.rgb.b}, ${palette.currentColor.alpha})`;
+    $rect.style.color = palette.getReadableColorOverAlpha();
+    if (palette.getReadableColorOverAlpha() !== '#fff') {
         $imgWidth.classList.add('dark');
         $imgHeight.classList.add('dark');
     } else {
@@ -41,6 +41,8 @@ $dwnldBtn.addEventListener('click', () => {
 
 $imgHeight.addEventListener('change', refreshLinks);
 $imgWidth.addEventListener('change', refreshLinks);
+$imgHeight.addEventListener('keyup', refreshLinks);
+$imgWidth.addEventListener('keyup', refreshLinks);
 
 $darkBckgr.addEventListener('click', () => {
     $dwnldPopup.classList.remove('visible');

@@ -25,11 +25,22 @@ $border-radius: 5px
     width: max-content
     height: max-content
 
+    padding: 10px
+
     border-radius: $border-radius
     background: white
     box-shadow: black 0 20px 100px -15px
 
+    .dwnld-trnsprnt
+      position: absolute
+      top: 10px
+      left: 10px
+
+      width: 500px
+      height: 150px
+
     .rect
+      position: relative
       width: 500px
       height: 150px
       background: #007aff
@@ -38,7 +49,6 @@ $border-radius: 5px
       justify-content: center
       align-items: center
 
-      margin: 10px 10px 0 10px
       color: white
       font-size: 17pt
 
@@ -57,6 +67,7 @@ $border-radius: 5px
         border-radius: $border-radius
         &.dark
           color: rgba(0, 0, 0, 0.9)
+          background: rgba(0, 0, 0, 0.2)
         &::placeholder
           color: white
         &.dark::placeholder
@@ -67,17 +78,22 @@ $border-radius: 5px
           color: rgba(0, 0, 0, 0.6)
         &:hover
           background: rgba(255, 255, 255, 0.4)
+        &.dark:hover
+          background: rgba(0, 0, 0, 0.17)
         &:focus
           background: rgba(255, 255, 255, 0.2)
+        &.dark:focus
+          background: rgba(0, 0, 0, 0.22)
         &::-webkit-inner-spin-button
           -webkit-appearance: none
           //border: rgba(255, 255, 255, 0.2) solid 2px
 
 
     .btns
-      padding: 10px
       display: flex
       justify-content: space-between
+
+      margin-top: 10px
 
       .dwnld-btns
         display: flex
