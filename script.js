@@ -1020,6 +1020,20 @@ cmykInput.addEventListener('input', function () {
 
 
 // Changing selected input
+const $rgbWrapper = document.getElementById('rgb-wrapper');
+rgbInput.addEventListener('blur', () => {
+  $rgbWrapper.classList.remove('focus');
+});
+rgbInput.addEventListener('focus', () => {
+  $rgbWrapper.classList.add('focus');
+});
+
+rgbPercentageInput.addEventListener('blur', () => {
+  $rgbWrapper.classList.remove('focus');
+});
+rgbPercentageInput.addEventListener('focus', () => {
+  $rgbWrapper.classList.add('focus');
+});
 
 function toSelectInput(input) {
   ui.selectedInput.classList.remove('selected');
@@ -1036,10 +1050,11 @@ function toSelectInput(input) {
 
     case rgbInput:
       mobileColorModelSelect.value = 'RGB';
+
       break;
 
     case rgbPercentageInput:
-      mobileColorModelSelect.value = 'RGB Percentage';
+      mobileColorModelSelect.value = 'RGB %';
       mobileColorModelSelect.classList.add('percentage');
       break;
 
@@ -1134,7 +1149,7 @@ mobileColorModelSelect.addEventListener('input', function() {
       toSelectInput(rgbInput);
       break;
 
-    case 'RGB Percentage':
+    case 'RGB %':
       toSelectInput(rgbPercentageInput);
       break;
 

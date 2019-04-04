@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no" />
   <meta name="author" content="Alexander Volkov">
   <link rel="stylesheet" href="default.css" />
+  <link rel="stylesheet" href="download.css" />
 </head>
 <body>
 <div class="mobile-background">
@@ -76,31 +77,31 @@
         <select class="mobile-color-model-select" id="mobileColorModelSelect">
           <option>HEX</option>
           <option>RGB</option>
-          <option>RGB Percentage</option>
+          <option>RGB %</option>
           <option>HSV</option>
           <option>CMYK</option>
         </select>
-        <div class="caption">HEX</div>
-        <div class="hex-box">
-          <div class="hex-input-lattice">#</div>
-          <div class="hex-input-box">
-            <input type="text" id="hexInput" class="selected" value="fff" />
-          </div>
+        <label for="hexInput" class="caption">HEX</label>
+        <div class="hex-wrapper">
+          <div class="lattice">#</div>
+          <input type="text" id="hexInput" class="selected" value="fff" />
         </div>
 
-        <div class="caption">RGB</div>
-        <input type="text" id="rgbInput" value="255, 255, 255" />
-        <input type="text" id="rgbPercentageInput" value="1, 1, 1" />
+        <label class="caption" for="rgbInput">RGB</label>
+        <div class="rgb-wrapper" id="rgb-wrapper">
+          <input type="text" id="rgbInput" value="255, 255, 255" />
+          <div class="line"></div>
+          <input type="text" id="rgbPercentageInput" value="1, 1, 1" />
+        </div>
 
-        <div class="caption">HSV</div>
+        <label for="hsvInput" class="caption">HSV</label>
         <input type="text" id="hsvInput" value="0, 0, 100" />
 
-        <div class="caption">CMYK</div>
+        <label for="cmykInput" class="caption">CMYK</label>
         <input type="text" id="cmykInput" value="0, 0, 0, 0" />
 
-        <div class="caption">
-          Created by Alexander Volkov
-        </div>
+        <div class="dwnld-btn" id="dwnld-btn">Скачать цвет</div>
+        <a href="#" class="me">Александр Волков</a>
         <a href="https://github.com/agvolkov5/bigpicker" class="github">GitHub</a>
         <div class="night-switcher" id="night-mode-switcher" onclick="nightModeSwitch()">
           <div class="box">
@@ -147,7 +148,32 @@
     </div>
     <div class="example-text" id="exampleText"></div>
   </div>
+  <div class="dwnld-popup" id="dwnld-popup">
+    <div class="dark-bckgr" id="dark-bckgr"></div>
+    <div class="popup">
+      <div class="props">
+
+        <div class="rect">
+          <div class="inputs">
+            <input type="number" placeholder="256" min="1" max="7680">
+            ✕
+            <input type="number" placeholder="256" min="1" max="4320">
+          </div>
+        </div>
+      </div>
+      <div class="btns">
+        <div class="btn cancel" id="dwnld-cancel">Отмена</div>
+        <div class="dwnld-btns">
+          <div class="btn">.gif</div>
+          <div class="btn">.jpg</div>
+          <div class="btn">.png</div>
+          <div class="btn">.svg</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script src="script.js"></script>
+<script src="download.js"></script>
 </body>
 </html>
