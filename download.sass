@@ -29,41 +29,6 @@ $border-radius: 5px
     background: white
     box-shadow: black 0 20px 100px -15px
 
-    .props
-      display: flex
-      flex-direction: column-reverse
-      justify-content: flex-end
-      align-items: center
-      padding: 10px 10px 0 10px
-      color: white
-      font-size: 17pt
-
-      .inputs
-        input
-          transition: all 130ms ease-in-out
-          width: 100px
-          padding: 4px 0
-          margin: 0 5px
-          font-size: 21pt
-          text-align: center
-          background: rgba(255, 255, 255, 0.3)
-          //border: rgba(255, 255, 255, 0) solid 2px
-          border: none
-          outline: none
-          color: white
-          border-radius: $border-radius
-          &::placeholder
-            color: white
-          &:focus::placeholder
-            color: rgba(255, 255, 255, 0.6)
-          &:hover
-            background: rgba(255, 255, 255, 0.4)
-          &:focus
-            background: rgba(255, 255, 255, 0.2)
-          &::-webkit-inner-spin-button
-            -webkit-appearance: none
-            //border: rgba(255, 255, 255, 0.2) solid 2px
-
     .rect
       width: 500px
       height: 150px
@@ -72,6 +37,35 @@ $border-radius: 5px
       display: flex
       justify-content: center
       align-items: center
+
+      margin: 10px 10px 0 10px
+      color: white
+      font-size: 17pt
+
+      input
+        transition: all 130ms ease-in-out
+        width: 100px
+        padding: 4px 0
+        margin: 0 10px
+        font-size: 21pt
+        text-align: center
+        background: rgba(255, 255, 255, 0.3)
+        //border: rgba(255, 255, 255, 0) solid 2px
+        border: none
+        outline: none
+        color: white
+        border-radius: $border-radius
+        &::placeholder
+          color: white
+        &:focus::placeholder
+          color: rgba(255, 255, 255, 0.6)
+        &:hover
+          background: rgba(255, 255, 255, 0.4)
+        &:focus
+          background: rgba(255, 255, 255, 0.2)
+        &::-webkit-inner-spin-button
+          -webkit-appearance: none
+          //border: rgba(255, 255, 255, 0.2) solid 2px
 
 
     .btns
