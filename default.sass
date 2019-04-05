@@ -78,7 +78,7 @@ body.night
         grid-area: lattice
         color: #616161
         font-size: 17pt
-        padding-top: 7px
+        padding-top: 10px
 
       input
         grid-area: hex
@@ -96,7 +96,7 @@ body.night
 
       input
         box-shadow: none
-        border: none
+        border-color: transparent
         background: none
 
         width: 100%
@@ -104,14 +104,14 @@ body.night
       .line
         transition: all 0.1s linear 0s
         position: relative
-        margin: 1px auto
+        margin: 0 auto
         width: 90%
         height: 1px
 
         background: #d4d4d4
 
     .dwnld-btn
-      margin: 15px auto
+      margin: 7px auto
       width: 90%
       padding: 9px 0
 
@@ -138,9 +138,27 @@ body.night
 
     background-color: rgba(255, 255, 255, 1)
 
+  //.color-picker, .tone-picker, .alpha-picker
+  //  overflow: hidden
+  //  border-radius: $border-radius
+
   .color-picker
+    position: relative
     grid-area: color-picker
     height: 100%
+
+    .color-picker-background
+      z-index: 10
+      position: absolute
+      top: 0
+
+    .cursor-svg
+      z-index: 11
+      overflow: visible
+      position: absolute
+      top: 0
+      width: 100%
+      height: 100%
 
 
   .tone-picker
@@ -158,7 +176,8 @@ body.night
     fill: #DBDBDB
 
   .color-picker-background, .tone-picker-background, .alpha-picker-background
-    overflow: visible
+    overflow: hidden
+    border-radius: $border-radius
 
     width: 100%
     height: 100%
@@ -195,11 +214,11 @@ a
     input
       transition: all 0.1s linear 0s
       color: #787878
-      border-color: transparent
+      border-color: black
       box-shadow: none
       background: #383838
       &:focus
-        border: #424242 solid 2px
+        border-color: #424242
         background: #1f1f1f
       &::selection
         background: #949494
@@ -210,7 +229,7 @@ a
       background: transparent
 
       input
-        border-color: transparent
+        border-color: black
         &:focus
           border-color: #424242
 

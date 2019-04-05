@@ -608,7 +608,7 @@ let touchIntent = false,
 
     // info = document.getElementById('info'),
     // colorPreview = document.getElementById('colorPreview'),
-    toneColor = document.getElementById('toneColor'),
+    toneColor = document.getElementById('color-picker-tone'),
     transparentGradientColorStart = document.getElementById('transparentGradientColorStart'),
     transparentGradientColorEnd = document.getElementById('transparentGradientColorEnd'),
     rectColor = document.getElementById('rectColor'),
