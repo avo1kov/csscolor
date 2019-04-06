@@ -143,8 +143,8 @@ body.night
   //  border-radius: $border-radius
 
   .color-picker
-    position: relative
     grid-area: color-picker
+    position: relative
     height: 100%
 
     .color-picker-background
@@ -162,8 +162,8 @@ body.night
 
 
   .tone-picker
-    position: relative
     grid-area: tone-picker
+    position: relative
     height: 100%
 
     .tone-picker-background
@@ -182,7 +182,21 @@ body.night
 
   .alpha-picker
     grid-area: alpha-picker
+    position: relative
     height: 100%
+
+    .alpha-picker-background
+      z-index: 10
+      position: absolute
+      top: 0
+
+    .cursor-svg
+      z-index: 11
+      overflow: visible
+      position: absolute
+      top: 0
+      width: 100%
+      height: 100%
 
 
   .transparent-fill
