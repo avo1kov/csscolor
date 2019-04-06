@@ -637,10 +637,12 @@ const ui = {
     }
   },
   getReadableColorOverAlpha: () => {
-    if ((((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
+    if (((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
         || (palette.currentColor.percent.alphaCursor.x < 50)
-        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)))
-        && (palette.currentColor.alpha > 0.75)) {
+        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
+      if (ui.darkMode && palette.currentColor.alpha < 0.75) {
+        return '#fff';
+      }
       return '#404040';
     } else {
       return '#fff';
@@ -1181,6 +1183,7 @@ turnNightMode = () => {
   document.body.classList.add('night');
   document.body.style.transitionDuration = "0.1s";
   ui.darkMode = true;
+  updateUI();
 };
 
 turnLightMode = () => {
@@ -1189,6 +1192,7 @@ turnLightMode = () => {
   document.body.classList.remove('night');
   document.body.style.transitionDuration = "0.1s";
   ui.darkMode = false;
+  updateUI();
 };
 
 const nightModeSwitcher = document.getElementById('night-mode-switcher');
