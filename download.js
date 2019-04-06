@@ -26,8 +26,9 @@ refreshLinks = () => {
 
 $dwnldBtn.addEventListener('click', () => {
     $rect.style.background = `rgba(${palette.currentColor.rgb.r}, ${palette.currentColor.rgb.g}, ${palette.currentColor.rgb.b}, ${palette.currentColor.alpha})`;
-    $rect.style.color = palette.getReadableColorOverAlpha();
-    if (palette.getReadableColorOverAlpha() !== '#fff') {
+    const readableColor = ui.getReadableColorOverAlpha();
+    $rect.style.color = readableColor;
+    if (readableColor !== '#fff') {
         $imgWidth.classList.add('dark');
         $imgHeight.classList.add('dark');
     } else {

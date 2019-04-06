@@ -40,31 +40,6 @@ const palette = {
     alpha: 1
   },
 
-  getReadableColorOverColor: () => {
-    if (((palette.currentColor.hsv.s < 35) && (palette.currentColor.hsv.v > 65))
-        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
-      return '#404040';
-    } else {
-      return '#fff';
-    }
-  },
-  getReadableColorOverTone: () => {
-    if ((palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)) {
-      return '#404040';
-    } else {
-      return '#fff';
-    }
-  },
-  getReadableColorOverAlpha: () => {
-    if (((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
-        || (palette.currentColor.percent.alphaCursor.x < 50)
-        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
-      return '#404040';
-    } else {
-      return '#fff';
-    }
-  },
-
   setColorFromPercent: function (percent) {
     percent = this.validatePercent(percent);
     if (percent) {
@@ -644,7 +619,33 @@ const ui = {
       || navigator.userAgent.match(/Windows Phone/i)),
   exampleText: 'Пример для <b>демонстрации</b>',
   url: window.location.pathname,
-  portraitOrientation: window.matchMedia('(orientation: portrait)').matches
+  portraitOrientation: window.matchMedia('(orientation: portrait)').matches,
+  darkMode: false,
+  getReadableColorOverColor: () => {
+    if (((palette.currentColor.hsv.s < 35) && (palette.currentColor.hsv.v > 65))
+        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
+      return '#404040';
+    } else {
+      return '#fff';
+    }
+  },
+  getReadableColorOverTone: () => {
+    if ((palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)) {
+      return '#404040';
+    } else {
+      return '#fff';
+    }
+  },
+  getReadableColorOverAlpha: () => {
+    if ((((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
+        || (palette.currentColor.percent.alphaCursor.x < 50)
+        || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)))
+        && (palette.currentColor.alpha > 0.75)) {
+      return '#404040';
+    } else {
+      return '#fff';
+    }
+  },
 };
 
 function updateUI(from) {
@@ -715,10 +716,10 @@ function updateUI(from) {
       + (palette.currentColor.percent.colorCursor.x * colorPicker.clientWidth / 100) + ', '
       + (palette.currentColor.percent.colorCursor.y * colorPicker.clientHeight / 100) + ')');
 
-  colorPickerCursor.setAttribute('stroke', palette.getReadableColorOverColor());
-  tonePickerCursorVertical.setAttribute('stroke', palette.getReadableColorOverTone());
-  tonePickerCursorHorizontal.setAttribute('stroke', palette.getReadableColorOverTone());
-  alphaPickerCursor.setAttribute('stroke', palette.getReadableColorOverAlpha());
+  colorPickerCursor.setAttribute('stroke', ui.getReadableColorOverColor());
+  tonePickerCursorVertical.setAttribute('stroke', ui.getReadableColorOverTone());
+  tonePickerCursorHorizontal.setAttribute('stroke', ui.getReadableColorOverTone());
+  alphaPickerCursor.setAttribute('stroke', ui.getReadableColorOverAlpha());
 
   if (ui.portraitOrientation) {
     tonePickerCursor.setAttribute('transform', 'translate('
@@ -1179,6 +1180,7 @@ turnNightMode = () => {
   nightModeSwitcher.classList.add('night');
   document.body.classList.add('night');
   document.body.style.transitionDuration = "0.1s";
+  ui.darkMode = true;
 };
 
 turnLightMode = () => {
@@ -1186,6 +1188,7 @@ turnLightMode = () => {
   nightModeSwitcher.classList.remove('night');
   document.body.classList.remove('night');
   document.body.style.transitionDuration = "0.1s";
+  ui.darkMode = false;
 };
 
 const nightModeSwitcher = document.getElementById('night-mode-switcher');
