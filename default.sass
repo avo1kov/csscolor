@@ -162,8 +162,22 @@ body.night
 
 
   .tone-picker
+    position: relative
     grid-area: tone-picker
     height: 100%
+
+    .tone-picker-background
+      z-index: 10
+      position: absolute
+      top: 0
+
+    .cursor-svg
+      z-index: 11
+      overflow: visible
+      position: absolute
+      top: 0
+      width: 100%
+      height: 100%
 
 
   .alpha-picker
