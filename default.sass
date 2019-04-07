@@ -20,7 +20,7 @@ body.night
   display: grid
   grid-template-rows: 80vh 40px auto
   grid-template-columns: 80vh 40px 240px
-  grid-template-areas: "color-picker tone-picker info" "alpha-picker . info" "example-text example-text example-text"
+  grid-template-areas: "color-picker tone-picker info" "alpha-picker theme-switcher info" "example-text example-text example-text"
   grid-gap: 7px
   justify-content: center
 
@@ -315,6 +315,7 @@ a
 
 
 .night-switcher
+  grid-area: theme-switcher
   cursor: pointer
 
 

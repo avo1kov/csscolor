@@ -973,8 +973,8 @@ rgbPercentageInput.addEventListener('input', function () {
 });
 
 hsvInput.addEventListener('input', function () {
-  const hsvInputString = hsvInput.value.replace(',', ' ').replace(/ +/g, ' ').replace(/ +/g, ' ').trim();
-  // console.log(hsvInputString);
+  const hsvInputString = hsvInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
+  console.log(hsvInputString);
   // hsvInput.value = hsvInputString;
 
   const hsv = {
