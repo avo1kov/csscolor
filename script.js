@@ -574,7 +574,8 @@ const palette = {
 
 // UI describing
 
-let touchIntent = false,
+let touchIntent = false;
+const
     wrapper = document.getElementById('wrapper'),
 
     colorPicker = document.getElementById('colorPicker'),
@@ -599,7 +600,7 @@ let touchIntent = false,
     // colorPickerCursorInnerRing = document.getElementById('colorPickerCursorInnerRing'),
     // colorPickerCursorOuterRing = document.getElementById('colorPickerCursorOuterRing'),
     colorPickerCursor = document.getElementById('colorPickerCursor');
-tonePickerCursor = document.getElementById('tonePickerCursor'),
+    tonePickerCursor = document.getElementById('tonePickerCursor'),
     tonePickerCursorVertical = document.getElementById('tonePickerCursorVertical'),
     tonePickerCursorHorizontal = document.getElementById('tonePickerCursorHorizontal'),
     alphaPickerCursor = document.getElementById('alphaPickerCursor'),
@@ -617,7 +618,7 @@ const ui = {
       || navigator.userAgent.match(/iPod/i)
       || navigator.userAgent.match(/BlackBerry/i)
       || navigator.userAgent.match(/Windows Phone/i)),
-  exampleText: 'Пример для <b>демонстрации</b>',
+  exampleText: 'Пример текста для <b>демонстрации</b> цвета',
   url: window.location.pathname,
   portraitOrientation: window.matchMedia('(orientation: portrait)').matches,
   darkMode: false,
@@ -661,6 +662,8 @@ function updateUI(from) {
     s: 100,
     v: 100
   });
+
+  // hexInput.style.borderColor = `rgb(${toneRgb.r}, ${toneRgb.g}, ${toneRgb.b})`;
 
   toneColor.setAttribute('fill', 'rgb('
       + Math.round(toneRgb.r) + ', '
@@ -1196,7 +1199,7 @@ turnLightMode = () => {
   updateUI();
 };
 
-const nightModeSwitcher = document.getElementById('night-mode-switcher');
+const nightModeSwitcher = document.getElementById('themeSwitcher');
 function nightModeSwitch() {
   if (nightModeSwitcher.classList.contains('night')) {
     turnLightMode();
@@ -1206,6 +1209,7 @@ function nightModeSwitch() {
     localStorage.setItem('night-mode', 'on');
   }
 }
+nightModeSwitcher.addEventListener('click', nightModeSwitch);
 
 getDefaultTheme = () => {
   const userTheme = localStorage.getItem('journalbook_theme');
