@@ -596,9 +596,9 @@ const
     cmykInput = document.getElementById('cmykInput'),
 
     exampleText = document.getElementById('exampleText'),
-
-    // colorPickerCursorInnerRing = document.getElementById('colorPickerCursorInnerRing'),
-    // colorPickerCursorOuterRing = document.getElementById('colorPickerCursorOuterRing'),
+    downloadButton = document.getElementById('dwnld-btn'),
+    linkToMe = document.getElementById('linkToMe'),
+    
     colorPickerCursor = document.getElementById('colorPickerCursor');
     tonePickerCursor = document.getElementById('tonePickerCursor'),
     tonePickerCursorVertical = document.getElementById('tonePickerCursorVertical'),
@@ -626,16 +626,18 @@ const ui = {
     if (((palette.currentColor.hsv.s < 35) && (palette.currentColor.hsv.v > 65))
         || ((palette.currentColor.hsv.v > 80) && (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190))) {
       return '#404040';
-    } else {
-      return '#fff';
     }
+    return '#fff';
   },
   getReadableColorOverTone: () => {
     if ((palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190)) {
       return '#404040';
-    } else {
-      return '#fff';
     }
+    return '#fff';
+  },
+  isBlackReadableOverTone: () => {
+    return (palette.currentColor.hsv.h > 43) && (palette.currentColor.hsv.h < 190);
+
   },
   getReadableColorOverAlpha: () => {
     if (((palette.currentColor.hsv.s < 50) && (palette.currentColor.hsv.v > 50))
@@ -664,6 +666,52 @@ function updateUI(from) {
   });
 
   // hexInput.style.borderColor = `rgb(${toneRgb.r}, ${toneRgb.g}, ${toneRgb.b})`;
+  const blackVisibilityOverTone = ui.isBlackReadableOverTone();
+  if (!ui.darkMode) {
+    // if (!blackVisibilityOverTone) {
+    //   downloadButton.style.backgroundColor = `rgb(${toneRgb.r}, ${toneRgb.g}, ${toneRgb.b})`;
+    // } else {
+      const darkerThoneRgb = palette.convertHsvToRgb({
+        h: palette.currentColor.hsv.h,
+        s: 70,
+        v: 80
+      });
+      downloadButton.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
+    // }
+  } else {
+      const darkerThoneRgb = palette.convertHsvToRgb({
+        h: palette.currentColor.hsv.h,
+        s: 70,
+        v: 60
+      });
+      downloadButton.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
+  }
+  const darkerThoneRgb = palette.convertHsvToRgb({
+    h: palette.currentColor.hsv.h,
+    s: 70,
+    v: 60
+  });
+  linkToMe.style.color = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
+
+  if (ui.darkMode) {
+    downloadButton.style.color = ui.isBlackReadableOverTone() ? 'black' : 'white';
+    downloadButton.style.color = 'black';
+  } else {
+    downloadButton.style.color = 'white';
+  }
+  // } else {
+  //   if (blackVisibilityOverTone) {
+  //     const downloadButtonTextColor = palette.convertHsvToRgb({
+  //       h: palette.currentColor.hsv.h,
+  //       s: 100,
+  //       v: 100
+  //     });
+  //     downloadButton.style.color = `rgba(${downloadButtonTextColor.r}, ${downloadButtonTextColor.g}, ${downloadButtonTextColor.b}, 1)`;
+  //     downloadButton.style.color = 'white';
+  //   } else {
+  //     downloadButton.style.color = 'white';
+  //   }
+  // }
 
   toneColor.setAttribute('fill', 'rgb('
       + Math.round(toneRgb.r) + ', '

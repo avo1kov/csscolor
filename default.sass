@@ -22,6 +22,7 @@ header.header
     color: #4d4d4d
 
 .palette
+  font-size: 100%
   display: grid
   grid-template-rows: auto 70vh 45px auto auto
   grid-template-columns: 70vh 45px 28vh
@@ -63,7 +64,7 @@ header.header
 
       .caption
         color: #616161
-        font-size: 9pt
+        font-size: 0.7em
 
       label
         margin: 10px 0 2px
@@ -80,12 +81,10 @@ header.header
         border-radius: $border-radius
 
         width: 90%
-        font-size: 14pt
+        font-size: 1.3em
 
         outline: none
         background: white
-        &:focus
-          //border: #007aff solid 1px
 
       .hex-wrapper
         width: 90%
@@ -134,10 +133,15 @@ header.header
     .dwnld-btn
       //display: inline-block
       //margin: 7px auto
+      //overflow: hidden
+      display: flex
+      align-items: center
+      justify-content: center
+      height: 20px
       width: 90%
       padding: 8px 0
 
-      font-size: 13pt
+      font-size: 1em
       text-align: center
       color: white
       border-radius: $border-radius
@@ -149,6 +153,10 @@ header.header
         background: #1486ff
       &:active
         background: #0074f0
+
+      svg
+        fill: white
+        margin-right: 7px
 
   .color-picker
     grid-area: color-picker
@@ -223,6 +231,8 @@ header.header
   .author
     grid-area: author
     text-align: center
+    a
+      font-size: 1em
 
 a
   color: #00b3ff
@@ -243,7 +253,7 @@ a
 
 .example-text
   grid-area: example-text
-  font-size: 13pt
+  font-size: 1.2em
   width: 100%
   padding: 5px 0
   border: none
@@ -620,6 +630,9 @@ article.article
       &:active
         background: #2b2b2b
         color: #787878
+
+      svg
+        fill: black
 
   //.palette
   //  .author .me
