@@ -69,6 +69,7 @@ header.header
         margin: 10px 0 2px
 
       input
+        box-sizing: border-box
         transition: all 0.1s linear 0s
 
         padding: 6px 0
@@ -84,7 +85,7 @@ header.header
         outline: none
         background: white
         &:focus
-          border: #007aff solid 1px
+          //border: #007aff solid 1px
 
       .hex-wrapper
         width: 90%
@@ -112,7 +113,7 @@ header.header
         border-radius: $border-radius
         background: white
         &.focus
-          border-color: #007aff
+          //border-color: #007aff
 
         input
           box-shadow: none
@@ -647,4 +648,4 @@ article.article
 
   .example-text
     &:hover
-      outline: #d1d1d6 solid 2px
+      background: rgba(255, 255, 255, 0.17)
