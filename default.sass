@@ -15,14 +15,19 @@ body.night
   transition: all 0.1s linear 0s
   background: black
 
+.wrapper
+  position: relative
+
 header.header
   grid-area: header
   h1
     font-weight: lighter
-    font-size: 30pt
-    color: #4d4d4d
+    font-size: 2.4em
+    color: rgba(120, 120, 120, 0.4)
 
 .palette
+  position: relative
+  z-index: 1
   font-size: 2vh
   display: grid
   grid-template-rows: auto 70vh $scroll-height auto auto
@@ -44,6 +49,9 @@ header.header
     //grid-template-rows: 19vh auto auto
     //grid-template-areas: "color-viewer" "inputs"
     height: 100%
+
+    .select-wrapper
+      display: none
 
     .color-preview
       grid-area: color-viewer
@@ -248,7 +256,7 @@ header.header
 
       svg
         vertical-align: middle
-        fill: #b0b0b0
+        fill: rgba(0, 0, 0, 0.25)
 
 a
   color: #00b3ff
@@ -328,8 +336,20 @@ article.article
     background: rgba(255, 255, 255, 0.3)
 
   svg
-    fill: #b0b0b0
+    fill: rgba(0, 0, 0, 0.25)
     transform: rotate(22deg)
+
+.dark-bckgr
+  z-index: 3
+  display: none
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  background: rgba(0, 0, 0, 0.3)
+  &.visible
+    display: block
 
 .night
   .color-preview
@@ -403,17 +423,19 @@ article.article
         color: #aaa
 
   .theme-switcher
-    background: transparent
+    background: rgba(0, 0, 0, 0.6)
     svg
-      fill: #4f4f4f
+      fill: rgba(255, 255, 255, 0.33)
     &:hover svg
-      fill: #8c8c8c
+      fill: rgba(255, 255, 255, 0.5)
 
-  .tools .dwnld-btn
-    svg
-      fill: #4f4f4f
-    &:hover svg
-      fill: #8c8c8c
+  .tools
+    .dwnld-btn
+      background: rgba(0, 0, 0, 0.6)
+      svg
+        fill: rgba(255, 255, 255, 0.33)
+      &:hover svg
+        fill: rgba(255, 255, 255, 0.5)
 
   .example-text
     &:hover

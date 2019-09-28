@@ -25,6 +25,7 @@ refreshLinks = () => {
 };
 
 $dwnldBtn.addEventListener('click', () => {
+    $darkBckgr.classList.add('visible');
     $rect.style.background = `rgba(${palette.currentColor.rgb.r}, ${palette.currentColor.rgb.g}, ${palette.currentColor.rgb.b}, ${palette.currentColor.alpha})`;
     const readableColor = ui.getReadableColorOverAlpha();
     $rect.style.color = readableColor;
@@ -47,8 +48,15 @@ $imgWidth.addEventListener('keyup', refreshLinks);
 
 $darkBckgr.addEventListener('click', () => {
     $dwnldPopup.classList.remove('visible');
+    $donatePopup.classList.remove('visible');
+    $darkBckgr.classList.remove('visible');
 });
 
 $dwnldCancelBtn.addEventListener('click', () => {
+    $dwnldPopup.classList.remove('visible');
+    $darkBckgr.classList.remove('visible');
+});
+
+$darkBckgr.addEventListener('click', () => {
     $dwnldPopup.classList.remove('visible');
 });

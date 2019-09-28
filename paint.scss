@@ -1,0 +1,42 @@
+.paint-filed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+
+  //background: green;
+
+  svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    //background: blue;
+  }
+
+  .draw-cursor{
+    position: absolute;
+    //display: none;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  //.wrapper:hover .draw-cursor {
+  //  display: block;
+  //}
+
+  .raster-stack {
+    position: absolute;
+  }
+  .raster-stack > .layer {
+    transition: all .1s linear;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .unvisible {
+    transition: all .1s linear;
+    opacity: 0;
+  }
+}

@@ -582,8 +582,6 @@ const
     tonePicker = document.getElementById('tonePicker'),
     alphaPicker = document.getElementById('alphaPicker'),
 
-    // info = document.getElementById('info'),
-    // colorPreview = document.getElementById('colorPreview'),
     toneColor = document.getElementById('color-picker-tone'),
     transparentGradientColorStart = document.getElementById('transparentGradientColorStart'),
     transparentGradientColorEnd = document.getElementById('transparentGradientColorEnd'),
@@ -696,19 +694,6 @@ function updateUI(from) {
   } else {
     downloadButton.style.color = 'white';
   }
-  // } else {
-  //   if (blackVisibilityOverTone) {
-  //     const downloadButtonTextColor = palette.convertHsvToRgb({
-  //       h: palette.currentColor.hsv.h,
-  //       s: 100,
-  //       v: 100
-  //     });
-  //     downloadButton.style.color = `rgba(${downloadButtonTextColor.r}, ${downloadButtonTextColor.g}, ${downloadButtonTextColor.b}, 1)`;
-  //     downloadButton.style.color = 'white';
-  //   } else {
-  //     downloadButton.style.color = 'white';
-  //   }
-  // }
 
   toneColor.setAttribute('fill', 'rgb('
       + Math.round(toneRgb.r) + ', '
