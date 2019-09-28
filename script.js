@@ -596,8 +596,12 @@ const
     cmykInput = document.getElementById('cmykInput'),
 
     exampleText = document.getElementById('exampleText'),
-    downloadButton = document.getElementById('dwnld-btn'),
+    downloadButton = document.getElementById('donate-btn'),
     linkToMe = document.getElementById('linkToMe'),
+    gifLink = document.getElementById('gif-link'),
+    jpgLink = document.getElementById('jpg-link'),
+    pngLink = document.getElementById('png-link'),
+    svgLink = document.getElementById('svg-link'),
     
     colorPickerCursor = document.getElementById('colorPickerCursor');
     tonePickerCursor = document.getElementById('tonePickerCursor'),
@@ -607,6 +611,7 @@ const
 
     cursors = document.getElementsByClassName('cursor'),
     mobileColorModelSelect = document.getElementById('mobileColorModelSelect'),
+    mobileColorModelSelectSubstitute = document.getElementById('mobileColorModelSelectSubstitude'),
     mobileBackground = document.getElementById('mobileBackground');
 
 const ui = {
@@ -621,6 +626,7 @@ const ui = {
   exampleText: 'Пример текста для <b>демонстрации</b> цвета',
   url: window.location.pathname,
   portraitOrientation: window.matchMedia('(orientation: portrait)').matches,
+  isMobileDevice: window.matchMedia('only screen and (max-device-width: 1125px)').matches,
   darkMode: false,
   getReadableColorOverColor: () => {
     if (((palette.currentColor.hsv.s < 35) && (palette.currentColor.hsv.v > 65))
@@ -665,33 +671,24 @@ function updateUI(from) {
     v: 100
   });
 
-  // hexInput.style.borderColor = `rgb(${toneRgb.r}, ${toneRgb.g}, ${toneRgb.b})`;
-  const blackVisibilityOverTone = ui.isBlackReadableOverTone();
-  if (!ui.darkMode) {
-    // if (!blackVisibilityOverTone) {
-    //   downloadButton.style.backgroundColor = `rgb(${toneRgb.r}, ${toneRgb.g}, ${toneRgb.b})`;
-    // } else {
-      const darkerThoneRgb = palette.convertHsvToRgb({
+  let darkerThoneRgb = palette.convertHsvToRgb({
+    h: palette.currentColor.hsv.h,
+    s: 78,
+    v: 80
+  });
+  if (ui.darkMode) {
+      darkerThoneRgb = palette.convertHsvToRgb({
         h: palette.currentColor.hsv.h,
-        s: 70,
-        v: 80
-      });
-      downloadButton.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
-    // }
-  } else {
-      const darkerThoneRgb = palette.convertHsvToRgb({
-        h: palette.currentColor.hsv.h,
-        s: 70,
+        s: 78,
         v: 60
       });
-      downloadButton.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
   }
-  const darkerThoneRgb = palette.convertHsvToRgb({
-    h: palette.currentColor.hsv.h,
-    s: 70,
-    v: 60
-  });
+  downloadButton.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
   linkToMe.style.color = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
+  gifLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
+  jpgLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
+  pngLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
+  svgLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
 
   if (ui.darkMode) {
     downloadButton.style.color = ui.isBlackReadableOverTone() ? 'black' : 'white';
@@ -774,9 +771,10 @@ function updateUI(from) {
   tonePickerCursorHorizontal.setAttribute('stroke', ui.getReadableColorOverTone());
   alphaPickerCursor.setAttribute('stroke', ui.getReadableColorOverAlpha());
 
-  if (ui.portraitOrientation) {
+  if (ui.isMobileDevice) {
     tonePickerCursor.setAttribute('transform', 'translate('
         + (palette.currentColor.percent.toneCursor.x * tonePicker.clientWidth / 100) + ', 0)');
+    // console.log(palette.currentColor.percent.toneCursor.x);
   } else {
     tonePickerCursor.setAttribute('transform', 'translate(0, '
         + (palette.currentColor.percent.toneCursor.x * tonePicker.clientHeight / 100) + ')');
@@ -821,7 +819,7 @@ function toneChoosingActionStart(coordinate) {
   wrapper.classList.add('non-select');
   tonePickerCursor.classList.add('scale-out-anim');
   let tonePercent = (coordinate.y - tonePicker.offsetTop) * 100 / tonePicker.clientHeight;
-  if (ui.portraitOrientation) {
+  if (ui.isMobileDevice) {
     tonePercent = (coordinate.x - tonePicker.offsetLeft) * 100 / tonePicker.clientWidth;
   }
   palette.setColorFromPercent({
@@ -901,7 +899,7 @@ function actionsHandler(coordinate) {
 
     case 'tone':
       let tonePercent = (coordinate.y - tonePicker.offsetTop) * 100 / tonePicker.clientHeight;
-      if (ui.portraitOrientation) {
+      if (ui.isMobileDevice) {
         tonePercent = (coordinate.x - tonePicker.offsetLeft) * 100 / tonePicker.clientWidth;
       }
 
@@ -942,7 +940,7 @@ function changeUrl() {
 
 function actionsEnd() {
   if ((touchIntent === 'color') || (touchIntent === 'tone') || (touchIntent === 'alpha')) {
-    if (ui.deviceIsSmartPhoneOrTablet) {
+    if (!ui.isMobileDevice) {
       ui.selectedInput.select();
     }
     tonePickerCursor.classList.remove('scale-out-anim');
@@ -1083,7 +1081,8 @@ cmykInput.addEventListener('input', function () {
 
 
 // Changing selected input
-const $rgbWrapper = document.getElementById('rgb-wrapper');
+const $rgbWrapper = document.getElementById('rgb-wrapper'),
+      $hexWrapper = document.getElementById('hex-wrapper');
 rgbInput.addEventListener('blur', () => {
   $rgbWrapper.classList.remove('focus');
 });
@@ -1105,32 +1104,43 @@ function toSelectInput(input) {
 
   localStorage.setItem('selectedInputId', input.id);
 
+  $hexWrapper.classList.remove('selected');
+  $rgbWrapper.classList.remove('selected');
   mobileColorModelSelect.classList.remove('percentage');
   switch (input) {
     case hexInput:
       mobileColorModelSelect.value = 'HEX';
+      mobileColorModelSelectSubstitute.innerText = 'HEX';
+      $hexWrapper.classList.add('selected');
       break;
 
     case rgbInput:
       mobileColorModelSelect.value = 'RGB';
+      mobileColorModelSelectSubstitute.innerText = 'RGB';
+      $rgbWrapper.classList.add('selected');
 
       break;
 
     case rgbPercentageInput:
       mobileColorModelSelect.value = 'RGB %';
+      mobileColorModelSelectSubstitute.innerText = 'RGB %';
       mobileColorModelSelect.classList.add('percentage');
+      $rgbWrapper.classList.add('selected');
       break;
 
     case hsvInput:
       mobileColorModelSelect.value = 'HSV';
+      mobileColorModelSelectSubstitute.innerText = 'HSV';
       break;
 
     case cmykInput:
       mobileColorModelSelect.value = 'CMYK';
+      mobileColorModelSelectSubstitute.innerText = 'CMYK';
       break;
 
     default:
       mobileColorModelSelect.value = ':)';
+      mobileColorModelSelectSubstitute.innerText = ':)';
   }
 }
 
@@ -1197,6 +1207,7 @@ function getJsonFromUrl() {
 // Window resize handler
 window.addEventListener('resize', function() {
   ui.portraitOrientation = window.matchMedia('(orientation: portrait)').matches;
+  ui.isMobileDevice = window.matchMedia('only screen and (max-device-width: 1125px)').matches;
   updateUI();
 });
 

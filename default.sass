@@ -1,4 +1,5 @@
 $border-radius: 5px
+$scroll-height: 45px
 
 *
   padding: 0
@@ -22,11 +23,11 @@ header.header
     color: #4d4d4d
 
 .palette
-  font-size: 100%
+  font-size: 2vh
   display: grid
-  grid-template-rows: auto 70vh 45px auto auto
-  grid-template-columns: 70vh 45px 28vh
-  grid-template-areas: "header header header" "color-picker tone-picker info" "alpha-picker theme-switcher author" "example-text example-text example-text" "article article article"
+  grid-template-rows: auto 70vh $scroll-height auto auto
+  grid-template-columns: 70vh $scroll-height 28vh
+  grid-template-areas: "header header header" "color-picker tone-picker info" "alpha-picker theme-switcher tools" "example-text example-text example-text" "article article article"
   grid-gap: 7px
   justify-content: center
 
@@ -73,7 +74,7 @@ header.header
         box-sizing: border-box
         transition: all 0.1s linear 0s
 
-        padding: 6px 0
+        padding: 0.35em 0
 
         text-align: center
         color: #616161
@@ -91,11 +92,12 @@ header.header
         display: grid
         grid-template-columns: 20px 1fr
         grid-template-areas: "lattice hex"
+        //align-items: center
 
         .lattice
           grid-area: lattice
           color: #616161
-          font-size: 17pt
+          font-size: 1.4em
           padding-top: 10px
 
         input
@@ -130,16 +132,13 @@ header.header
 
           background: #d4d4d4
 
-    .dwnld-btn
-      //display: inline-block
-      //margin: 7px auto
-      //overflow: hidden
+    .donate-btn
       display: flex
       align-items: center
       justify-content: center
       height: 20px
       width: 90%
-      padding: 8px 0
+      padding: 0.5em 0
 
       font-size: 1em
       text-align: center
@@ -233,6 +232,23 @@ header.header
     text-align: center
     a
       font-size: 1em
+  .tools
+    grid-area: tools
+    //background: rgba(0, 0, 0, 0.1)
+    display: flex
+
+    .dwnld-btn
+      background: rgba(0, 0, 0, 0.05)
+      width: $scroll-height
+      cursor: pointer
+      border-radius: $border-radius
+      display: flex
+      justify-content: center
+      align-items: center
+
+      svg
+        vertical-align: middle
+        fill: #b0b0b0
 
 a
   color: #00b3ff
@@ -297,10 +313,8 @@ article.article
 .mobile-background
   display: none
 
-
 .mobile-color-model-select
   display: none
-
 
 .theme-switcher
   display: flex
@@ -316,266 +330,6 @@ article.article
   svg
     fill: #b0b0b0
     transform: rotate(22deg)
-
-.night-switcher:hover > .box
-  border-color: #919191
-
-.night-switcher:hover .svg-sun
-  fill: #919191
-
-
-.night .night-switcher:hover .moon
-  background: #3d3d3d
-
-.night-switcher > .box
-  transition: all 0.1s linear 0s
-  position: relative
-  overflow: hidden
-
-  margin: 10px auto 0
-
-  border-style: solid
-  border-color: #616161
-  border-width: 2px
-
-  width: 50px
-  height: 25px
-  border-radius: 25px
-  background: #fff
-
-
-.svg-sun
-  transition: all 0.1s linear 0s
-  position: absolute
-  top: 3px
-  right: 3px
-  height: 21px
-  /*display: none*/
-  fill: #616161
-/*fill: black*/
-/*transform: translate(4vw, 0.3vw) scale(0.16)*/
-
-
-.night .svg-sun
-  transition: all 0.1s linear 0s
-  right: 26px
-  opacity: 0
-  fill: #fff
-  transform: rotate(-90deg) scale(0.6)
-
-
-.moon
-  transition: all 0.1s linear 0s
-  position: absolute
-  top: 6px
-  right: 7px
-  width: 13px
-  height: 13px
-  border-radius: 13px
-  background: #fff
-  transform: scale(0.5)
-  opacity: 0
-
-
-.night .moon
-  transition: all 0.1s linear 0s
-  opacity: 1
-  right: 31px
-  transform: scale(1.2)
-  background: #616161
-
-
-.dark-side-of-moon
-  transition: all 0.1s linear 0s
-  position: absolute
-  top: 4px
-  left: 0
-  width: 13px
-  height: 13px
-  border-radius: 100%
-  background: white
-  transform: scale(1.2)
-
-.night .dark-side-of-moon
-  background: black
-
-
-.night-switcher.night .box
-  transition: all 0.1s linear 0s
-  background: #000
-  border-color: #616161
-
-/*.night-switcher.night > .box > .dark-side-of-moon */
-/*transition: all 1s linear 0s*/
-/*left: 1px*/
-/*background: #000*/
-/**/
-
-/* Only mobile elements */
-@media handheld and (orientation: portrait)
-  .night-switcher
-    display: none
-
-  .mobile-background
-    display: initial
-    position: fixed
-    z-index: 1
-
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-
-
-  .palette
-    box-sizing: border-box
-    position: absolute
-    z-index: 2
-
-    top: 0
-    bottom: 0
-    left: 0
-    right: 0
-
-    width: 100vw
-    padding-left: 5vw
-
-    margin: 0
-
-    justify-content: flex-end
-    flex-direction: column
-    flex-wrap: nowrap
-
-
-  .tone-gradient-horizontal
-    display: initial
-
-
-  .tone-gradient-vertical
-    display: none
-
-
-  .info
-    order: 1
-    display: flex
-    align-items: flex-end
-    width: 90vw
-
-
-  .color-preview
-    display: none
-
-
-  .inputs
-    display: grid
-    grid-column-gap: 10px
-    grid-template-columns: 150px 1fr
-    grid-template-rows: auto
-    grid-template-areas: "select input"
-    align-items: flex-end
-    justify-content: flex-end
-    width: 100%
-  /*display: flex*/
-  /*flex-direction: row*/
-  /*justify-content: space-between*/
-  /*align-items: flex-end*/
-
-
-  .inputs .caption
-    display: none
-
-
-  .inputs input
-    grid-area: input
-    display: none
-
-    width: 100%
-    height: 50px
-
-    border-radius: 100vw
-
-    background: white
-
-
-  .hex-box, .hex-input-box
-    width: auto
-
-
-  .inputs input.selected
-    display: initial
-
-
-  select.mobile-color-model-select
-    grid-area: select
-    box-sizing: border-box
-
-    display: initial
-
-    width: 100%
-    height: 50px
-
-    padding: 0 1fr
-
-    outline: none
-
-    font-size: 4vw
-    font-weight: bold
-    color: white
-    text-align-last: center
-    text-align: center
-    border-radius: 33vw
-
-    background: black
-    appearance: none
-    -webkit-appearance: none
-    -moz-appearance: none
-
-  .mobile-color-model-select.percentage
-    width: 40vw
-
-
-  .hex-input-lattice
-    display: none
-
-
-  .color-picker
-    order: 3
-
-    width: 90vw
-    height: 90vw
-
-    margin: 0
-
-
-  .tone-picker
-    order: 2
-    width: 90vw
-    height: 10vw
-
-    margin: 3vw 0
-
-
-  .alpha-picker
-    order: 4
-    width: 90vw
-    height: 10vw
-    margin: 3vw 0
-
-
-  .tone-picker-cursor-vertical
-    display: none
-
-
-  .tone-picker-cursor-horizontal
-    display: initial
-
-
-  .example-text
-    display: none
-
-
-  .github
-    display: none
 
 .night
   .color-preview
@@ -622,7 +376,7 @@ article.article
         transition: all 0.1s linear 0s
         background: transparent
   .info
-    .dwnld-btn
+    .donate-btn
       color: #ccc
       background: #4f4f4f
       &:hover
@@ -634,9 +388,6 @@ article.article
       svg
         fill: black
 
-  //.palette
-  //  .author .me
-  //    color: gray
   a
     color: #878787
     &:hover
@@ -652,8 +403,13 @@ article.article
         color: #aaa
 
   .theme-switcher
-    //background: #4f4f4f
     background: transparent
+    svg
+      fill: #4f4f4f
+    &:hover svg
+      fill: #8c8c8c
+
+  .tools .dwnld-btn
     svg
       fill: #4f4f4f
     &:hover svg
@@ -662,3 +418,204 @@ article.article
   .example-text
     &:hover
       background: rgba(255, 255, 255, 0.17)
+
+/* Only mobile elements */
+@media only screen and (max-device-width: 1125px)
+  $scroll-height: 50px
+
+  .theme-switcher, .palette .tools .dwnld-btn
+    display: none
+
+  .mobile-background
+    display: initial
+    position: fixed
+    z-index: 1
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+
+  .wrapper
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    z-index: 2
+
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    .palette
+      font-size: 2vh
+      display: grid
+      grid-template-rows: auto minmax(10px, $scroll-height) minmax(100px, 94vw) minmax(10px, $scroll-height)
+      grid-template-columns: 94vw
+      grid-template-areas: "info" "alpha-picker" "color-picker" "tone-picker"
+      grid-gap: 10px
+      justify-content: center
+      align-content: end
+      padding: 3vw
+      box-sizing: border-box
+
+      margin: 0
+      width: 100vw
+      height: 100vh
+
+      .header
+        display: none
+
+      .info
+        //display: none
+        order: 1
+        display: flex
+        align-items: flex-end
+        font-size: 21px
+        //justify-content: space-between
+
+        .color-preview
+          display: none
+
+        .inputs-wrapper
+          width: 100%
+          height: 100%
+
+        .inputs
+          display: grid
+          width: 100%
+          grid-column-gap: 10px
+          grid-template-columns: 120px 1fr
+          grid-template-rows: auto
+          grid-template-areas: "select input"
+          align-items: flex-end
+          justify-content: center
+          height: 100%
+
+          .caption
+            display: none
+
+          input
+            grid-area: input
+            display: none
+
+            width: 100%
+            //height: 50px
+            font-size: 1em
+            padding: 0.2em 0 0.15em 0
+            //height: 100%
+            border-radius: 100vw
+            color: black
+
+            background: white
+            &:focus
+              background: white
+
+          .hex-wrapper
+            .lattice
+              display: none
+
+          .rgb-wrapper, .hex-wrapper
+            display: none
+            border: none
+            width: 100%
+            height: 100%
+            .line
+              display: none
+
+          .selected
+            display: initial
+
+        .select-wrapper
+          position: relative
+          grid-area: select
+          height: 100%
+
+          .select-substitute
+            position: absolute
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+            background: black
+            color: white
+            text-align: center
+            border-radius: 100vw
+            padding: 0.2em 0 0.15em 0
+            line-height: 1.2em
+            font-size: 1em
+
+          select.mobile-color-model-select
+            opacity: 0
+            box-sizing: border-box
+            display: block
+            position: absolute
+            top: 0
+            right: 0
+            bottom: 0
+            left: 0
+            width: 100%
+            padding: 0 auto
+            line-height: 30px
+            outline: none
+            font-size: 13px
+            font-weight: bold
+            color: white
+            text-align-last: center
+            text-align: -webkit-center
+            border: none
+            //border-radius: 33vw
+            background: red
+            appearance: none
+            -webkit-appearance: none
+            -moz-appearance: none
+
+        .hex-input-lattice
+          display: none
+
+        .author
+          display: none
+
+        .donate-btn
+          display: none
+
+      .color-picker
+        //display: none
+        order: 3
+        width: 100%
+        height: 100%
+        //margin: 0
+        //border-radius: 0
+
+      .tone-picker
+        order: 2
+        width: 100%
+        height: 100%
+
+        .tone-picker-background
+          //border-radius: 0
+
+        .tone-gradient-horizontal
+          display: initial
+
+        .tone-gradient-vertical
+          display: none
+
+      .alpha-picker
+        //display: none
+        .transparent-fill
+          fill: #bdbdbd
+
+      .tone-picker-cursor-vertical
+        display: none
+
+      .tone-picker-cursor-horizontal
+        display: initial
+
+      .tools
+        display: none
+
+      .example-text
+        display: none
+
+      .article
+        display: none
