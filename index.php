@@ -106,9 +106,6 @@
 					<p>
 						В качестве экперимента разместили небольшую статью про flexbox: <a href="https://csscolor.ru/flexbox" class="content">https://csscolor.ru/flexbox</a>
 					</p>
-					<p>
-						Ваш комментарий был бы кстати :)
-					</p>
 ',
 			'media' => $media['tg'],
 			'ads' => 'yandex',
