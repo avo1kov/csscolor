@@ -2,6 +2,7 @@
 
 // Logical model describing
 const palette = {
+  selectedThone: 'red',
   currentColor: {
     percent: {
       colorCursor: {
@@ -621,7 +622,7 @@ const ui = {
       || navigator.userAgent.match(/iPod/i)
       || navigator.userAgent.match(/BlackBerry/i)
       || navigator.userAgent.match(/Windows Phone/i)),
-  exampleText: 'Пример текста для <b>демонстрации</b> цвета',
+  exampleText: '<?php echo $labels[\'text-example\']; ?>',//'Пример текста для <b>демонстрации</b> цвета',
   url: window.location.pathname,
   portraitOrientation: window.matchMedia('(orientation: portrait)').matches,
   isMobileDevice: window.matchMedia('only screen and (max-device-width: 1125px)').matches,
@@ -668,6 +669,29 @@ function updateUI(from) {
     s: 100,
     v: 100
   });
+
+  const h = palette.currentColor.hsv.h;
+  if (((h > 0) && (h <= 4)) || (h > 340)) {
+    palette.selectedThone = 'red';
+  }
+  if ((h > 4) && (h <= 40)) {
+    palette.selectedThone = 'brown';
+  }
+  if ((h > 4) && (h <= 40)) {
+    palette.selectedThone = 'brown';
+  }
+  if ((h > 40) && (h <= 65)) {
+    palette.selectedThone = 'yellow';
+  }
+  if ((h > 65) && (h <= 170)) {
+    palette.selectedThone = 'green';
+  }
+  if ((h > 170) && (h <= 256)) {
+    palette.selectedThone = 'blue';
+  }
+  if ((h > 256) && (h <= 340)) {
+    palette.selectedThone = 'purple';
+  }
 
   let darkerThoneRgb = palette.convertHsvToRgb({
     h: palette.currentColor.hsv.h,
@@ -1064,7 +1088,6 @@ cmykInput.addEventListener('input', function () {
   changeUrl()
 });
 
-
 // Changing selected input
 const $rgbWrapper = document.getElementById('rgb-wrapper'),
       $hexWrapper = document.getElementById('hex-wrapper');
@@ -1291,3 +1314,36 @@ autoThemeApply = () => {
 
 autoThemeApply();
 window.onfocus = autoThemeApply;
+
+// Inputs interact tracking
+hexInput.addEventListener('copy', () => {
+  dataLayer.push({'event':'copy-color','color-model':'hex'});
+});
+rgbInput.addEventListener('copy', () => {
+  dataLayer.push({'event':'copy-color','color-model':'rgb'});
+});
+rgbPercentageInput.addEventListener('copy', () => {
+  dataLayer.push({'event':'copy-color','color-model':'rgb%'});
+});
+hsvInput.addEventListener('copy', () => {
+  dataLayer.push({'event':'copy-color','color-model':'hsv'});
+});
+cmykInput.addEventListener('copy', () => {
+  dataLayer.push({'event':'copy-color','color-model':'cmyk'});
+});
+
+hexInput.addEventListener('paste', () => {
+  dataLayer.push({'event':'paste-color','color-model':'hex'});
+});
+rgbInput.addEventListener('paste', () => {
+  dataLayer.push({'event':'paste-color','color-model':'rgb'});
+});
+rgbPercentageInput.addEventListener('paste', () => {
+  dataLayer.push({'event':'paste-color','color-model':'rgb%'});
+});
+hsvInput.addEventListener('paste', () => {
+  dataLayer.push({'event':'paste-color','color-model':'hsv'});
+});
+cmykInput.addEventListener('paste', () => {
+  dataLayer.push({'event':'paste-color','color-model':'cmyk'});
+});

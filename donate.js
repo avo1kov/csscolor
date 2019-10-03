@@ -26,6 +26,7 @@ const $donatePopup = document.getElementById('donate-popup');
 
 $donateBtn.addEventListener('click', () => {
     $darkBckgr.classList.add('visible');
+    dataLayer.push({'event':'donate-button-click','selected-tone': palette.selectedThone});
     // $rect.style.background = `rgba(${palette.currentColor.rgb.r}, ${palette.currentColor.rgb.g}, ${palette.currentColor.rgb.b}, ${palette.currentColor.alpha})`;
     // const readableColor = ui.getReadableColorOverAlpha();
     // $rect.style.color = readableColor;
