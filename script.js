@@ -614,6 +614,7 @@ const
     mobileBackground = document.getElementById('mobileBackground');
 
 const ui = {
+  isColorChanged: false,
   selectedInput: hexInput,
   deviceIsSmartPhoneOrTablet: !(navigator.userAgent.match(/Android/i)
       || navigator.userAgent.match(/webOS/i)
@@ -659,6 +660,10 @@ const ui = {
 };
 
 function updateUI(from) {
+  if (palette.currentColor.hex != 'fff') {
+    palette.isColorChanged = true;
+  }
+
   rectColor.setAttribute('fill', 'rgba(' + Math.round(palette.currentColor.rgb.r) + ', '
       + Math.round(palette.currentColor.rgb.g) + ', '
       + Math.round(palette.currentColor.rgb.b) + ', '

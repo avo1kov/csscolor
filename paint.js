@@ -1,5 +1,4 @@
 const $paintField = document.getElementById('paint-field');
-console.log('hi', $paintField);
 const $svg = document.getElementById("svg"),
     $drawCursor = document.getElementById("draw-cursor"),
     obj_title = document.getElementById("raster-stack");
@@ -11,7 +10,18 @@ let mousedownFlag = false,
     i = 0,
     j = 0;
 
-drawPoint = (x, y) => {
+let wasDrawn = false;
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+const drawPoint = (x, y) => {
     if (document.getElementById("point" + x + y) == null) {
         let steps = 1 - Math.random() * 0.4;
         let size = length;
@@ -20,13 +30,17 @@ drawPoint = (x, y) => {
         point.setAttribute("y", (y - size / 2).toString());
         point.setAttribute("width", size.toString());
         point.setAttribute("height", size.toString());
-        point.setAttribute("fill", "#" + palette.currentColor.hex);
+        let color = palette.currentColor.hex;
+        if (!palette.isColorChanged) {
+            color = getRandomColor();
+        }
+        point.setAttribute("fill", "#" + color);
         point.setAttribute("id", "point" + x + y);
         $svg.appendChild(point);
     }
 };
 
-d = (x1, y1, x2, y2) => {
+const d = (x1, y1, x2, y2) => {
     let dy = x2 - x1;
     let dx = y2 - y1;
     let i = length;
@@ -47,7 +61,7 @@ d = (x1, y1, x2, y2) => {
     }
 };
 
-e = (x1, y1, x2, y2) => {
+const e = (x1, y1, x2, y2) => {
     let dy = x2 - x1;
     let dx = y2 - y1;
     let i = length;
