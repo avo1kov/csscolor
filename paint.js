@@ -32,7 +32,12 @@ const drawPoint = (x, y) => {
         point.setAttribute("height", size.toString());
         let color = palette.currentColor.hex;
         if (!palette.isColorChanged) {
-            color = getRandomColor();
+            color = palette.convertRgbToHex(palette.convertHsvToRgb({
+                h: y / 2,
+                s: 60 * Math.random() + 40,
+                v: 100
+            }));
+            // color = getRandomColor();
         }
         point.setAttribute("fill", "#" + color);
         point.setAttribute("id", "point" + x + y);
