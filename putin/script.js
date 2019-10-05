@@ -309,7 +309,7 @@ document.addEventListener("mouseup", () => {
     // if (localStorage.getItem("drew") == "True") {
     //     localStorage.setItem("drew", "False");
     // }
-    mousedownFlag = false;
+    // mousedownFlag = false;
     previousX = null;
     previousY = null;
     undoFlag = false;
