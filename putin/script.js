@@ -2,8 +2,7 @@ const $paintField = document.getElementById('paint-field');
 const $svg = document.getElementById("svg"),
     $drawCursor = document.getElementById("draw-cursor"),
     obj_title = document.getElementById("raster-stack");
-let mousedownFlag = false,
-    length = Math.round(screen.width / 130),
+let mousedownFlag = true,
     previousX = null,
     previousY = null,
     redoFlag = false,
@@ -16,30 +15,90 @@ window.mobilecheck = function() {
     return check;
 };
 
+const $loadCanvas = document.getElementById('loading-canvas');
+const $canvasBack = document.getElementById('picture-back');
 const $canvas = document.getElementById('picture');
 $canvas.width = window.innerWidth;
 $canvas.height = window.innerHeight;
+$canvasBack.width = window.innerWidth;
+$canvasBack.height = window.innerHeight;
+$loadCanvas.width = window.innerWidth;
+$loadCanvas.height = window.innerHeight;
 const ctx = $canvas.getContext('2d');
+const ctxBack = $canvasBack.getContext('2d');
+const ctxLoad =  $loadCanvas.getContext('2d');
+function dis(context) {
+    context.webkitImageSmoothingEnabled = false;
+    context.mozImageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = false;
+}
+dis(ctx);
+dis(ctxBack);
+dis(ctxLoad);
 var img = new Image();
-img.src = './VVP.jpg';
+// img.src = './VVP.jpg';
+img.src = 'VVP.jpg';
+ctx.fillStyle="white";
+ctx.fillRect(0, 0, $canvasBack.width, $canvasBack.height);
+let length = Math.round(screen.width / 130);
 img.onload = function(){
     if (window.mobilecheck) {
-        length = 10;
+        length = 7;
     }
-    ctx.drawImage(img,0,0);
-    console.log($canvas.width, $canvas.height);
-    for (i = 0; i < 10 + Math.random() * 20; i++) {
-        const rx = Math.round(Math.random() * $canvas.width);
-        const ry = Math.round(Math.random() * $canvas.height);
-        drawPoint(rx, ry);
+
+    // ctxLoad.drawImage(img,0,0);
+    let newImgWidth, newImgHeight;
+    if (img.width > img.height) {
+        // ctxLoad.drawImage(img, 0, 0, window.innerWidth / length, (img.height * (img.width / window.innerWidth)) / length);
+        newImgWidth = window.innerWidth;
+        newImgHeight = (img.height / (img.width / window.innerWidth));
+    } else {
+        // ctxLoad.drawImage(img, 0, 0, (img.width * (img.height / window.innerHeight))/ length, window.innerHeight / length);
+        newImgWidth = (img.width / (img.height / window.innerHeight));
+        newImgHeight = window.innerHeight;
     }
+    console.log(newImgWidth, newImgHeight);
+    ctxLoad.drawImage(img, 0, 0, newImgWidth / length, newImgHeight / length);
+    for (let x = 0; x < $canvasBack.width; x += newImgWidth) {
+        for (let y = 0; y < $canvasBack.height; y += newImgHeight) {
+            ctxBack.drawImage($loadCanvas, 0, 0, newImgWidth / length, newImgHeight / length, x, y, newImgWidth, newImgHeight);
+        }
+    }
+    // ctx.putImageData(ctxLoad.getImageData(0, 0, img.width / 5, img.height / 5), 0, 0, 0, 0, img.width, img.height);
+    // ctxBack.drawImage(img,0,0);
+
+    // console.log($loadCanvas.width, $loadCanvas.height);
+    // for (let x = 0; x < $loadCanvas.width; x += length) {
+    //     for (let y = 0; y < $loadCanvas.height; y += length) {
+    //         drawPoint(x, y);
+    //     }
+    // }
+    console.log('vse');
+    //     for (let y = 0; x < $loadCanvas.height; y += length) {
+    //         drawPoint(x, y);
+    //     }
+    // }
+    // console.log($canvas.width, $canvas.height);
+    // for (i = 0; i < 10 + Math.random() * 20; i++) {
+    //     const rx = Math.round(Math.random() * $canvas.width);
+    //     const ry = Math.round(Math.random() * $canvas.height);
+    //     drawPoint(rx, ry);
+    // }
 };
 
+// pictures = [];
+// for (let i = 1; i <= 15; i++) {
+//     pictures.push(`${i}.jpeg`);
+// }
+// function shuffle(array) {
+//     array.sort(() => Math.random() - 0.5);
+// }
+// shuffle(pictures);
+// setInterval(() => {
+//     img.src = 'pics/' + pictures.shift();
+// }, 7000);
 // var audio = new Audio('gimn.mp3');
 // audio.play();
-document.addEventListener("load", () => {
-    document.getElementById("gimn").play();
-});
 
 let wasDrawn = false;
 
@@ -122,27 +181,95 @@ const drawPoint = (x, y) => {
     if (document.getElementById("point" + x + y) == null) {
         let steps = 1 - Math.random() * 0.4;
         let size = length;
-        let point = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        point.setAttribute("x", (x - size / 2).toString());
-        point.setAttribute("y", (y - size / 2).toString());
-        point.setAttribute("width", size.toString());
-        point.setAttribute("height", size.toString());
+        // let point = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        // point.setAttribute("x", (x - size / 2).toString());
+        // point.setAttribute("y", (y - size / 2).toString());
+        // point.setAttribute("width", size.toString());
+        // point.setAttribute("height", size.toString());
         const x1 = x % img.width,
             y1 = y % img.height;
-        console.log(x1, y1);
-        const rgb = ctx.getImageData(Math.round(x1), Math.round(y1), 1, 1).data;
-        console.log(x, y, rgb);
+        // console.log(x1, y1);
+        const rgb = ctxLoad.getImageData(Math.round(x1), Math.round(y1), 1, 1).data;
+        // console.log(x, y, rgb);
         const color = convertRgbToHex({
             r: rgb[0],
             g: rgb[1],
             b: rgb[2]
         });
-        point.setAttribute("fill", "#" + color);
-        point.setAttribute("id", "point" + x + y);
-        $svg.appendChild(point);
+        ctxBack.fillStyle = "#" + color;
+        ctxBack.fillRect(x, y, length, length);
+        // point.setAttribute("fill", "#" + color);
+        // point.setAttribute("id", "point" + x + y);
+        // $svg.appendChild(point);
     }
 };
 
+const drawRect = (x, y, width) => {
+    // console.log(length);
+    const w = 9 * length;
+    // ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    // ctx.fillRect(x, y, w * 2, w * 2);
+    // ctx.clearRect(0, 0, $canvas.width, $canvas.height);
+    // ctx.clearRect(x - w, y - w, w * 2, w * 2);
+
+    ctx.putImageData(ctxBack.getImageData(x-w/2, y-w/2, w, w), x - w/2, y - w/2);
+    ctx.putImageData(ctxBack.getImageData(x-w/2, y-w/2, w, w), x - w/2, y - w/2);
+    // for (let i = x - w; i <= x + w; i+=length) {
+    //     for (let j = y - w; j <= y + w; j+=length) {
+    //         drawPoint(i, j);
+    //     }
+    // }
+};
+
+// const CHANNELS_PER_PIXEL = 4;
+// function drawCircle(x0, y0, radius) {
+//     var x = radius;
+//     var y = 0;
+//     var decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+//     var imageWidth = $canvas.width;
+//     var imageHeight = $canvas.height;
+//     var imageData = ctx.getImageData(0, 0, imageWidth, imageHeight);
+//     var pixelData = imageData.data;
+//     var makePixelIndexer = function (width) {
+//         return function (i, j) {
+//             var index = CHANNELS_PER_PIXEL * (j * width + i);
+//             //index points to the Red channel of pixel
+//             //at column i and row j calculated from top left
+//             return index;
+//         };
+//     };
+//     var pixelIndexer = makePixelIndexer(imageWidth);
+//     var drawPixel = function (x, y) {
+//         var idx = pixelIndexer(x,y);
+//         pixelData[idx] = 255;	//red
+//         pixelData[idx + 1] = 0;	//green
+//         pixelData[idx + 2] = 255;//blue
+//         pixelData[idx + 3] = 255;//alpha
+//     };
+//     drawPixel = drawPoint;
+//
+//     while (x >= y) {
+//         drawPixel((x * length) + x0, (y* length) + y0);
+//         drawPixel((y* length) + x0, (x* length) + y0);
+//         drawPixel((-x* length) + x0, (y* length) + y0);
+//         drawPixel((-y* length) + x0, (x* length) + y0);
+//         drawPixel((-x* length) + x0, (-y* length) + y0);
+//         drawPixel((-y* length) + x0, (-x* length) + y0);
+//         drawPixel((x* length) + x0, (-y* length) + y0);
+//         drawPixel((y* length) + x0, (-x* length) + y0);
+//         y++;
+//         if (decisionOver2 <= 0) {
+//             decisionOver2 += 2 * y + 1; // Change in decision criterion for y -> y+1
+//         } else {
+//             x--;
+//             decisionOver2 += 2 * (y - x) + 1; // Change for y -> y+1, x -> x-1
+//         }
+//     }
+//
+//     ctx.putImageData(imageData, 0, 0);
+// }
+
+const radius = 1;
 const d = (x1, y1, x2, y2) => {
     let dy = x2 - x1;
     let dx = y2 - y1;
@@ -155,7 +282,7 @@ const d = (x1, y1, x2, y2) => {
     let item = y1;
     let x = x1;
     for (; x <= x2; x = x + length) {
-        drawPoint(x, item);
+        drawRect(x, item, radius);
         if (y > 0) {
             item = item + i;
             y = y - 2 * dy;
@@ -176,7 +303,7 @@ const e = (x1, y1, x2, y2) => {
     let x = x1;
     let y = y1;
     for (; y <= y2; y = y + length) {
-        drawPoint(x, y);
+        drawRect(x, y, radius);
         if (sum > 0) {
             x = x + i;
             sum = sum - 2 * dx;
@@ -219,14 +346,15 @@ document.addEventListener('touchstart', function(event) {
 });
 
 document.addEventListener('mousedown', (e) => {
-    document.getElementById("gimn").play();
+    // document.getElementById("gimn").play();
     // if (!touchIntent) {
         mousedownFlag = true;
         let [x, y] = [
             Math.round(e.pageX / length) * length,
             Math.round(e.pageY / length) * length
         ];
-        drawPoint(x, y);
+        // drawPoint(x, y);
+        drawRect(x, y, radius);
         entryToSend = x;
         unreadItem = y;
 
@@ -265,79 +393,79 @@ document.addEventListener("mousemove", (e) => {
     }
 }, false);
 
-mousedownFlag = true;
-
-document.addEventListener('touchend', function() {
-    document.body.style.userSelect = "auto";
-    document.body.style.webkitUserSelect = "auto";
-    // if (localStorage.getItem("drew") == "True") {
-    //     localStorage.setItem("drew", "False");
-    // }
-    mousedownFlag = false;
-    previousX = null;
-    previousY = null;
-    undoFlag = false;
-    l = i + 1;
-    for (; l <= j; l++) {
-        console.log(l);
-        document.getElementById("layer" + l).remove();
-    }
-    i++;
-    j = i;
-    const svg_xml = (new XMLSerializer).serializeToString($svg);
-    const raterizedImage = document.createElement("img");
-    raterizedImage.setAttribute("src", "data:image/svg+xml;base64," + btoa(svg_xml));
-    raterizedImage.setAttribute("id", "layer" + i);
-    raterizedImage.setAttribute("class", "layer");
-    // raterizedImage.style.width = document.body.clientWidth + "px";
-    // raterizedImage.style.height = document.body.scrollHeight + "px";
-    obj_title.appendChild(raterizedImage);
-    /**
-     * @return {undefined}
-     */
-    raterizedImage.onload = function() {
-        for (; $svg.firstChild;) {
-            $svg.removeChild($svg.firstChild);
-        }
-    };
-    console.log(i);
-});
-
-document.addEventListener("mouseup", () => {
-    document.body.style.userSelect = "auto";
-    document.body.style.webkitUserSelect = "auto";
-    // if (localStorage.getItem("drew") == "True") {
-    //     localStorage.setItem("drew", "False");
-    // }
-    // mousedownFlag = false;
-    previousX = null;
-    previousY = null;
-    undoFlag = false;
-    l = i + 1;
-    for (; l <= j; l++) {
-        console.log(l);
-        document.getElementById("layer" + l).remove();
-    }
-    i++;
-    j = i;
-    const svg_xml = (new XMLSerializer).serializeToString($svg);
-    const raterizedImage = document.createElement("img");
-    raterizedImage.setAttribute("src", "data:image/svg+xml;base64," + btoa(svg_xml));
-    raterizedImage.setAttribute("id", "layer" + i);
-    raterizedImage.setAttribute("class", "layer");
-    // raterizedImage.style.width = document.body.clientWidth + "px";
-    // raterizedImage.style.height = document.body.scrollHeight + "px";
-    obj_title.appendChild(raterizedImage);
-    /**
-     * @return {undefined}
-     */
-    raterizedImage.onload = function() {
-        for (; $svg.firstChild;) {
-            $svg.removeChild($svg.firstChild);
-        }
-    };
-    console.log(i);
-}, false);
+// mousedownFlag = true;
+//
+// document.addEventListener('touchend', function() {
+//     document.body.style.userSelect = "auto";
+//     document.body.style.webkitUserSelect = "auto";
+//     // if (localStorage.getItem("drew") == "True") {
+//     //     localStorage.setItem("drew", "False");
+//     // }
+//     mousedownFlag = false;
+//     previousX = null;
+//     previousY = null;
+//     undoFlag = false;
+//     l = i + 1;
+//     for (; l <= j; l++) {
+//         console.log(l);
+//         document.getElementById("layer" + l).remove();
+//     }
+//     i++;
+//     j = i;
+//     const svg_xml = (new XMLSerializer).serializeToString($svg);
+//     const raterizedImage = document.createElement("img");
+//     raterizedImage.setAttribute("src", "data:image/svg+xml;base64," + btoa(svg_xml));
+//     raterizedImage.setAttribute("id", "layer" + i);
+//     raterizedImage.setAttribute("class", "layer");
+//     // raterizedImage.style.width = document.body.clientWidth + "px";
+//     // raterizedImage.style.height = document.body.scrollHeight + "px";
+//     obj_title.appendChild(raterizedImage);
+//     /**
+//      * @return {undefined}
+//      */
+//     raterizedImage.onload = function() {
+//         for (; $svg.firstChild;) {
+//             $svg.removeChild($svg.firstChild);
+//         }
+//     };
+//     console.log(i);
+// });
+//
+// document.addEventListener("mouseup", () => {
+//     document.body.style.userSelect = "auto";
+//     document.body.style.webkitUserSelect = "auto";
+//     // if (localStorage.getItem("drew") == "True") {
+//     //     localStorage.setItem("drew", "False");
+//     // }
+//     // mousedownFlag = false;
+//     previousX = null;
+//     previousY = null;
+//     undoFlag = false;
+//     l = i + 1;
+//     for (; l <= j; l++) {
+//         console.log(l);
+//         document.getElementById("layer" + l).remove();
+//     }
+//     i++;
+//     j = i;
+//     const svg_xml = (new XMLSerializer).serializeToString($svg);
+//     const raterizedImage = document.createElement("img");
+//     raterizedImage.setAttribute("src", "data:image/svg+xml;base64," + btoa(svg_xml));
+//     raterizedImage.setAttribute("id", "layer" + i);
+//     raterizedImage.setAttribute("class", "layer");
+//     // raterizedImage.style.width = document.body.clientWidth + "px";
+//     // raterizedImage.style.height = document.body.scrollHeight + "px";
+//     obj_title.appendChild(raterizedImage);
+//     /**
+//      * @return {undefined}
+//      */
+//     raterizedImage.onload = function() {
+//         for (; $svg.firstChild;) {
+//             $svg.removeChild($svg.firstChild);
+//         }
+//     };
+//     console.log(i);
+// }, false);
 
 function onClick() {
     /** @type {boolean} */
