@@ -6,6 +6,8 @@ const $rect = document.getElementById('rect');
 const $imgWidth = document.getElementById('img-width');
 const $imgHeight = document.getElementById('img-height');
 
+const $donatePopup = document.getElementById('donate-popup');
+
 const $gifLink = document.getElementById('gif-link'),
     $jpgLink = document.getElementById('jpg-link'),
     $pngLink = document.getElementById('png-link'),

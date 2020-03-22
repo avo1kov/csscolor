@@ -20,13 +20,18 @@
 		$preview_image = 'https://csscolor.ru/preview-maker.php?format=png&model=hsv&w=144&h=144&color='.substr($color, 1);
 	}
 	if ($hex != '') {
-	    if ($alpha == '') {
-	        $alpha = 1;
-	    }
 	    if (strlen($hex) == 3) {
 	        $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
-	    }
-	    $preview_image = 'https://bigpicker.org/png/?hex='.$hex.'&alpha='.$alpha;
+		}
+		if (strlen($hex) == 4) {
+	        $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2].$hex[3].$hex[3];
+		}
+		if ($alpha != '') {
+			$preview_image = 'https://csscolor.ru/preview.php?hex='.$hex.dechex($alpha*255);
+		} else {
+			$preview_image = 'https://csscolor.ru/preview.php?hex='.$hex;
+		}
+		
 	}
 
 	$langList = array(
@@ -61,7 +66,7 @@
 '
 	);
 
-	$author = '<a href=\'https://www.facebook.com/agvolkov5\' class=\'content\' target=\'_new\' class="me" id="linkToMe">Alexander Volkov</a>';
+	$author = '<a href="https://www.instagram.com/avo1kov/" class="content" target="_new" class="content me" id="linkToMe" onclick="dataLayer.push({\'event\':\'footer-link-click\'});">Alexander Volkov</a>';
 
 	$helloTextArray = array(
 		'Лень <b>делает</b> всякое дело трудным.',
@@ -94,7 +99,7 @@
 			'height' => 'Высота',
 			'donate' => 'Поддержать',
 			'cancel' => 'Отмена',
-			'goal' => 'alpha-picker-background',
+			'goal' => 'Поддержите нас. Это важно',
 			'download-color-button-ok' => 'Ок',
 			'text-example' => $helloText,
 			'description' => '<p>
@@ -109,7 +114,7 @@
 ',
 			'media' => $media['tg'],
 			'ads' => 'yandex',
-			'author' => '<a href=\'https://vk.com/id151352523\' class=\'content\' target=\'_new\' class="me" id="linkToMe">Александр Волков</a>'
+			'author' => '<a href="https://www.instagram.com/avo1kov/" class="content" target="_new" class="content me" id="linkToMe" onclick="dataLayer.push({\'event\':\'footer-link-click\'});">Александр Волков</a>'
 	);
 
 	if ($lang == 'en') {
@@ -212,20 +217,6 @@
 						</p>
 ';
 		$labels['media'] = $media['tg'];
-	} else if ($lang == 'uprt') {
-		$labels['title'] = 'оо.. дааа';
-		$labels['download-color-button-for-layout'] = 'Угарнуть';
-		$labels['width'] = 'Превед';
-		$labels['height'] = 'Медвед';
-		$labels['donate'] = 'Аукхъ';
-        $labels['cancel'] = 'пффф..';
-        $labels['goal'] = 'На найская философия';
-		$labels['download-color-button-ok'] = 'Ахаха';
-		$labels['text-example'] = '<b>Жирный текст</b> и не очень.';
-		$labels['description'] = '<p>
-							Вот оно что
-						</p>';
-		$labels['media'] = '';
 	}
 
 	if ($lang == 'fr') {
@@ -554,9 +545,10 @@
 	// 	array('source_name' => 'Black', 'russian_name' => '', 'hex' => '#000000', 'rgb' => '0, 0, 0')
 	// );
 
-	$colors = array(
-		$main_colors, $red_colors, $pink_colors, $orange_colors, $yellow_colors, $purple_colors, $brown_colors, $green_colors, $blue_colors, $white_colors, $gray_colors
-	);
+	// $colors = array(
+	// 	$main_colors, $red_colors, $pink_colors, $orange_colors, $yellow_colors, $purple_colors, $brown_colors, $green_colors, $blue_colors, $white_colors, $gray_colors
+	// );
 
 	// include ('main190920.html');
-	include ('index.html');
+	// include ('index.html');
+	include ('out.html');

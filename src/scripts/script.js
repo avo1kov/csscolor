@@ -1,7 +1,5 @@
-
-
 // Logical model describing
-const palette = {
+window.palette = {
   selectedThone: 'red',
   currentColor: {
     percent: {
@@ -100,6 +98,8 @@ const palette = {
     if (this.validateHex(hex)) {
       this.currentColor.hex = hex;
       this.currentColor.rgb = this.convertHexToRgb(hex);
+      this.currentColor.alpha = this.getAlphaFromHex(hex);
+      console.log(this.currentColor.alpha);
       this.currentColor.rgbPercentage = this.convertRgbToRgbPercentage(this.currentColor.rgb);
       this.currentColor.hsv = this.convertRgbToHsv(this.currentColor.rgb);
       this.currentColor.percent = this.convertHsvToPercent(this.currentColor.hsv);
@@ -124,6 +124,7 @@ const palette = {
     if (alpha !== false) {
       this.currentColor.alpha = alpha / 100;
       this.currentColor.percent.alphaCursor.x = alpha;
+      this.currentColor.hex = this.convertRgbToHex(this.currentColor.rgb);
     }
   },
 
@@ -285,7 +286,7 @@ const palette = {
   },
 
   validateHex: function (hex) {
-    hex = hex.replace(/[^0-9a-fA-F]/g, '').substr(0, 6);
+    hex = hex.replace(/[^0-9a-fA-F]/g, '').substr(0, 8);
     if (hex.length < 3) {
       return false;
     }
@@ -388,7 +389,8 @@ const palette = {
     const hex = {
       r: Math.round(rgb.r).toString(16),
       g: Math.round(rgb.g).toString(16),
-      b: Math.round(rgb.b).toString(16)
+      b: Math.round(rgb.b).toString(16),
+      a: Math.round(this.currentColor.alpha * 255).toString(16)
     };
 
     if (hex.r.length < 2) {
@@ -400,30 +402,53 @@ const palette = {
     if (hex.b.length < 2) {
       hex.b = '0' + hex.b;
     }
-
-    if ((hex.r[0] === hex.r[1]) && (hex.g[0] === hex.g[1]) && (hex.b[0] === hex.b[1])) {
-      hex.r = hex.r[0];
-      hex.g = hex.g[0];
-      hex.b = hex.b[0];
+    if (hex.a.length < 2) {
+      hex.a = '0' + hex.a;
     }
 
-    return hex.r + hex.g + hex.b;
+    if (this.currentColor.alpha == 1) {
+      if ((hex.r[0] === hex.r[1]) && (hex.g[0] === hex.g[1]) && (hex.b[0] === hex.b[1])) {
+        hex.r = hex.r[0];
+        hex.g = hex.g[0];
+        hex.b = hex.b[0];
+      }
+      return hex.r + hex.g + hex.b;
+    } else {
+      if ((hex.r[0] === hex.r[1]) && (hex.g[0] === hex.g[1]) && (hex.b[0] === hex.b[1]) && (hex.a[0] === hex.a[1])) {
+        hex.r = hex.r[0];
+        hex.g = hex.g[0];
+        hex.b = hex.b[0];
+        hex.a = hex.a[0];
+      }
+      return hex.r + hex.g + hex.b + hex.a;
+    }
   },
 
   convertHexToRgb: function (hex) {
-    if (hex.length === 3) {
+    if (hex.length === 3 || hex.length === 4) {
       return {
         r: parseInt(hex[0] + hex[0], 16),
         g: parseInt(hex[1] + hex[1], 16),
         b: parseInt(hex[2] + hex[2], 16)
       };
-    } else if (hex.length === 6) {
+    } else if (hex.length === 6 || hex.length === 8) {
       return {
         r: parseInt(hex[0] + hex[1], 16),
         g: parseInt(hex[2] + hex[3], 16),
         b: parseInt(hex[4] + hex[5], 16)
       };
     }
+  },
+
+  getAlphaFromHex: (hex) => {
+    // if (hex.length == 3 || hex.length == 6) return 1;
+    if (hex.length === 4) {
+      return parseInt(hex[4] + hex[4], 16) / 255;
+    }
+    if (hex.length === 8) {
+      return parseInt(hex[6] + hex[7], 16) / 255;
+    }
+    return 1;
   },
 
   convertRgbToRgbPercentage: function (rgb) {
@@ -575,7 +600,7 @@ const palette = {
 
 // UI describing
 
-let touchIntent = false;
+window.touchIntent = false;
 const
     wrapper = document.getElementById('wrapper'),
 
@@ -613,7 +638,7 @@ const
     mobileColorModelSelectSubstitute = document.getElementById('mobileColorModelSelectSubstitude'),
     mobileBackground = document.getElementById('mobileBackground');
 
-const ui = {
+window.ui = {
   isColorChanged: false,
   selectedInput: hexInput,
   deviceIsSmartPhoneOrTablet: !(navigator.userAgent.match(/Android/i)
@@ -623,7 +648,7 @@ const ui = {
       || navigator.userAgent.match(/iPod/i)
       || navigator.userAgent.match(/BlackBerry/i)
       || navigator.userAgent.match(/Windows Phone/i)),
-  exampleText: '<?php echo $labels[\'text-example\']; ?>',//'Пример текста для <b>демонстрации</b> цвета',
+  exampleText: exampleText.innerHTML,
   url: window.location.pathname,
   portraitOrientation: window.matchMedia('(orientation: portrait)').matches,
   isMobileDevice: window.matchMedia('only screen and (max-device-width: 1125px)').matches,
@@ -770,7 +795,7 @@ function updateUI(from) {
   if (hsvInput !== from) { hsvInput.value = hsvInputString; }
   if (cmykInput !== from) { cmykInput.value = cmykInputString; }
 
-  exampleText.innerHTML = ui.exampleText;
+  // exampleText.innerHTML = ui.exampleText;
   exampleText.style.color = 'rgba(' + Math.round(palette.currentColor.rgb.r) + ', '
       + Math.round(palette.currentColor.rgb.g) + ', '
       + Math.round(palette.currentColor.rgb.b) + ', '
@@ -793,7 +818,6 @@ function updateUI(from) {
     tonePickerCursor.setAttribute('transform', 'translate(0, '
         + (palette.currentColor.percent.toneCursor.x * tonePicker.clientHeight / 100) + ')');
   }
-
 
   alphaPickerCursor.setAttribute('transform', 'translate('
       + (palette.currentColor.percent.alphaCursor.x * alphaPicker.clientWidth / 100 - 4) + ', 0)');
@@ -943,9 +967,9 @@ document.addEventListener('touchend', function() {
 function changeUrl() {
   // Changing url
   let alphaUrlString = '';
-  if (palette.currentColor.alpha !== 1) {
-    alphaUrlString = '&alpha=' + (Math.round(palette.currentColor.alpha * 100) / 100);
-  }
+  // if (palette.currentColor.alpha !== 1) {
+  //   alphaUrlString = '&alpha=' + (Math.round(palette.currentColor.alpha * 100) / 100);
+  // }
   window.history.pushState(null, '#' + palette.currentColor.hex, ui.url + '?hex=' + palette.currentColor.hex + alphaUrlString);
   localStorage.setItem('currentHue', palette.currentColor.hsv.h);
   localStorage.setItem('currentHex', palette.currentColor.hex);
@@ -972,7 +996,7 @@ function actionsEnd() {
 // Changing color via inputs
 
 hexInput.addEventListener('input', function () {
-  const hexInputString = hexInput.value.replace(/[^0-9a-fA-F]/g, '').substr(0, 6);
+  const hexInputString = hexInput.value.replace(/[^0-9a-fA-F]/g, '').substr(0, 8);
   // hexInput.value = hexInputString;
   palette.setColorFromHex(hexInputString);
   updateUI(hexInput);
@@ -1319,6 +1343,7 @@ autoThemeApply = () => {
 
 autoThemeApply();
 window.onfocus = autoThemeApply;
+window.dataLayer = [];
 
 // Inputs interact tracking
 hexInput.addEventListener('copy', () => {

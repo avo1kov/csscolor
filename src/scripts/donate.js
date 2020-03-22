@@ -1,6 +1,6 @@
 const $donateBtn = document.getElementById('donate-btn');
 const $donatePopup = document.getElementById('donate-popup');
-// const $darkBckgr = document.getElementById('dark-bckgr');
+const $darkBckgr = document.getElementById('dark-bckgr');
 // const $dwnldCancelBtn = document.getElementById('dwnld-cancel');
 // const $rect = document.getElementById('rect');
 // const $imgWidth = document.getElementById('img-width');

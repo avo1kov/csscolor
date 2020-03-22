@@ -1,0 +1,3 @@
+<!--#set var="code" value="404" -->
+<!--#set var="label" value="Страница не найдена" -->
+<!--#include virtual="/error.shtml" -->
