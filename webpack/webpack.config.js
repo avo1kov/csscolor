@@ -1,4 +1,8 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+const XMLWebpackPlugin = require('xml-webpack-plugin');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
+var path = require('path');
 
 let languagesHTML = '';
 const langList = [
@@ -94,31 +98,64 @@ const dataSet = {
 
 module.exports = {
     mode: 'development',
-    watch: true,
-    entry: './src/scripts/app.js', //path relative to this file
+    // mode: 'production',
+    // watch: true,
+    entry: './src/index.js', //path relative to this file
     output: {
         filename: './app.bundle.js' //path relative to this file
     },
     module: {
-        rules:[
+        rules: [
             {
                 test: /\.(s*)[ca]ss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader']
-            }
-       ]
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            insert: 'head'
+                        }
+                    },
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            },
+        ]
     },
     plugins: [
         new HtmlWebpackPlugin({
+            template: './src/index.ejs',
+            filename: './index.html',
             hash: true,
             ...dataSet,
-            template: './src/index.html',
-            filename: './index.html'
         }),
         new HtmlWebpackPlugin({
+            template: './src/out.ejs',
+            filename: './out.html',
             hash: true,
+            inject: 'body',
             ...dataSet,
-            template: './src/out.html',
-            filename: './out.html'
         }),
+        new MinifyPlugin(),
+        new CopyPlugin([
+            {
+                from: './src/sitemap.xml',
+                to: 'sitemap.xml',
+                transform(content) {
+                    return content
+                        .toString()
+                        .replace('<%= datetime %>', new Date().toISOString());
+                }
+            },
+        ]),
     ]
 }
