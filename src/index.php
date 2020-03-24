@@ -61,7 +61,7 @@
 '
 	);
 
-	$author = '<a href=\'https://www.instagram.com/avo1kov/\' target=\'_new\' class="content me" id="linkToMe">Alexander Volkov</a>';
+	$author_name = 'Alexander Volkov';
 
 	$helloTextArray = array(
 		'Лень <b>делает</b> всякое дело трудным.',
@@ -109,7 +109,7 @@
 ',
 			'media' => $media['tg'],
 			'ads' => 'yandex',
-			'author' => '<a href=\'https://www.instagram.com/avo1kov/\' class=\'content\' target=\'_new\' class="me" id="linkToMe">Александр Волков</a>'
+			'author_name' => 'Александр Волков'
 	);
 
 	if ($lang == 'en') {
@@ -134,7 +134,7 @@
 							Your comment would be nice :)
 						</p>
 ';
-		$labels['author'] = $author;
+		$labels['author_name'] = $author;
 		$labels['ads'] = 'none';
 		$labels['media'] = $media['tg'];
 	} else if ($lang == 'eo') {
@@ -160,7 +160,7 @@
 							Via komento estus bela :)
 						</p>
 ';
-		$labels['author'] = $author;
+		$labels['author_name'] = $author;
 		$labels['ads'] = 'none';
 		$labels['media'] = $media['tg'];
 	} else if ($lang == 'es') {
@@ -187,7 +187,7 @@
 							Su comentario sería bueno :)
 						</p>
 ';
-		$labels['author'] = $author;
+		$labels['author_name'] = $author;
 		$labels['ads'] = 'none';
 		$labels['media'] = $media['tg'];
 	} else if ($lang == 'uk') {
@@ -251,7 +251,7 @@
 							Votre commentaire serait bien :)
 						</p>
 ';
-		$labels['author'] = $author;
+		$labels['author_name'] = $author;
 		$labels['ads'] = 'none';
 		$labels['media'] = $media['tg'];
 	} else if ($lang == 'hi') {
@@ -277,7 +277,7 @@
 							आपकी टिप्पणी अच्छी होगी :)
 						</p>
 ';
-		$labels['author'] = $author;
+		$labels['author_name'] = $author;
 		$labels['ads'] = 'none';
 		$labels['media'] = $media['tg'];
 	} else if ($lang == 'de') {
@@ -303,7 +303,7 @@
 							Dein Kommentar wäre nett :)
 						</p>
 ';
-		$labels['author'] = $author;
+		$labels['author_name'] = $author;
 		$labels['ads'] = 'none';
 		$labels['media'] = $media['tg'];
 	} else if ($lang == 'sw') {
@@ -329,7 +329,7 @@
 							Maoni yako itakuwa nzuri :)
 						</p>
 ';
-		$labels['author'] = $author;
+		$labels['author_name'] = $author;
 		$labels['ads'] = 'none';
 		$labels['media'] = $media['tg'];
 	}
@@ -560,4 +560,5 @@
 
 	// include ('main190920.html');
 	// include ('index.html');
-	include ('out.html');
+	// include ('out.html');
+	include ('template.html');

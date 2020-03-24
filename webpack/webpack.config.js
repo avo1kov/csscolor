@@ -58,19 +58,92 @@ const exampleTextes = ['Лень <b>делает</b> всякое дело тр�
 ];
 const exampleText = exampleTextes[Math.ceil(Math.random() * exampleTextes.length)];
 
-const dataSet = {
+const phpDataSet = {
+    lang: `<?php echo $labels['lang']; ?>`,
+    title: `<?php echo $labels['title']; ?>`,
+    applicationName: `<?php echo $labels['title']; ?>`,
+    seoDescription: `<?php echo $labels['seo-description']; ?>`,
+    seoKeywords: `<?php echo $labels['seo-keywords']; ?>`,
+    previewImage: `<?php echo $preview_image; ?>`,
+    googleAnalytics: `<!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N7Q2VTH');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83097307-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-83097307-1');
+    </script>`,
+    googleTagManager: `<!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7Q2VTH" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->`,
+    donate: `<?php echo $labels['donate']; ?>`,
+    exampleText: `<?php echo $labels['text-example']; ?>`,
+    languagesHTML,
+    yandexAd: `<!-- Yandex.RTB R-A-335771-2 -->
+    <div id="yandex_rtb_R-A-335771-2"></div>
+    <script type="text/javascript">
+        (function(w, d, n, s, t) {
+            w[n] = w[n] || [];
+            w[n].push(function() {
+                Ya.Context.AdvManager.render({
+                    blockId: "R-A-335771-2",
+                    renderTo: "yandex_rtb_R-A-335771-2",
+                    async: true
+                });
+            });
+            t = d.getElementsByTagName("script")[0];
+            s = d.createElement("script");
+            s.type = "text/javascript";
+            s.src = "//an.yandex.ru/system/context.js";
+            s.async = true;
+            t.parentNode.insertBefore(s, t);
+        })(this, this.document, "yandexContextAsyncCallbacks");
+    </script>`,
+    description: `<?php echo $labels['description']; ?>`,
+    media: `<?php echo $labels['media']; ?>`,
+    year: `<?php echo date('Y'); ?>`,
+    authorName: `<?php echo $labels['author_name']; ?>`,
+    cancel: `<?php echo $labels['cancel']; ?>`,
+    goal: `<?php echo $labels['goal']; ?>`,
+    donateBox: `<?php echo $labels['donate_box']; ?>`,
+    yandexMetrica: `<!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(27027039, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/27027039" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->`,
+}
+
+const testDataSet = {
     lang: 'ru',
     title: 'HTML CSS Палитра цветов',
+    applicationName: `app name`,
     seoDescription: 'HTML CSS Палитра цветов в HEX, RGB, HSV и CMYK',
     seoKeywords: 'палитра css, цвета css, палитра html, css html цвета, html цвета палитра, палитра цветов',
-    downloadColorButtonForLayout: 'Скачать цвет',
-    width: 'Ширина',
-    height: 'Высота',
+    previewImage: '',
+    googleAnalytics: '',
+    googleTagManager: '',
     donate: 'Поддержать',
-    cancel: 'Отмена',
-    goal: 'Поддержите нас. Это важно',
-    downloadColorButtonOk: 'Ок',
     exampleText,
+    languagesHTML,
+    yandexAd: `<div style="width: 100%; height: 90px; background: #9191912c"></div>`,
     description: `<p>
                 <b>HTML CSS Палитра цветов</b> помогает подобрать <b>цвет</b> в виде <b>HEX, RGB, RGBA, HSV и CMYK</b> записи цветовой модели. Нажимайте на поля выбора цвета, а для более точного выбора, перемещайте курсор с зажатой левой кнопкой мыши. Изменяйте параметры цвета через поля ввода.
             </p>
@@ -80,10 +153,11 @@ const dataSet = {
             <p>
                 В качестве экперимента разместили небольшую статью про flexbox: <a href="https://csscolor.ru/flexbox" class="content">https://csscolor.ru/flexbox</a>
             </p>`,
-    media: '<script async src="https://comments.app/js/widget.js?2" data-comments-app-website="X4A89j26" data-limit="5" data-page-id="1" data-dislikes="1"></script>',
-    ads: 'yandex',
-    author: '<a href="https://vk.com/id151352523" class="content" target="_new" class="me" id="linkToMe">Александр Волков</a>',
+    media: '',
     year: (new Date()).getFullYear(),
+    authorName: 'Александр Волков',
+    cancel: 'Отмена',
+    goal: 'Поддержите нас. Это важно',
     donateBox: `<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0%20%D0%BF%D0%B0%D0%BB%D0%B8%D1%82%D1%80%D1%8B&targets-hint=&default-sum=100&button-text=13&hint=&successURL=&quickpay=shop&account=410013246801384" width="423" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
     <div style="text-align: right">
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -93,12 +167,12 @@ const dataSet = {
             <img alt="" border="0" src="https://www.paypal.com/ru_RU/i/scr/pixel.gif" width="1" height="1" />
         </form>
     </div>`,
-    languagesHTML,
+    yandexMetrica: '',
 }
 
 module.exports = {
-    mode: 'development',
-    // mode: 'production',
+    // mode: 'development',
+    mode: 'production',
     // watch: true,
     entry: './src/index.js', //path relative to this file
     output: {
@@ -133,17 +207,16 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.ejs',
-            filename: './index.html',
+            template: './src/template.ejs',
+            filename: './test.html',
             hash: true,
-            ...dataSet,
+            ...testDataSet,
         }),
         new HtmlWebpackPlugin({
-            template: './src/out.ejs',
-            filename: './out.html',
+            template: './src/template.ejs',
+            filename: './template.html',
             hash: true,
-            inject: 'body',
-            ...dataSet,
+            ...phpDataSet,
         }),
         new MinifyPlugin(),
         new CopyPlugin([
