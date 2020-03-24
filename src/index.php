@@ -22,11 +22,18 @@
 	if ($hex != '') {
 	    if ($alpha == '') {
 	        $alpha = 1;
-	    }
-	    if (strlen($hex) == 3) {
+		}
+		if (strlen($hex) == 4) {
+			$hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2].$hex[3].$hex[3];
+		} else if (strlen($hex) == 3) {
 	        $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
-	    }
-	    $preview_image = 'https://bigpicker.org/png/?hex='.$hex.'&alpha='.$alpha;
+		}
+		if ($alpha < 1) {
+			$preview_image = 'https://csscolor.ru/preview.php?hex='.$hex.sprintf('%02d', dechex($alpha*255));
+			// $preview_image = 'https://bigpicker.org/png/?hex='.$hex.'&alpha='.$alpha;
+		} else {
+			$preview_image = 'https://csscolor.ru/preview.php?hex='.$hex;
+		}
 	}
 
 	$langList = array(
