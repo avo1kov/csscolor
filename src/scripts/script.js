@@ -441,9 +441,8 @@ window.palette = {
   },
 
   getAlphaFromHex: (hex) => {
-    // if (hex.length == 3 || hex.length == 6) return 1;
     if (hex.length === 4) {
-      return parseInt(hex[4] + hex[4], 16) / 255;
+      return parseInt(hex[3] + hex[3], 16) / 255;
     }
     if (hex.length === 8) {
       return parseInt(hex[6] + hex[7], 16) / 255;
