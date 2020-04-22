@@ -247,40 +247,6 @@ dataSets.productionWesternPresets = {
         </form>
     </div>`,
 }
-dataSets.langsList = [
-    {
-        code: 'ru',
-        name: 'Русский'
-    },
-    {
-        code: 'en',
-        name: 'English'
-    },
-    {
-        code: 'de',
-        name: 'German'
-    },
-    {
-        code: 'es',
-        name: 'Español'
-    },
-    {
-        code: 'hi',
-        name: 'हिंदी'
-    },
-    {
-        code: 'fr',
-        name: 'Français'
-    },
-    {
-        code: 'eo',
-        name: 'Esperanto'
-    },
-    {
-        code: 'sw',
-        name: 'Kiswahili'
-    }
-];
 dataSets.langs = [
     {
         langCode: 'ru',
