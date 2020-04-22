@@ -26,8 +26,9 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config './webpack/webpack.config.js'",
+    "test1": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config './webpack/webpack.config.js' --env.production",
+    "test": "webpack --config './webpack/webpack.config.js'",
     "watch": "webpack --config './webpack/webpack.config.js' --watch"
   },
   "repository": {

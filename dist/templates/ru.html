@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="ru">
 <head>
     <title>HTML CSS Палитра цветов</title>
     <meta charset="utf-8">
-    
+    <link rel="alternate" href="https://csscolor.ru/" hreflang=""><link rel="alternate" href="https://csscolor.ru/en" hreflang="en"><link rel="alternate" href="https://csscolor.ru/de" hreflang="de"><link rel="alternate" href="https://csscolor.ru/es" hreflang="es"><link rel="alternate" href="https://csscolor.ru/hi" hreflang="hi"><link rel="alternate" href="https://csscolor.ru/fr" hreflang="fr"><link rel="alternate" href="https://csscolor.ru/eo" hreflang="eo"><link rel="alternate" href="https://csscolor.ru/sw" hreflang="sw">
     <link rel="shortcut icon" href="https://csscolor.ru/favicon.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="author" content="Alexander Volkov">
-    <meta name="application-name" content="app name">
+    <meta name="application-name" content="HTML CSS Палитра цветов">
     <meta name="description" content="">
     <meta name="keywords" content="палитра css, цвета css, палитра html, css html цвета, html цвета палитра, палитра цветов">
-    <meta property="og:title" content="app name">
+    <meta property="og:title" content="HTML CSS Палитра цветов">
     <meta property="og:description" content=""/>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://csscolor.ru">
-    <meta property="og:image" content="">
-    <meta property="twitter:image" content="">
+    <meta property="og:image" content="<?php echo $preview_image; ?>">
+    <meta property="twitter:image" content="<?php echo $preview_image; ?>">
     <meta name="yandex-verification" content="00c2d4c2cfecd1c6">
     <style>
         article.article {
@@ -24,10 +24,27 @@
             max-width: 1361.410px;
         }
     </style>
-    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N7Q2VTH');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83097307-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-83097307-1');
+    </script>
 </head>
 <body>
-    
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7Q2VTH" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="paint-filed" id="paint-field">
         <div id="raster-stack" class="wrap raster-stack"></div>
         <svg id="svg"></svg>
@@ -175,31 +192,50 @@
                 <a href="https://www.instagram.com/avo1kov/" class="author-link" id="insta-link" target="_new" onclick="dataLayer.push({'event':'instagram-link-click'});">@avo1kov</a>
             </div>
             <div class="example-text" id="exampleText" contenteditable="true">
-                Рассудительный стремится к отсутствию <b>страданий</b>, а не к наслаждению.
+                <?php echo $labels['text-example']; ?>
             </div>
             <div class="languages">
                 <a href="https://csscolor.ru/" class="content">Русский</a><a href="https://csscolor.ru/en" class="content">English</a><a href="https://csscolor.ru/de" class="content">German</a><a href="https://csscolor.ru/es" class="content">Español</a><a href="https://csscolor.ru/hi" class="content">हिंदी</a><a href="https://csscolor.ru/fr" class="content">Français</a><a href="https://csscolor.ru/eo" class="content">Esperanto</a><a href="https://csscolor.ru/sw" class="content">Kiswahili</a>
             </div>
             <article class="article">
-                <div style="width: 100%; height: 90px; background: #9191912c"></div>
+                <!-- Yandex.RTB R-A-335771-2 -->
+    <div id="yandex_rtb_R-A-335771-2"></div>
+    <script type="text/javascript">
+        (function(w, d, n, s, t) {
+            w[n] = w[n] || [];
+            w[n].push(function() {
+                Ya.Context.AdvManager.render({
+                    blockId: "R-A-335771-2",
+                    renderTo: "yandex_rtb_R-A-335771-2",
+                    async: true
+                });
+            });
+            t = d.getElementsByTagName("script")[0];
+            s = d.createElement("script");
+            s.type = "text/javascript";
+            s.src = "//an.yandex.ru/system/context.js";
+            s.async = true;
+            t.parentNode.insertBefore(s, t);
+        })(this, this.document, "yandexContextAsyncCallbacks");
+    </script>
                 <p>
-                <b>HTML CSS Палитра цветов</b> помогает подобрать <b>цвет</b> в виде <b>HEX, RGB, RGBA, HSV и CMYK</b> записи цветовой модели. Нажимайте на поля выбора цвета, а для более точного выбора, перемещайте курсор с зажатой левой кнопкой мыши. Изменяйте параметры цвета через поля ввода.
-            </p>
-            <p>
-                А ещё можно скачать выбранный цвет. Нажмите на кнопку <b>"Скачать цвет"</b>, появится поле параметров. Вы можете выбрать формат (SVG, PNG, JPEG или GIF) и размер картинки. Обращаю ваше внимание, что полупрозрачные цвета можно скачать только в форматах SVG и PNG.
-            </p>
-            <p>
-                В качестве экперимента разместили небольшую статью про flexbox: <a href="https://csscolor.ru/flexbox" class="content">https://csscolor.ru/flexbox</a>
-            </p>
+        <b>HTML CSS Палитра цветов</b> помогает подобрать <b>цвет</b> в виде <b>HEX, RGB, RGBA, HSV и CMYK</b> записи цветовой модели. Нажимайте на поля выбора цвета, а для более точного выбора, перемещайте курсор с зажатой левой кнопкой мыши. Изменяйте параметры цвета через поля ввода.
+    </p>
+    <p>
+        А ещё можно скачать выбранный цвет. Нажмите на кнопку <b>"Скачать цвет"</b>, появится поле параметров. Вы можете выбрать формат (SVG, PNG, JPEG или GIF) и размер картинки. Обращаю ваше внимание, что полупрозрачные цвета можно скачать только в форматах SVG и PNG.
+    </p>
+    <p>
+        В качестве экперимента разместили небольшую статью про flexbox: <a href="https://csscolor.ru/flexbox" class="content">https://csscolor.ru/flexbox</a>
+    </p>
             </article>
             <div class='media'>
                 <div class='center'>
-                    
+                    <script async src="https://comments.app/js/widget.js?2" data-comments-app-website="X4A89j26" data-limit="5" data-page-id="1" data-dislikes="1"></script>
                 </div>
             </div>
             <div class='footer'>
                 <div class='center'>
-                    2020
+                    <?php echo date('Y'); ?>
                     &copy;
                     <a href="https://www.instagram.com/avo1kov/" class="content" id="linkToMe" target="_new" onclick="dataLayer.push({'event':'footer-link-click'});">
                         Александр Волков
@@ -244,6 +280,20 @@
             </div>
         </div>
     </div>
-    
-<script type="text/javascript" src="./app.bundle.js?53529394e70548876dff"></script></body>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(27027039, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/27027039" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+<script type="text/javascript" src=".././app.bundle.js?53529394e70548876dff"></script></body>
 </html>
