@@ -1,0 +1,29 @@
+.color-sets {
+    grid-area: color-sets;
+    display: flex;
+    border-radius: 2px;
+    overflow: hidden;
+
+    .color {
+        box-sizing: border-box;
+        flex-grow: 1;
+        height: 120px;
+
+        text-align: center;
+        padding-top: 75px;
+        font-size: 22px;
+    }
+
+    .color-1 {
+        background-color: #4477aa;
+    }
+    .color-2 {
+        background-color: #117733;
+    }
+    .color-3 {
+        background-color: #ddcc77;
+    }
+    .color-4 {
+        background-color: #cc6677;
+    }
+}

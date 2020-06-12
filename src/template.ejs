@@ -2,7 +2,7 @@
 <html lang="<%= htmlWebpackPlugin.options.langCode %>">
 <head>
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <%= htmlWebpackPlugin.options.languagesMeta %>
     <link rel="shortcut icon" href="https://csscolor.ru/favicon.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
@@ -10,11 +10,16 @@
     <meta name="application-name" content="<%= htmlWebpackPlugin.options.applicationName %>">
     <meta name="description" content="<%= htmlWebpackPlugin.options.seoDescription %>">
     <meta name="keywords" content="<%= htmlWebpackPlugin.options.seoKeywords %>">
-    <meta property="og:title" content="<%= htmlWebpackPlugin.options.applicationName %>">
-    <meta property="og:description" content="<%= htmlWebpackPlugin.options.applicationDescription %>"/>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://csscolor.ru">
+    <meta property="og:title" content="<%= htmlWebpackPlugin.options.twitterTitle %>">
+    <meta property="og:site_name" content="CSSColor.ru"/>
+    <meta property="og:url" content="<%= htmlWebpackPlugin.options.url %>">
     <meta property="og:image" content="<%= htmlWebpackPlugin.options.previewImage %>">
+    <meta property="og:image:width" content="256">
+    <meta property="og:image:height" content="256">
+    <meta property="og:image:type" content="image/png">
+    <meta property="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.twitterTitle %>">
     <meta property="twitter:image" content="<%= htmlWebpackPlugin.options.previewImage %>">
     <meta name="yandex-verification" content="00c2d4c2cfecd1c6">
     <style>
@@ -25,6 +30,7 @@
         }
     </style>
     <%= htmlWebpackPlugin.options.googleAnalytics %>
+    <%= htmlWebpackPlugin.options.googleAdsense %>
 </head>
 <body>
     <%= htmlWebpackPlugin.options.googleTagManager %>
@@ -181,14 +187,16 @@
                 <%= htmlWebpackPlugin.options.languagesHTML %>
             </div>
             <article class="article">
+                <%= htmlWebpackPlugin.options.alphaBank %>
+                <%= htmlWebpackPlugin.options.gitlab %>
                 <%= htmlWebpackPlugin.options.yandexAd %>
                 <%= htmlWebpackPlugin.options.descriptionArticle %>
             </article>
-            <div class='media'>
+            <!-- <div class='media'>
                 <div class='center'>
                     <%= htmlWebpackPlugin.options.commentsWidget %>
                 </div>
-            </div>
+            </div> -->
             <div class='footer'>
                 <div class='center'>
                     <%= htmlWebpackPlugin.options.year %>

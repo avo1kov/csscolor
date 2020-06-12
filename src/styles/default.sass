@@ -33,7 +33,7 @@ header.header
   display: grid
   grid-template-rows: auto 70vh $scroll-height auto auto
   grid-template-columns: 70vh $scroll-height 28vh
-  grid-template-areas: "header header header" "color-picker tone-picker info" "alpha-picker theme-switcher tools" "example-text example-text example-text" "languages languages languages" "article article article" "media media media" "footer footer footer"
+  grid-template-areas: "header header header" "color-picker tone-picker info" "alpha-picker theme-switcher tools" "example-text example-text example-text" "languages languages languages" "color-sets color-sets color-sets" "article article article" "media media media" "footer footer footer"
   grid-gap: 7px
   justify-content: center
 
@@ -268,8 +268,11 @@ header.header
       margin: auto
       width: min-content
       height: fit-content(100%)
-      color: #48484a
+      color: #00b3ff
       font-size: 1em
+      
+      &:hover
+        color: #DD0000
 
 a
   color: #00b3ff
@@ -308,6 +311,49 @@ article.article
     color: #454545
     line-height: 22pt
     padding-top: 5px
+  a
+    font-size: 13pt
+  div.quotation-author
+    text-align: right
+    margin-top: 10px
+    margin-bottom: 20px
+  div.quotation
+    margin-top: 20px
+    display: flex
+    justify-content: space-between
+    align-items: stretch
+    position: relative
+    div.avatar
+      z-index: 2
+      width: 10%
+      background-image: url(../src/avatar.png)
+      background-size: contain
+      background-position-y: bottom
+      background-repeat: no-repeat
+      margin-left: 30px
+    div.text
+      z-index: 1
+      width: 90%
+      padding: 10px 20px
+      border-radius: 20px 20px 0 20px
+      background: #f2f2f7
+      position: relative
+      div.grey-arrow
+        position: absolute
+        background: #f2f2f7
+        width: 40px
+        height: 40px
+        right: -40px
+        bottom: 0
+        div.white-circle
+          transition: all 0.1s linear 0s
+          position: relative
+          bottom: 40px
+          width: 80px
+          height: 80px
+          border-radius: 80px
+          background: white
+
   yatag > yatag > yatag
     margin: 0 !important
 
@@ -429,6 +475,10 @@ article.article
       .line
         transition: all 0.1s linear 0s
         background: transparent
+
+  .author-link
+    color: #8e8e93 !important
+
   .info
     .donate-btn
       color: #ccc
@@ -481,6 +531,21 @@ article.article
 
   .media
     display: none
+
+  article.article
+    h1
+      color: #454545
+
+    div.quotation
+      div.text
+        background: #1c1c1e
+        p
+          color: #636366 !important
+      div.grey-arrow
+        background: #1c1c1e !important
+        div.white-circle
+          transition: all 0.1s linear 0s
+          background: black !important
 
 /* Only mobile elements */
 @media only screen and (max-device-width: 1125px)

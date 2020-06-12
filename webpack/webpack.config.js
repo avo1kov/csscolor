@@ -41,6 +41,21 @@ module.exports = env => ({
                     }
                 }
             },
+            { 
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]',
+                            // context: path.resolve(__dirname, "src/"),
+                            outputPath: './',
+                            publicPath: '../',
+                            useRelativePaths: true
+                        }
+                    }
+                ] 
+            }
         ]
     },
     plugins: [
@@ -76,6 +91,12 @@ module.exports = env => ({
                         .toString()
                         .replace('<%= datetime %>', new Date().toISOString());
                 }
+            },
+        ]),
+        new CopyPlugin([
+            {
+                from: './src/index.php',
+                to: 'index.php'
             },
         ]),
     ]

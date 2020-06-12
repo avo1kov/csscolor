@@ -56,7 +56,7 @@ let dataSets = {
         lang: 'ru',
         title: 'HTML CSS Палитра цветов',
         applicationName: 'app name',
-        seodescriptionArticle: 'HTML CSS Палитра цветов в HEX, RGB, HSV и CMYK',
+        descriptionArticle: 'HTML CSS Палитра цветов в HEX, RGB, HSV и CMYK',
         seoKeywords: 'палитра css, цвета css, палитра html, css html цвета, html цвета палитра, палитра цветов',
         previewImage: '',
         googleAnalytics: '',
@@ -89,13 +89,37 @@ let dataSets = {
         </form>
     </div>`,
         yandexMetrica: '',
+        alphaBank: `<h1>Как поддержать CSSCOLOR.RU и заработать?</h1>
+        <p>
+            Альфа-банк запустил <a href="https://alfabank.ru/lp/retail/friends/" target="_blink">рекламную компанию</a>, согласно которой можно получить <b>500 ₽</b>, если зарегистрировать бесплатную дебетовую карту по личной ссылке и совершить с неё первую покупку. Деньги получает и заказчик карты (вы), и держатель ссылки (проект).
+        </p>
+        <p>
+            Личная ссылка автора <b>CSSCOLOR.RU</b>: <a href="https://alfabank.ru/fr/?refid=d_NYI4YQ" target="_blink">https://alfabank.ru/fr/?refid=d_NYI4YQ</a>.
+        </p>
+        <div class="quotation">
+            <div class="text">
+                <p>
+                    CSSCOLOR.RU существует исключительно за счёт рекламного баннера и моих личных средств. Меня заботит функциональность и эстетика продуктов, которые я создаю, поэтому сайт до сих пор не покрыт рекламой вдоль и поперёк.
+                </p>
+                <p>
+                    Если для вас важно сохранение и развитие проекта, то сегодня вы имеете возможность помочь проекту бесплатно, либо сделав <a href="javascript:void(0)" id="donate-link">пожертвование</a>.
+                </p>
+                <div class="grey-arrow">
+                    <div class="white-circle"></div>
+                </div>
+            </div>
+            <div class="avatar"></div>
+        </div>
+        <div class="quotation-author">
+            Автор CSSCOLOR.RU, <a href="https://www.instagram.com/avo1kov/" target="_blink">Александр Волков</a>
+        </div>`
     }
 }
 dataSets.php = {
     lang: `<?php echo $labels['lang']; ?>`,
     title: `<?php echo $labels['title']; ?>`,
     applicationName: `<?php echo $labels['title']; ?>`,
-    seodescriptionArticle: `<?php echo $labels['seo-description']; ?>`,
+    descriptionArticle: `<?php echo $labels['seo-description']; ?>`,
     seoKeywords: `<?php echo $labels['seo-keywords']; ?>`,
     previewImage: `<?php echo $preview_image; ?>`,
     googleAnalytics: `<!-- Google Tag Manager -->
@@ -161,14 +185,18 @@ dataSets.php = {
         });
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/27027039" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->`,
+    <!-- /Yandex.Metrika counter -->`
 }
 dataSets.productionPresets = {
     previewImage: `<?php echo $preview_image; ?>`, // WARN,
+    securePreviewImage: `<?php echo $secure_preview_image; ?>`,
+    url: `<?php echo $url; ?>`,
     exampleText: `<?php echo $helloText; ?>`, // WARN
     year: `<?php echo date('Y'); ?>`,
     languagesMeta,
     languagesHTML,
+    twitterTitle: '<?php echo $twitter_title ?>',
+    twitterDescription: 'HTML CSS Палитра цветов',
     googleAnalytics: `<!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -188,6 +216,7 @@ dataSets.productionPresets = {
     googleTagManager: `<!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7Q2VTH" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->`,
+    googleAdsense: `<script data-ad-client="ca-pub-6348125197752812" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>`,
     yandexMetrica: `<!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -232,7 +261,31 @@ dataSets.productionPresets = {
             <input type="image" src="https://www.paypalobjects.com/ru_RU/RU/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Кнопка «Пожертвовать через PayPal»" />
             <img alt="" border="0" src="https://www.paypal.com/ru_RU/i/scr/pixel.gif" width="1" height="1" />
         </form>
-    </div>`
+    </div>`,
+    alphaBank: `<h1>Как поддержать CSSCOLOR.RU и заработать?</h1>
+        <p>
+            Альфа-банк запустил <a href="https://alfabank.ru/lp/retail/friends/" target="_blink">рекламную компанию</a>, согласно которой можно получить <b>500 ₽</b>, если зарегистрировать бесплатную дебетовую карту по личной ссылке и совершить с неё первую покупку. Деньги получает и заказчик карты (вы), и держатель ссылки (проект).
+        </p>
+        <p>
+            Личная ссылка автора <b>CSSCOLOR.RU</b>: <a href="https://alfabank.ru/fr/?refid=d_NYI4YQ" target="_blink">https://alfabank.ru/fr/?refid=d_NYI4YQ</a>.
+        </p>
+        <div class="quotation">
+            <div class="text">
+                <p>
+                    CSSCOLOR.RU существует исключительно за счёт рекламного баннера и моих личных средств. Меня заботит функциональность и эстетика продуктов, которые я создаю, поэтому сайт до сих пор не покрыт рекламой вдоль и поперёк.
+                </p>
+                <p>
+                    Если для вас важно сохранение и развитие проекта, то сегодня вы имеете возможность помочь проекту бесплатно, либо сделав <a href="javascript:void(0)" id="donate-link">пожертвование</a>.
+                </p>
+                <div class="grey-arrow">
+                    <div class="white-circle"></div>
+                </div>
+            </div>
+            <div class="avatar"></div>
+        </div>
+        <div class="quotation-author">
+            Автор CSSCOLOR.RU, <a href="https://www.instagram.com/avo1kov/" target="_blink">Александр Волков</a>
+        </div>`
 }
 dataSets.productionWesternPresets = {
     authorName: 'Alexander Volkov',
@@ -246,14 +299,16 @@ dataSets.productionWesternPresets = {
             <img alt="" border="0" src="https://www.paypal.com/ru_RU/i/scr/pixel.gif" width="1" height="1" />
         </form>
     </div>`,
+    alphaBank: ``
 }
 dataSets.langs = [
     {
         langCode: 'ru',
         ...dataSets.productionPresets,
         title: 'HTML CSS Палитра цветов',
+        twitterDescription: 'HTML CSS Палитра цветов',
         applicationName: 'HTML CSS Палитра цветов',
-        seodescriptionArticle: 'HTML CSS Палитра цветов в HEX, RGB, HSV и CMYK',
+        descriptionArticle: 'HTML CSS Палитра цветов в HEX, RGB, HSV и CMYK',
         seoKeywords: 'палитра css, цвета css, палитра html, css html цвета, html цвета палитра, палитра цветов',
         donateButtonLabel: 'Поддержать',
         descriptionArticle: `<p>
@@ -268,14 +323,16 @@ dataSets.langs = [
         authorName: 'Александр Волков',
         cancel: 'Отмена',
         donateLabel: 'Поддержите нас. Это важно',
+        gitlab: '<p>Исходный код <b>CSSCOLOR.RU</b> открыт. Ссылка на репозиторий: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>'
     },
     {
         langCode: 'en',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
         title: 'HTML CSS Color picker',
+        twitterDescription: 'HTML CSS Color picker',
         applicationName: 'HTML CSS Color picker',
-        seodescriptionArticle: 'Color picker for you! Works with HSV, RGB, HEX, CMYK and transparent. You can download selected color as SVG, PNG, JPEG and GIF picture. This is a nice picker!',
+        descriptionArticle: 'Color picker for you! Works with HSV, RGB, HEX, CMYK and transparent. You can download selected color as SVG, PNG, JPEG and GIF picture. This is a nice picker!',
         seoKeywords: 'color picker, colour picker, palette css, colors css, colours css, palette html, css html colors, css html colours, html color palette, html colour palette, color palette, colour palette',
         descriptionArticle: `<p>
         <b>Color picker</b> helps you pick a <b>color</b> in HEX, RGB, RGBA, CMYK and HSV color model record. Click on the field of color selection, and for a more precise selection, move the cursor while holding the left mouse button. Change the color settings via input fields.
@@ -287,14 +344,16 @@ dataSets.langs = [
     </p>`,
         cancel: 'Cancel',
         donateLabel: 'Please feel free to make a donation',
+        gitlab: `<p><b>CSSCOLOR.RU</b> is open-source project. Link to repository: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'de',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
         title: 'Farbwähler',
+        twitterDescription: 'Farbwähler',
         applicationName: 'Farbwähler',
-        seodescriptionArticle: 'Farbauswahl für Sie! Funktioniert mit HSV, RGB, HEX, CMYK und transparent. Sie können die ausgewählte Farbe als SVG-, PNG-, JPEG- und GIF-Bild herunterladen. Das ist eine schöne Auswahl!',
+        descriptionArticle: 'Farbauswahl für Sie! Funktioniert mit HSV, RGB, HEX, CMYK und transparent. Sie können die ausgewählte Farbe als SVG-, PNG-, JPEG- und GIF-Bild herunterladen. Das ist eine schöne Auswahl!',
         descriptionArticle: `<p>
         <b>Mit der Farbauswahl</b> können Sie eine <b>Farbe</b> in der HEX-, RGB-, RGBA-, HSV- und CMYK-Farbmodellaufzeichnung auswählen. Klicken Sie auf das Feld für die Farbauswahl. Um eine genauere Auswahl zu treffen, bewegen Sie den Cursor bei gedrückter linker Maustaste. Ändern Sie die Farbeinstellungen über Eingabefelder.
     </p>
@@ -306,14 +365,16 @@ dataSets.langs = [
     </p>`,
         cancel: 'Stornieren',
         donateLabel: 'Bitte Spenden',
+        gitlab: `<p><b>CSSCOLOR.RU</b> ist ein Open-Source-Projekt. Link zum Repository: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'es',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
         title: 'HTML CSS Selector de colores',
+        twitterDescription: 'HTML CSS Selector de colores',
         applicationName: 'HTML CSS Selector de colores',
-        seodescriptionArticle: 'HTML CSS Selector de color para desarrollador. Funciona con HSV, RGB, CMYK y HEX.',
+        descriptionArticle: 'HTML CSS Selector de color para desarrollador. Funciona con HSV, RGB, CMYK y HEX.',
         seoKeywords: 'selector de color, paleta css, colores css, colores html, css html colores, paleta de colores html, paleta de color',
         descriptionArticle: `<p>
         <b>HTML CSS Selector de colores</b> le ayuda a elegir un <b>color</b> en el registro de color HEX, RGB, RGBA, CMYK y HSV. Haga clic en el campo de selección de colores y, para una selección más precisa, mueva el cursor mientras mantiene pulsado el botón izquierdo del ratón. Cambie la configuración del color a través de los campos de entrada.
@@ -326,14 +387,16 @@ dataSets.langs = [
     </p>`,
         cancel: 'Cancelar',
         donateLabel: 'Por favor haga una donación',
+        gitlab: `<p><b>CSSCOLOR.RU</b> es un proyecto de código abierto. Enlace al repositorio: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'hi',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
         title: 'रंग चयनकर्ता',
+        twitterDescription: 'रंग चयनकर्ता',
         applicationName: 'रंग चयनकर्ता',
-        seodescriptionArticle: 'आप के लिए रंग बीनने! एचएसवी, आरजीबी, एचईएक्स और पारदर्शी के साथ काम करता है। आप चयनित रंग को SVG, PNG, JPG और GIF चित्र के रूप में डाउनलोड कर सकते हैं। यह अच्छा पिकर है!',
+        descriptionArticle: 'आप के लिए रंग बीनने! एचएसवी, आरजीबी, एचईएक्स और पारदर्शी के साथ काम करता है। आप चयनित रंग को SVG, PNG, JPG और GIF चित्र के रूप में डाउनलोड कर सकते हैं। यह अच्छा पिकर है!',
         seoKeywords: 'रंग बीनने, रंग बीनने, पैलेट सीएसएस, रंग सीएसएस, रंग सीएसएस, पैलेट html, सीएसएस html रंग, सीएसएस html रंग, HTML रंग पैलेट, HTML रंग पैलेट, रंग पैलेट, रंग पैलेट',
         descriptionArticle: `<p>
         <b>कलर</b> पिकर आपको HEX, RGB, RGBA, CMYK और HSV कलर मॉडल रिकॉर्ड में रंग चुनने में मदद करता है। रंग चयन के क्षेत्र पर क्लिक करें, और अधिक सटीक चयन के लिए, बाईं माउस बटन को पकड़े हुए कर्सर को घुमाएं। इनपुट फ़ील्ड के माध्यम से रंग सेटिंग्स बदलें।
@@ -346,14 +409,16 @@ dataSets.langs = [
     </p>`,
         cancel: 'रद्द करना',
         donateLabel: 'कृपया एक दान करें',
+        gitlab: `<p><b>CSSCOLOR.RU</b> ओपन-सोर्स प्रोजेक्ट है। रिपोजिटरी से लिंक: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'fr',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
         title: 'HTML CSS Sélecteur de couleurs',
+        twitterDescription: 'HTML CSS Sélecteur de couleurs',
         applicationName: 'HTML CSS Sélecteur de couleurs',
-        seodescriptionArticle: 'HTML CSS Sélecteur de couleurs pour le développeur. Fonctionne avec HSV, RGB, CMYK et HEX.',
+        descriptionArticle: 'HTML CSS Sélecteur de couleurs pour le développeur. Fonctionne avec HSV, RGB, CMYK et HEX.',
         seoKeywords: 'couleur css, couleur css, couleurs css, couleurs css, palette html, css couleurs html, css couleurs html, html palette de couleurs, html palette de couleurs, palette de couleurs, palette de couleurs',
         descriptionArticle: `<p>
         <b>Sélecteur de couleurs HTML CSS</b> vous aide à choisir une <b>couleur</b> dans l\'enregistrement de modèle de couleur HEX, RGB, RGBA, HSV et CMYK. Cliquez sur le champ de sélection des couleurs, et pour une sélection plus précise, déplacez le curseur tout en maintenant le bouton gauche de la souris enfoncé. Modifiez les paramètres de couleur via les champs de saisie.
@@ -366,14 +431,16 @@ dataSets.langs = [
     </p>`,
         cancel: 'Annuler',
         donateLabel: 'Merci de faire un don',
+        gitlab: `<p><b>CSSCOLOR.RU</b> est un projet open-source. Lien vers le référentiel: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'eo',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
         title: 'Koloro picker',
+        twitterDescription: 'Koloro picker',
         applicationName: 'Koloro picker',
-        seodescriptionArticle: 'Koloro picker por vi!',
+        descriptionArticle: 'Koloro picker por vi!',
         seoKeywords: 'koloro picker, koloro picker, paletro, css, koloroj, css koloroj css, paletro, html, css, html koloroj, css, html koloroj, html paletro, html paletro, koloro paletro, koloro paletro',
         descriptionArticle: `<p>
         <b>Koloro picker</b> helpas vin elekti <b>koloron</b> en HEX, RGB, RGBA, CMYK kaj HSV koloro modelo rekordo. Klaku sur la kampo de koloro selektado, kaj por pli preciza elekto, movu la kursoron dum tenante la maldekstra musbutono. Ŝanĝi la koloro agordojn per enigo kampoj.
@@ -386,14 +453,16 @@ dataSets.langs = [
     </p>`,
         cancel: 'Nuligi',
         donateLabel: 'Bonvolu fari donacon',
+        gitlab: `<p><b>CSSCOLOR.RU</b> estas malfermfonda projekto. Ligilo al deponejo: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'sw',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
         title: 'Chombo cha rangi ya wavuti',
+        twitterDescription: 'Chombo cha rangi ya wavuti',
         applicationName: 'Chombo cha rangi ya wavuti',
-        seodescriptionArticle: 'Mchoraji wa rangi kwako! Inafanya kazi na HSV, RGB, HEX, CMYK na uwazi. Unaweza kupakua rangi iliyochaguliwa kama SVG, PNG, JPEG na picha ya GIF. Huyu ni kachumbari mzuri!',
+        descriptionArticle: 'Mchoraji wa rangi kwako! Inafanya kazi na HSV, RGB, HEX, CMYK na uwazi. Unaweza kupakua rangi iliyochaguliwa kama SVG, PNG, JPEG na picha ya GIF. Huyu ni kachumbari mzuri!',
         seoKeywords: 'rangi ya kuchagua, rangi ya kuchagua, pausi css, rangi ya CSS, rangi ya CSS, rangi ya html, rangi ya css html, rangi ya css html, rangi ya html rangi, rangi ya html',
         descriptionArticle: `<p>
         Chombo cha rangi husaidia kuchagua rangi katika HEX, RGB, RGBA, HSV, CMYK na rekodi ya mfano wa rangi. Bonyeza kwenye uwanja wa chaguo la rangi, na kwa uteuzi sahihi zaidi, uhamishe mshale wakati unashikilia kitufe cha kushoto cha panya. Badilisha mipangilio ya rangi kupitia sehemu za pembejeo.
@@ -406,6 +475,7 @@ dataSets.langs = [
     </p>`,
         cancel: 'Ghairi',
         donateLabel: 'Tafadhali jisikie huru kutoa mchango',
+        gitlab: `<p><b>CSSCOLOR.RU</b> ni mradi wa chanzo-wazi. Unganisha kwa uwekaji: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
 ]
 
