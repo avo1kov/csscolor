@@ -89,7 +89,7 @@ let dataSets = {
         </form>
     </div>`,
         yandexMetrica: '',
-        alphaBank: `<h1>Как поддержать CSSCOLOR.RU и заработать?</h1>
+        alphaBank: `<h1>Как поддержать CSSCOLOR.RU бесплатно?</h1>
         <p>
             Альфа-банк запустил <a href="https://alfabank.ru/lp/retail/friends/" target="_blink">рекламную компанию</a>, согласно которой можно получить <b>500 ₽</b>, если зарегистрировать бесплатную дебетовую карту по личной ссылке и совершить с неё первую покупку. Деньги получает и заказчик карты (вы), и держатель ссылки (проект).
         </p>
@@ -112,7 +112,8 @@ let dataSets = {
         </div>
         <div class="quotation-author">
             Автор CSSCOLOR.RU, <a href="https://www.instagram.com/avo1kov/" target="_blink">Александр Волков</a>
-        </div>`
+        </div>`,
+        gitlab: '<p>Исходный код <b>CSSCOLOR.RU</b> открыт. Ссылка на репозиторий: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>'
     }
 }
 dataSets.php = {
@@ -262,7 +263,7 @@ dataSets.productionPresets = {
             <img alt="" border="0" src="https://www.paypal.com/ru_RU/i/scr/pixel.gif" width="1" height="1" />
         </form>
     </div>`,
-    alphaBank: `<h1>Как поддержать CSSCOLOR.RU и заработать?</h1>
+    alphaBank: `<h1>Как поддержать CSSCOLOR.RU бесплатно?</h1>
         <p>
             Альфа-банк запустил <a href="https://alfabank.ru/lp/retail/friends/" target="_blink">рекламную компанию</a>, согласно которой можно получить <b>500 ₽</b>, если зарегистрировать бесплатную дебетовую карту по личной ссылке и совершить с неё первую покупку. Деньги получает и заказчик карты (вы), и держатель ссылки (проект).
         </p>
