@@ -340,19 +340,13 @@ article.article
       position: relative
       div.grey-arrow
         position: absolute
-        background: #f2f2f7
         width: 40px
         height: 40px
-        right: -40px
+        right: -39px
         bottom: 0
-        div.white-circle
-          transition: all 0.1s linear 0s
-          position: relative
-          bottom: 40px
-          width: 80px
-          height: 80px
-          border-radius: 80px
-          background: white
+        svg
+          height: 40px
+          width: 40px
 
   yatag > yatag > yatag
     margin: 0 !important
@@ -539,11 +533,8 @@ article.article
         background: #1c1c1e
         p
           color: #636366 !important
-      div.grey-arrow
-        background: #1c1c1e !important
-        div.white-circle
-          transition: all 0.1s linear 0s
-          background: black !important
+      div.grey-arrow .quotation-arrow
+        fill: #1c1c1e !important
 
     div.quotation-author
       color: #454545
@@ -624,14 +615,11 @@ article.article
             display: none
 
           input
-            //grid-area: input
             display: none
 
             width: 100%
-            //height: 50px
             font-size: 1em
             padding: 0.2em 0 0.15em 0
-            //height: 100%
             border-radius: 100vw
             color: black
 

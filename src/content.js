@@ -105,7 +105,9 @@ let dataSets = {
                     Если для вас важно сохранение и развитие проекта, то сегодня вы имеете возможность помочь проекту бесплатно, либо сделав <a href="javascript:void(0)" id="donate-link">пожертвование</a>.
                 </p>
                 <div class="grey-arrow">
-                    <div class="white-circle"></div>
+                    <svg width="634px" height="633px" viewBox="0 0 634 633" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+                        <path class="quotation-arrow" d="M1 633 L1 -1 C1 -1 -7 632 634 632 Z" fill="#f2f2f7" fill-opacity="1" stroke="none"/>
+                    </svg>
                 </div>
             </div>
             <div class="avatar"></div>
@@ -279,7 +281,9 @@ dataSets.productionPresets = {
                     Если для вас важно сохранение и развитие проекта, то сегодня вы имеете возможность помочь проекту бесплатно, либо сделав <a href="javascript:void(0)" id="donate-link">пожертвование</a>.
                 </p>
                 <div class="grey-arrow">
-                    <div class="white-circle"></div>
+                    <svg width="634px" height="633px" viewBox="0 0 634 633" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+                        <path class="quotation-arrow" d="M1 633 L1 -1 C1 -1 -7 632 634 632 Z" fill="#f2f2f7" fill-opacity="1" stroke="none"/>
+                    </svg>
                 </div>
             </div>
             <div class="avatar"></div>
