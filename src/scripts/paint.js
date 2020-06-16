@@ -37,7 +37,6 @@ const drawPoint = (x, y) => {
                 s: 60 * Math.random() + 40,
                 v: 100
             }));
-            // color = getRandomColor();
         }
         point.setAttribute("fill", "#" + color);
         point.setAttribute("id", "point" + x + y);
@@ -103,8 +102,11 @@ drawLine = (x1, y1, x2, y2) => {
     }
 };
 
-document.addEventListener('mousedown', (e) => {
-    if (!touchIntent) {
+document.addEventListener('mousedown', e => {
+    e = e || window.event;
+    var target = e.target || e.srcElement,
+        className = target.getAttribute("class");
+    if (!touchIntent && className == "palette") {
         mousedownFlag = true;
         let [x, y] = [
             Math.round(e.pageX / length) * length,
@@ -114,8 +116,7 @@ document.addEventListener('mousedown', (e) => {
         entryToSend = x;
         unreadItem = y;
 
-        document.body.style.userSelect = "none";
-        document.body.style.webkitUserSelect = "none";
+        wrapper.classList.add('non-select');
     }
 });
 
@@ -132,32 +133,12 @@ document.addEventListener("mousemove", (e) => {
         }
         previousX = x;
         previousY = y;
-        // if (!drawFlag && localStorage.getItem("drew") === False) {
-        //     /** @type {!XMLHttpRequest} */
-        //     var requestForData = new XMLHttpRequest;
-        //     /**
-        //      * @return {undefined}
-        //      */
-        //     requestForData.onreadystatechange = function() {
-        //         if (this.readyState == 4 && this.status == 200) {
-        //             console.log("Answer successfully got.");
-        //         }
-        //     };
-        //     requestForData.open("GET", "https://csscolor.ru/draw_stat.php", true);
-        //     requestForData.send();
-        //     /** @type {boolean} */
-        //     drawFlag = true;
-        //     console.log("Query sent.");
-        // }
     }
 }, false);
 
 document.addEventListener("mouseup", () => {
-    document.body.style.userSelect = "auto";
-    document.body.style.webkitUserSelect = "auto";
-    // if (localStorage.getItem("drew") == "True") {
-    //     localStorage.setItem("drew", "False");
-    // }
+    wrapper.classList.remove('non-select');
+
     mousedownFlag = false;
     previousX = null;
     previousY = null;

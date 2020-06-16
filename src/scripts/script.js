@@ -1088,8 +1088,6 @@ hsvInput.addEventListener('input', function () {
 
 cmykInput.addEventListener('input', function () {
   const cmykInputString = cmykInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
-  console.log(cmykInputString);
-  // cmykInput.value = cmykInputString;
 
   const cmyk = {
     c: palette.currentColor.hsv.c,
