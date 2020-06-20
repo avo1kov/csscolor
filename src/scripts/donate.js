@@ -5,14 +5,17 @@ const $darkBckgr = document.getElementById('dark-bckgr');
 
 const showDonatePopup = () => {
     $darkBckgr.classList.add('visible');
-    dataLayer.push({'event':'donate-button-click','selected-tone': palette.selectedThone});
     $donatePopup.classList.add('visible');
+    dataLayer.push({'event':'donate-button-click','selected-tone': palette.selectedThone});
 };
 
 const hideDonatePopup = () => {
+    $darkBckgr.classList.remove('visible');
     $donatePopup.classList.remove('visible');
 };
 
-$donateBtn.addEventListener('click', showDonatePopup);
-$donateLink.addEventListener('click', showDonatePopup);
 $darkBckgr.addEventListener('click', hideDonatePopup);
+$donateBtn.addEventListener('click', showDonatePopup);
+if ($donateLink) {
+    $donateLink.addEventListener('click', showDonatePopup);
+}
