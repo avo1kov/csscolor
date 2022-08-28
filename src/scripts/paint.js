@@ -194,11 +194,18 @@ document.addEventListener('touchstart', function(event) {
 });
 
 document.addEventListener('mousedown', (e) => {
-    mousedownFlag = true;
+    e = e || window.event;
+    var target = e.target || e.srcElement,
+        className = target.getAttribute("class");
 
-    const {x, y} = normalizeXY(e.pageX, e.pageY);
+    console.log({touchIntent, className});
+    if (!touchIntent && className == "palette") {
+        mousedownFlag = true;
 
-    startDrawing(x, y);
+        const {x, y} = normalizeXY(e.pageX, e.pageY);
+
+        startDrawing(x, y);
+    }
 });
 
 document.addEventListener('touchmove', function(event) {
