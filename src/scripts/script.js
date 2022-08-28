@@ -837,11 +837,12 @@ colorPicker.addEventListener('mousedown', function(event) {
 });
 
 colorPicker.addEventListener('touchstart', function(event) {
+  event.preventDefault();
   if (event.targetTouches.length > 0) {
     const touch = event.targetTouches[0];
     colorChoosingActionStart(touch.pageX, touch.pageY);
   }
-});
+}, {passive: false});
 
 function toneChoosingActionStart(coordinate) {
   wrapper.classList.add('non-select');
@@ -867,6 +868,7 @@ tonePicker.addEventListener('mousedown', function(event) {
 });
 
 tonePicker.addEventListener('touchstart', function(event) {
+  event.preventDefault();
   if (event.targetTouches.length > 0) {
     const touch = event.targetTouches[0];
     toneChoosingActionStart({
@@ -889,6 +891,7 @@ alphaPicker.addEventListener('mousedown', function(event) {
 });
 
 alphaPicker.addEventListener('touchstart', function(event) {
+  event.preventDefault();
   if (event.targetTouches.length > 0) {
     const touch = event.targetTouches[0];
     alphaChoosingActionStart(touch.pageX);
@@ -907,11 +910,15 @@ document.addEventListener('touchmove', function(event) {
 });
 
 document.addEventListener('mousemove', function(event) {
+  if (touchIntent) {
+    event.preventDefault();
+  }
+
   actionsHandler({
     x: event.pageX,
     y: event.pageY
   });
-});
+}, {passive: false});
 
 function actionsHandler(coordinate) {
   switch (touchIntent) {
