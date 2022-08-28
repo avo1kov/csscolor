@@ -619,7 +619,6 @@ const
     cmykInput = document.getElementById('cmykInput'),
 
     exampleText = document.getElementById('exampleText'),
-    downloadButton = document.getElementById('donate-btn'),
     linkToMe = document.getElementById('linkToMe'),
     gifLink = document.getElementById('gif-link'),
     jpgLink = document.getElementById('jpg-link'),
@@ -734,19 +733,11 @@ function updateUI(from) {
         v: 60
       });
   }
-  downloadButton.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
   linkToMe.style.color = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
   gifLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
   jpgLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
   pngLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
   svgLink.style.backgroundColor = `rgb(${darkerThoneRgb.r}, ${darkerThoneRgb.g}, ${darkerThoneRgb.b})`;
-
-  if (ui.darkMode) {
-    downloadButton.style.color = ui.isBlackReadableOverTone() ? 'black' : 'white';
-    downloadButton.style.color = 'black';
-  } else {
-    downloadButton.style.color = 'white';
-  }
 
   toneColor.setAttribute('fill', 'rgb('
       + Math.round(toneRgb.r) + ', '
