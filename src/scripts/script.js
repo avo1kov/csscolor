@@ -1,6 +1,6 @@
 // Logical model describing
 window.palette = {
-  selectedThone: 'red',
+  selectedTone: 'red',
   currentColor: {
     percent: {
       colorCursor: {
@@ -636,25 +636,6 @@ const
     mobileColorModelSelectSubstitute = document.getElementById('mobileColorModelSelectSubstitude'),
     mobileBackground = document.getElementById('mobileBackground');
 
-const metaThemeColor = document.querySelector("meta[name=theme-color]");
-const transparentPattern = document.getElementById("transparent-shifted-pattern");
-
-window.addEventListener('load', () => {
-  updateTransparentPattern();
-});
-
-window.addEventListener('resize', () => {
-  updateTransparentPattern();
-});
-
-function updateTransparentPattern() {
-  const xOffset = -alphaPicker.offsetLeft % 20;
-  const yOffset = -alphaPicker.offsetTop % 20;
-
-  transparentPattern.setAttribute('x', xOffset + 'px');
-  transparentPattern.setAttribute('y', yOffset + 'px');
-}
-
 window.ui = {
   isColorChanged: false,
   selectedInput: hexInput,
@@ -701,8 +682,34 @@ window.ui = {
   },
 };
 
+const metaThemeColor = document.querySelector("meta[name=theme-color]");
+const transparentPattern = document.getElementById("transparent-shifted-pattern");
+
+transparentPattern.setAttribute('x',  '0');
+transparentPattern.setAttribute('y', '0');
+
+window.addEventListener('load', () => {
+  updateTransparentPattern();
+});
+
+window.addEventListener('resize', () => {
+  updateTransparentPattern();
+});
+
+function updateTransparentPattern() {
+  if (!window.ui.isMobileDevice) {
+    return;
+  }
+
+  const xOffset = -alphaPicker.offsetLeft % 20;
+  const yOffset = -alphaPicker.offsetTop % 20;
+
+  transparentPattern.setAttribute('x', xOffset + 'px');
+  transparentPattern.setAttribute('y', yOffset + 'px');
+}
+
 function updateUI(from) {
-  if (palette.currentColor.hex != 'fff') {
+  if (palette.currentColor.hex !== 'fff') {
     palette.isColorChanged = true;
   }
 
@@ -719,25 +726,25 @@ function updateUI(from) {
 
   const h = palette.currentColor.hsv.h;
   if (((h > 0) && (h <= 4)) || (h > 340)) {
-    palette.selectedThone = 'red';
+    palette.selectedTone = 'red';
   }
   if ((h > 4) && (h <= 40)) {
-    palette.selectedThone = 'brown';
+    palette.selectedTone = 'brown';
   }
   if ((h > 4) && (h <= 40)) {
-    palette.selectedThone = 'brown';
+    palette.selectedTone = 'brown';
   }
   if ((h > 40) && (h <= 65)) {
-    palette.selectedThone = 'yellow';
+    palette.selectedTone = 'yellow';
   }
   if ((h > 65) && (h <= 170)) {
-    palette.selectedThone = 'green';
+    palette.selectedTone = 'green';
   }
   if ((h > 170) && (h <= 256)) {
-    palette.selectedThone = 'blue';
+    palette.selectedTone = 'blue';
   }
   if ((h > 256) && (h <= 340)) {
-    palette.selectedThone = 'purple';
+    palette.selectedTone = 'purple';
   }
 
   let darkerThoneRgb = palette.convertHsvToRgb({

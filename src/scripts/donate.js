@@ -6,7 +6,7 @@ const $darkBckgr = document.getElementById('dark-bckgr');
 const showDonatePopup = () => {
     $darkBckgr.classList.add('visible');
     $donatePopup.classList.add('visible');
-    dataLayer.push({'event':'donate-button-click','selected-tone': palette.selectedThone});
+    dataLayer.push({'event':'donate-button-click','selected-tone': palette.selectedTone});
 };
 
 const hideDonatePopup = () => {
