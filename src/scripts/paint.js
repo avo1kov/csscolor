@@ -18,23 +18,27 @@ window.mobilecheck = function() {
 };
 
 const $canvas = document.getElementById('picture-canvas');
-
 let vw = Math.max(document.body.clientWidth || 0, window.innerWidth || 0);
 let vh = Math.max(document.body.clientHeight || 0, window.innerHeight || 0);
 
-$canvas.width = vw;
-$canvas.height = vh;
+function setCanvasSize() {
+    vw = Math.max(document.body.clientWidth || 0, window.innerWidth || 0);
+    vh = Math.max(document.body.clientHeight || 0, window.innerHeight || 0);
+
+    $canvas.width = vw;
+    $canvas.height = vh;
+
+    $paintField.style.height = `${vh}px`;
+}
+
+window.addEventListener('load', setCanvasSize);
 
 const ctx = $canvas.getContext('2d');
 
 window.addEventListener('resize', function() {
     const canvasData = ctx.getImageData(0, 0, vw, vh);
 
-    vw = Math.max(document.body.clientWidth || 0, window.innerWidth || 0);
-    vh = Math.max(document.body.clientHeight || 0, window.innerHeight || 0);
-
-    $canvas.width = vw;
-    $canvas.height = vh;
+    setCanvasSize();
 
     ctx.putImageData(canvasData, 0, 0);
 });
@@ -181,18 +185,6 @@ function drawLine(x1, y1, x2, y2) {
     }
 };
 
-document.addEventListener('touchstart', function(event) {
-    length = 10;
-    mousedownFlag = true;
-
-    if (event.targetTouches.length > 0) {
-        const touch = event.targetTouches[0];
-        const {x, y} = normalizeXY(touch.pageX, touch.pageY);
-
-        startDrawing(x, y);
-    }
-});
-
 document.addEventListener('mousedown', (e) => {
     e = e || window.event;
     var target = e.target || e.srcElement,
@@ -205,15 +197,6 @@ document.addEventListener('mousedown', (e) => {
         const {x, y} = normalizeXY(e.pageX, e.pageY);
 
         startDrawing(x, y);
-    }
-});
-
-document.addEventListener('touchmove', function(event) {
-    if (event.targetTouches.length > 0) {
-        const touch = event.targetTouches[0];
-        const {x, y} = normalizeXY(touch.pageX, touch.pageY);
-
-        draw(x, y);
     }
 });
 
@@ -231,10 +214,6 @@ function normalizeXY(x, y) {
         y: Math.floor(y / length) * length
     };
 }
-
-document.addEventListener('touchend', function() {
-    finishDrawing()
-});
 
 document.addEventListener("mouseup", () => {
     finishDrawing();

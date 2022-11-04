@@ -48,8 +48,9 @@
 
 	$langList = array(
 		'' => 'Русский',
+		'ua' => 'Українська',
 		'en' => 'English',
-		'de' => 'German',
+		'de' => 'Deutsch',
 		'es' => 'Español',
 		'hi' => 'हिंदी',
 		'fr' => 'Français',

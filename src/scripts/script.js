@@ -72,6 +72,7 @@ window.palette = {
 
   setColorFromRgb: function (rgb) {
     rgb = this.validateRgb(rgb);
+
     if (rgb) {
       this.currentColor.hsv = this.convertRgbToHsv(rgb);
       this.currentColor.percent = this.convertHsvToPercent(this.currentColor.hsv);
@@ -99,7 +100,6 @@ window.palette = {
       this.currentColor.hex = hex;
       this.currentColor.rgb = this.convertHexToRgb(hex);
       this.currentColor.alpha = this.getAlphaFromHex(hex);
-      console.log(this.currentColor.alpha);
       this.currentColor.rgbPercentage = this.convertRgbToRgbPercentage(this.currentColor.rgb);
       this.currentColor.hsv = this.convertRgbToHsv(this.currentColor.rgb);
       this.currentColor.percent = this.convertHsvToPercent(this.currentColor.hsv);
@@ -636,6 +636,25 @@ const
     mobileColorModelSelectSubstitute = document.getElementById('mobileColorModelSelectSubstitude'),
     mobileBackground = document.getElementById('mobileBackground');
 
+const metaThemeColor = document.querySelector("meta[name=theme-color]");
+const transparentPattern = document.getElementById("transparent-shifted-pattern");
+
+window.addEventListener('load', () => {
+  updateTransparentPattern();
+});
+
+window.addEventListener('resize', () => {
+  updateTransparentPattern();
+});
+
+function updateTransparentPattern() {
+  const xOffset = -alphaPicker.offsetLeft % 20;
+  const yOffset = -alphaPicker.offsetTop % 20;
+
+  transparentPattern.setAttribute('x', xOffset + 'px');
+  transparentPattern.setAttribute('y', yOffset + 'px');
+}
+
 window.ui = {
   isColorChanged: false,
   selectedInput: hexInput,
@@ -785,7 +804,6 @@ function updateUI(from) {
   if (hsvInput !== from) { hsvInput.value = hsvInputString; }
   if (cmykInput !== from) { cmykInput.value = cmykInputString; }
 
-  // exampleText.innerHTML = ui.exampleText;
   exampleText.style.color = 'rgba(' + Math.round(palette.currentColor.rgb.r) + ', '
       + Math.round(palette.currentColor.rgb.g) + ', '
       + Math.round(palette.currentColor.rgb.b) + ', '
@@ -803,7 +821,6 @@ function updateUI(from) {
   if (ui.isMobileDevice) {
     tonePickerCursor.setAttribute('transform', 'translate('
         + (palette.currentColor.percent.toneCursor.x * tonePicker.clientWidth / 100) + ', 0)');
-    // console.log(palette.currentColor.percent.toneCursor.x);
   } else {
     tonePickerCursor.setAttribute('transform', 'translate(0, '
         + (palette.currentColor.percent.toneCursor.x * tonePicker.clientHeight / 100) + ')');
@@ -992,9 +1009,51 @@ function actionsEnd() {
 
 // Changing color via inputs
 
+function splitParamsString(originString) {
+  const replacedString = originString.replaceAll(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
+  const splittedString = replacedString.split(' ').map((param) => param * 1);
+
+  return splittedString;
+}
+
+function setColomFromParams(params, input, defaultColor) {
+  const [,,,a] = params;
+
+  if (a) {
+    palette.setAlpha(a * 100);
+  } else {
+    palette.setAlpha(100);
+  }
+
+  let r, g, b, h, s, v, c, m, y, k;
+
+  switch(input) {
+    case rgbInput:
+      [r, g, b] = params;
+      palette.setColorFromRgb({r, g, b});
+      break;
+    case rgbPercentageInput:
+      [r, g, b] = params;
+      palette.setColorFromRgbPercentage({r, g, b});
+      break;
+    case hsvInput:
+      [h, s, v] = params;
+      palette.setColorFromHsv({h, s, v});
+      break;
+    case cmykInput:
+      [c, m, y, k] = params;
+      palette.setColorFromCmyk({c, m, y, k});
+      break;
+  }
+  
+
+  updateUI(input);
+  changeUrl()
+}
+
 hexInput.addEventListener('input', function () {
   const hexInputString = hexInput.value.replace(/[^0-9a-fA-F]/g, '').substr(0, 8);
-  // hexInput.value = hexInputString;
+  
   palette.setColorFromHex(hexInputString);
   updateUI(hexInput);
 
@@ -1002,114 +1061,27 @@ hexInput.addEventListener('input', function () {
 });
 
 rgbInput.addEventListener('input', function () {
-  let rgbInputString = rgbInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
-  console.log(rgbInputString);
-  // rgbInput.value = rgbInputString;
+  const params = splitParamsString(rgbInput.value);
 
-  const rgb = {
-    r: palette.currentColor.rgb.r,
-    g: palette.currentColor.rgb.g,
-    b: palette.currentColor.rgb.b
-  };
-
-  const splitString = rgbInputString.split(' ');
-  if (splitString.length >= 3) {
-    rgb.r = splitString[0] * 1;
-    rgb.g = splitString[1] * 1;
-    rgb.b = splitString[2] * 1;
-    if (splitString.length > 3) {
-      palette.setAlpha(splitString[3] * 100);
-    } else {
-      palette.setAlpha(100);
-    }
-    palette.setColorFromRgb(rgb);
-  }
-
-  updateUI(rgbInput);
-  changeUrl()
+  setColomFromParams(params, rgbInput, palette.currentColor.rgb);
 });
 
 rgbPercentageInput.addEventListener('input', function () {
-  let rgbPercentageInputString = rgbPercentageInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
-  // rgbPercentageInput.value = rgbPercentageInputString;
+  const params = splitParamsString(rgbPercentageInput.value);
 
-  const rgbPercentage = {
-    r: palette.currentColor.rgbPercentage.r,
-    g: palette.currentColor.rgbPercentage.g,
-    b: palette.currentColor.rgbPercentage.b
-  };
-
-  const splitString = rgbPercentageInputString.split(' ');
-  if (splitString.length >= 3) {
-    rgbPercentage.r = splitString[0] * 100;
-    rgbPercentage.g = splitString[1] * 100;
-    rgbPercentage.b = splitString[2] * 100;
-    if (splitString.length > 3) {
-      palette.setAlpha(splitString[3] * 100);
-    } else {
-      palette.setAlpha(100);
-    }
-    palette.setColorFromRgbPercentage(rgbPercentage);
-  }
-
-  updateUI(rgbPercentageInput);
-  changeUrl()
+  setColomFromParams(params, rgbPercentageInput, palette.currentColor.rgbPercentage);
 });
 
 hsvInput.addEventListener('input', function () {
-  const hsvInputString = hsvInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
-  // console.log(hsvInputString);
-  // hsvInput.value = hsvInputString;
+  const params = splitParamsString(hsvInput.value);
 
-  const hsv = {
-    h: palette.currentColor.hsv.h,
-    s: palette.currentColor.hsv.s,
-    v: palette.currentColor.hsv.v
-  };
-
-  const splitString = hsvInputString.split(' ');
-  if (splitString.length >= 3) {
-    hsv.h = splitString[0] * 1;
-    hsv.s = splitString[1] * 1;
-    hsv.v = splitString[2] * 1;
-    if (splitString.length > 3) {
-      palette.setAlpha(splitString[3] * 100);
-    } else {
-      palette.setAlpha(100);
-    }
-    palette.setColorFromHsv(hsv);
-  }
-
-  updateUI(hsvInput);
-  changeUrl()
+  setColomFromParams(params, hsvInput, palette.currentColor.hsv);
 });
 
 cmykInput.addEventListener('input', function () {
-  const cmykInputString = cmykInput.value.replace(',', ' ').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ').trim();
+  const params = splitParamsString(cmykInput.value);
 
-  const cmyk = {
-    c: palette.currentColor.hsv.c,
-    m: palette.currentColor.hsv.m,
-    y: palette.currentColor.hsv.y,
-    k: palette.currentColor.hsv.k
-  };
-
-  const splitString = cmykInputString.split(' ');
-  if (splitString.length >= 4) {
-    cmyk.c = splitString[0] * 1;
-    cmyk.m = splitString[1] * 1;
-    cmyk.y = splitString[2] * 1;
-    cmyk.k = splitString[3] * 1;
-    if (splitString.length > 4) {
-      palette.setAlpha(splitString[4] * 100);
-    } else {
-      palette.setAlpha(100);
-    }
-    palette.setColorFromCmyk(cmyk);
-  }
-
-  updateUI(cmykInput);
-  changeUrl()
+  setColomFromParams(params, cmykInput, palette.currentColor.cmyk);
 });
 
 // Changing selected input

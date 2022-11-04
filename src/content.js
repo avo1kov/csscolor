@@ -5,12 +5,16 @@ const langList = [
         name: 'Русский'
     },
     {
+        code: 'ua',
+        name: 'Українська'
+    },
+    {
         code: 'en',
         name: 'English'
     },
     {
         code: 'de',
-        name: 'German'
+        name: 'Deutsch'
     },
     {
         code: 'es',
@@ -329,6 +333,26 @@ dataSets.langs = [
             Автор CSSCOLOR.RU, <a href="https://www.instagram.com/avo1kov/" target="_blink">Александр Волков</a>
         </div>`,
         gitlab: '<p>Исходный код <b>CSSCOLOR.RU</b> открыт. Ссылка на репозиторий: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>'
+    },
+    {
+        langCode: 'ua',
+        ...dataSets.productionPresets,
+        ...dataSets.productionWesternPresets,
+        title: 'Вибір кольору HTML CSS',
+        twitterDescription: 'Вибір кольору HTML CSS',
+        applicationName: 'Вибір кольору HTML CSS',
+        descriptionArticle: 'Колір для вас! Працює з HSV, RGB, HEX, CMYK і прозорими. Ви можете завантажити вибраний колір у форматі SVG, PNG, JPEG і GIF. Це гарний збирач!',
+        seoKeywords: 'вибір кольорів, вибір кольорів, палітра css, кольори css, кольори css, палітра html, кольори css html, кольори css html, палітра кольорів html, палітра кольорів html, палітра кольорів, палітра кольорів',
+        donateButtonLabel: 'Дарувати',
+        descriptionArticle: `<p>
+        <b>Засіб вибору кольорів</b> допоможе вибрати <b>колір</b> у записі колірної моделі HEX, RGB, RGBA, CMYK і HSV. Натисніть на поле вибору кольору, а для більш точного вибору переміщуйте курсор, утримуючи ліву кнопку миші. Змінюйте налаштування кольору за допомогою полів введення.
+    </p>
+    <p>
+        Також ви можете <b>завантажити вибраний колір</b>. Натисніть кнопку «Завантажити колір», яка з’явиться у вікні налаштувань. Ви можете вибрати формат (SVG, PNG, JPEG або GIF) і розмір зображення. Зверніть увагу, що напівпостійний колір можна завантажити лише у форматі SVG і PNG.
+    </p>`,
+        cancel: 'Скасувати',
+        donateLabel: 'Будь ласка, зробіть пожертву',
+        gitlab: `<p><b>CSSCOLOR.RU</b> є проектом з відкритим кодом. Посилання на репозиторій: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'en',
