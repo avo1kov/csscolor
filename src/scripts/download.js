@@ -62,3 +62,5 @@ $dwnldCancelBtn.addEventListener('click', () => {
 $darkBckgr.addEventListener('click', () => {
     $dwnldPopup.classList.remove('visible');
 });
+
+$dwnldBtn.style.display = 'flex';
