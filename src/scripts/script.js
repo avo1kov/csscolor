@@ -84,7 +84,9 @@ window.palette = {
   },
 
   setColorFromRgbPercentage: function (rgbPercentage) {
+    console.log(1, rgbPercentage);
     rgbPercentage = this.validateRgbPercentage(rgbPercentage);
+    console.log({rgbPercentage});
     if (rgbPercentage) {
       this.currentColor.rgbPercentage = rgbPercentage;
       this.currentColor.rgb = this.convertRgbPercentageToRgb(rgbPercentage);
@@ -253,9 +255,9 @@ window.palette = {
   validateRgbPercentage: function (rgbPercentage) {
     if (rgbPercentage.hasOwnProperty('r') && rgbPercentage.hasOwnProperty('g')
         && rgbPercentage.hasOwnProperty('b')) {
-      rgbPercentage.r = parseInt(rgbPercentage.r);
-      rgbPercentage.g = parseInt(rgbPercentage.g);
-      rgbPercentage.b = parseInt(rgbPercentage.b);
+      rgbPercentage.r = parseFloat(rgbPercentage.r);
+      rgbPercentage.g = parseFloat(rgbPercentage.g);
+      rgbPercentage.b = parseFloat(rgbPercentage.b);
       if ((isNaN(rgbPercentage.r)) || (isNaN(rgbPercentage.g)) || (isNaN(rgbPercentage.b))) {
         return false;
       }
@@ -270,14 +272,14 @@ window.palette = {
         rgbPercentage.b = 0;
       }
 
-      if (rgbPercentage.r > 100) {
-        rgbPercentage.r = 100;
+      if (rgbPercentage.r > 1) {
+        rgbPercentage.r = 1;
       }
-      if (rgbPercentage.g > 100) {
-        rgbPercentage.g = 100;
+      if (rgbPercentage.g > 1) {
+        rgbPercentage.g = 1;
       }
-      if (rgbPercentage.b > 100) {
-        rgbPercentage.b = 100;
+      if (rgbPercentage.b > 1) {
+        rgbPercentage.b = 1;
       }
 
       return rgbPercentage;
@@ -452,17 +454,17 @@ window.palette = {
 
   convertRgbToRgbPercentage: function (rgb) {
     return {
-      r: rgb.r * 100 / 255,
-      g: rgb.g * 100 / 255,
-      b: rgb.b * 100 / 255
+      r: rgb.r / 255,
+      g: rgb.g / 255,
+      b: rgb.b / 255
     };
   },
 
   convertRgbPercentageToRgb: function (rgbPercentage) {
     return {
-      r: rgbPercentage.r * 255 / 100,
-      g: rgbPercentage.g * 255 / 100,
-      b: rgbPercentage.b * 255 / 100
+      r: rgbPercentage.r * 255,
+      g: rgbPercentage.g * 255,
+      b: rgbPercentage.b * 255
     };
   },
 
@@ -1023,7 +1025,7 @@ function splitParamsString(originString) {
   return splittedString;
 }
 
-function setColomFromParams(params, input, defaultColor) {
+function setColorFromParams(params, input, defaultColor) {
   const [,,,a] = params;
 
   if (a) {
@@ -1070,25 +1072,26 @@ hexInput.addEventListener('input', function () {
 rgbInput.addEventListener('input', function () {
   const params = splitParamsString(rgbInput.value);
 
-  setColomFromParams(params, rgbInput, palette.currentColor.rgb);
+  setColorFromParams(params, rgbInput, palette.currentColor.rgb);
 });
 
 rgbPercentageInput.addEventListener('input', function () {
   const params = splitParamsString(rgbPercentageInput.value);
+  console.log({params});
 
-  setColomFromParams(params, rgbPercentageInput, palette.currentColor.rgbPercentage);
+  setColorFromParams(params, rgbPercentageInput, palette.currentColor.rgbPercentage);
 });
 
 hsvInput.addEventListener('input', function () {
   const params = splitParamsString(hsvInput.value);
 
-  setColomFromParams(params, hsvInput, palette.currentColor.hsv);
+  setColorFromParams(params, hsvInput, palette.currentColor.hsv);
 });
 
 cmykInput.addEventListener('input', function () {
   const params = splitParamsString(cmykInput.value);
 
-  setColomFromParams(params, cmykInput, palette.currentColor.cmyk);
+  setColorFromParams(params, cmykInput, palette.currentColor.cmyk);
 });
 
 // Changing selected input
