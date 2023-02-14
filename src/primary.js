@@ -1,4 +1,4 @@
-// import './styles/default.sass';
+import './styles/default.sass';
 
 import './scripts/script.js';
 import './scripts/download.js';

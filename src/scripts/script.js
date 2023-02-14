@@ -1251,11 +1251,34 @@ mobileColorModelSelect.addEventListener('input', function() {
   }
 });
 
+const commentsWidget = document.getElementById('comments-widget');
+
+function getCommentsWidget(theme = 'light') {
+  commentsWidget.innerHTML = '';
+  const s = document.createElement('script');
+  s.setAttribute('type', 'text/javascript');
+  s.setAttribute('async', 'true');
+  s.src = 'https://telegram.org/js/telegram-widget.js?21';
+  s.setAttribute('data-telegram-discussion', 'csscolor/5');
+  s.setAttribute('data-comments-limit', '10');
+  s.setAttribute('data-colorful', '1')
+
+  if (theme === 'light') {
+    s.setAttribute('data-color', '00b3ff');
+  } else {
+    s.setAttribute('data-color', '454545');
+    s.setAttribute('data-dark', '1');
+  }
+
+  commentsWidget.appendChild(s);
+}
+
 turnNightMode = () => {
   document.body.style.transitionDuration = "0s";
   nightModeSwitcher.classList.add('night');
   document.body.classList.add('night');
   document.body.style.transitionDuration = "0.1s";
+  getCommentsWidget('night');
   ui.darkMode = true;
   updateUI();
 };
@@ -1265,6 +1288,7 @@ turnLightMode = () => {
   nightModeSwitcher.classList.remove('night');
   document.body.classList.remove('night');
   document.body.style.transitionDuration = "0.1s";
+  getCommentsWidget();
   ui.darkMode = false;
   updateUI();
 };
@@ -1312,6 +1336,12 @@ autoThemeApply = () => {
   } else if (localStorage.getItem('night-mode') === 'on') {
     localStorage.setItem('night-mode', 'on');
     turnNightMode();
+  } else {
+    if (userDesktopTheme === 'dark') {
+      turnNightMode();
+    } else {
+      turnLightMode();
+    }
   }
 };
 

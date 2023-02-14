@@ -10,9 +10,6 @@ module.exports = [
         entry: {
             app: './src/secondary.js',
         },
-        output: {
-            clean: true
-        },
         module: {
             rules: [
                 {
@@ -40,6 +37,7 @@ module.exports = [
         },
         output: {
             filename: './[name].bundle.js',
+            clean: true
         },
         module: {
             rules: [

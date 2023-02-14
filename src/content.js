@@ -78,7 +78,6 @@ let dataSets = {
             <p>
                 В качестве экперимента разместили небольшую статью про flexbox: <a href="https://csscolor.ru/flexbox" class="content">https://csscolor.ru/flexbox</a>
             </p>`,
-        commentsWidget: '',
         year: (new Date()).getFullYear(),
         authorName: 'Александр Волков',
         cancel: 'Отмена',
@@ -172,7 +171,6 @@ dataSets.php = {
         })(this, this.document, "yandexContextAsyncCallbacks");
     </script>`,
     descriptionArticle: `<?php echo $labels['description']; ?>`,
-    commentsWidget: `<?php echo $labels['media']; ?>`,
     year: `<?php echo date('Y'); ?>`,
     authorName: `<?php echo $labels['author_name']; ?>`,
     cancel: `<?php echo $labels['cancel']; ?>`,
@@ -259,7 +257,6 @@ dataSets.productionPresets = {
             t.parentNode.insertBefore(s, t);
         })(this, this.document, "yandexContextAsyncCallbacks");
     </script>`,
-    commentsWidget: '<script async src="https://comments.app/js/widget.js?2" data-comments-app-website="X4A89j26" data-limit="5" data-page-id="1" data-dislikes="1"></script>',
     donateBox: `<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0%20%D0%BF%D0%B0%D0%BB%D0%B8%D1%82%D1%80%D1%8B&targets-hint=&default-sum=100&button-text=13&hint=&successURL=&quickpay=shop&account=410013246801384" width="423" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
     <div style="text-align: right">
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
