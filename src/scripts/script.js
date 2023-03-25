@@ -84,9 +84,8 @@ window.palette = {
   },
 
   setColorFromRgbPercentage: function (rgbPercentage) {
-    console.log(1, rgbPercentage);
     rgbPercentage = this.validateRgbPercentage(rgbPercentage);
-    console.log({rgbPercentage});
+
     if (rgbPercentage) {
       this.currentColor.rgbPercentage = rgbPercentage;
       this.currentColor.rgb = this.convertRgbPercentageToRgb(rgbPercentage);
@@ -786,9 +785,9 @@ function updateUI(from) {
       + Math.round(palette.currentColor.rgb.g) + ', '
       + Math.round(palette.currentColor.rgb.b),
 
-      rgbPercentageInputString = Math.round(palette.currentColor.rgbPercentage.r) / 100 + ', '
-          + Math.round(palette.currentColor.rgbPercentage.g) / 100 + ', '
-          + Math.round(palette.currentColor.rgbPercentage.b) / 100,
+      rgbPercentageInputString = roundNumber(palette.currentColor.rgbPercentage.r, 2) + ', '
+          + roundNumber(palette.currentColor.rgbPercentage.g, 2) + ', '
+          + roundNumber(palette.currentColor.rgbPercentage.b, 2),
 
       hsvInputString = Math.round(palette.currentColor.hsv.h) + ', '
           + Math.round(palette.currentColor.hsv.s) + ', '
@@ -1077,7 +1076,6 @@ rgbInput.addEventListener('input', function () {
 
 rgbPercentageInput.addEventListener('input', function () {
   const params = splitParamsString(rgbPercentageInput.value);
-  console.log({params});
 
   setColorFromParams(params, rgbPercentageInput, palette.currentColor.rgbPercentage);
 });
@@ -1384,3 +1382,17 @@ hsvInput.addEventListener('paste', () => {
 cmykInput.addEventListener('paste', () => {
   dataLayer.push({'event':'paste-color','color-model':'cmyk'});
 });
+
+function roundNumber(num, scale) {
+  if(!("" + num).includes("e")) {
+    return +(Math.round(num + "e+" + scale)  + "e-" + scale);
+  } else {
+    const arr = ("" + num).split("e");
+    let sig = "";
+
+    if(+arr[1] + scale > 0) {
+      sig = "+";
+    }
+    return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
+  }
+}
