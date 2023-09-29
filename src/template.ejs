@@ -23,6 +23,7 @@
     <meta property="twitter:image" content="<%= htmlWebpackPlugin.options.previewImage %>">
     <meta name="yandex-verification" content="00c2d4c2cfecd1c6">
     <link rel="stylesheet" href="./secondary.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <%= htmlWebpackPlugin.options.googleAnalytics %>
     <%= htmlWebpackPlugin.options.googleAdsense %>
 </head>
@@ -129,6 +130,13 @@
                     <input type="text" id="hsvInput" value="0, 0, 100" />
                     <label for="cmykInput" class="caption">CMYK</label>
                     <input type="text" id="cmykInput" value="0, 0, 0, 0" />
+                    <div class="label">
+                        <label for="customInput" class="caption">Custom</label>
+                        <span class="icon material-symbols-outlined">
+                            edit
+                        </span>                            
+                    </div>
+                    <input type="text" id="customInput" value="" />
                 </div>
             </div>
         </div>

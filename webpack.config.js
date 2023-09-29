@@ -101,6 +101,10 @@ module.exports = [
                     to: 'index.php'
                 },
             ]),
-        ]
+        ],
+        devServer: {
+            compress: true,
+            port: 9000,
+        },
     }
 ];
