@@ -6,6 +6,8 @@ const $rect = document.getElementById('rect');
 const $imgWidth = document.getElementById('img-width');
 const $imgHeight = document.getElementById('img-height');
 
+const $donatePopup = document.getElementById('donate-popup');
+
 const $gifLink = document.getElementById('gif-link'),
     $jpgLink = document.getElementById('jpg-link'),
     $pngLink = document.getElementById('png-link'),
@@ -48,6 +50,7 @@ $imgWidth.addEventListener('keyup', refreshLinks);
 
 $darkBckgr.addEventListener('click', () => {
     $dwnldPopup.classList.remove('visible');
+    $donatePopup.classList.remove('visible');
     $darkBckgr.classList.remove('visible');
 });
 
