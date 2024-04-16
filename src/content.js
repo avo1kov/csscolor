@@ -1,12 +1,27 @@
-let languagesHTML = '';
 const langList = [
     {
         code: '',
         name: 'Русский'
     },
     {
+        code: 'sr',
+        name: 'Српски'
+    },
+    {
+        code: 'kk',
+        name: 'Қазақша'
+    },
+    {
         code: 'ua',
         name: 'Українська'
+    },
+    {
+        code: 'be',
+        name: 'Беларуская'
+    },
+    {
+        code: 'ka',
+        name: 'ქართული'
     },
     {
         code: 'en',
@@ -21,10 +36,6 @@ const langList = [
         name: 'Español'
     },
     {
-        code: 'hi',
-        name: 'हिंदी'
-    },
-    {
         code: 'fr',
         name: 'Français'
     },
@@ -35,12 +46,27 @@ const langList = [
     {
         code: 'sw',
         name: 'Kiswahili'
-    }
+    },
+    {
+        code: 'hi',
+        name: 'हिंदी'
+    },
+    {
+        code: 'zh',
+        name: '中文'
+    },
 ];
-const languagesMeta = langList.map(lang => `<link rel="alternate" href="https://csscolor.ru${lang.code === 'ru' ? '' : '/' + lang.code}" hreflang="${lang.code}">`).join('');
-languagesHTML = langList.map(lang => `<a href="https://csscolor.ru/${lang.code}" class="content">${lang.name}</a>`).join('');
 
-const exampleTextes = ['Лень <b>делает</b> всякое дело трудным.',
+const languagesMeta = langList.map(lang =>
+    `<link rel="alternate" href="https://csscolor.ru${lang.code === 'ru' ? '' : '/' + lang.code}" hreflang="${lang.code}">`
+).join('');
+
+const languagesHTML = langList.map(lang =>
+    `<a href="https://csscolor.ru/${lang.code}" class="content">${lang.name}</a>`
+    ).join('');
+
+const exampleTextes = [
+    'Лень <b>делает</b> всякое дело трудным.',
     'Звание <b>свободного</b> человека дороже всего.',
     'Характер подобен дереву, а репутация — его тени. Мы заботимся о тени, но на самом деле надо думать о <b>дереве</b>.',
     'Одно <b>сегодня</b> стоит двух завтра.',
@@ -53,7 +79,10 @@ const exampleTextes = ['Лень <b>делает</b> всякое дело тр�
     'Серьёзное разрушается <b>смехом</b>, смех — серьёзностью.',
     'Жизнь — это <b>путешествие</b>, а не пункт назначения.'
 ];
-const exampleText = exampleTextes[Math.ceil(Math.random() * exampleTextes.length)];
+
+const exampleText = exampleTextes[
+    Math.floor(Math.random() * exampleTextes.length)
+];
 
 let dataSets = {
     test: {
@@ -61,7 +90,7 @@ let dataSets = {
         title: 'HTML CSS Палитра цветов',
         applicationName: 'app name',
         descriptionArticle: 'HTML CSS Палитра цветов в HEX, RGB, HSV и CMYK',
-        seoKeywords: 'палитра css, цвета css, палитра html, css html цвета, html цвета палитра, палитра цветов',
+        seoKeywords: 'палитра css, цвета css, палитра html, css html цвета, html цвета палитра,     палитра цветов',
         previewImage: '',
         googleAnalytics: '',
         googleTagManager: '',
@@ -69,7 +98,8 @@ let dataSets = {
         exampleText,
         languagesHTML,
         yandexAd: `<div style="width: 100%; height: 90px; background: #9191912c"></div>`,
-        descriptionArticle: `<p>
+        descriptionArticle:
+            `<p>
                 <b>HTML CSS Палитра цветов</b> помогает подобрать <b>цвет</b> в виде <b>HEX, RGB, RGBA, HSV и CMYK</b> записи цветовой модели. Нажимайте на поля выбора цвета, а для более точного выбора, перемещайте курсор с зажатой левой кнопкой мыши. Изменяйте параметры цвета через поля ввода.
             </p>
             <p>
@@ -332,6 +362,26 @@ dataSets.langs = [
         gitlab: '<p>Исходный код <b>CSSCOLOR.RU</b> открыт. Ссылка на репозиторий: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>'
     },
     {
+        langCode: 'be',
+        ...dataSets.productionPresets,
+        ...dataSets.productionWesternPresets,
+        title: 'HTML CSS Палітра колераў',
+        twitterDescription: 'HTML CSS Палітра колераў',
+        applicationName: 'HTML CSS Палітра колераў',
+        descriptionArticle: 'HTML CSS Палітра кветак у HEX, RGB, HSV і CMYK',
+        seoKeywords: 'палітра css, колеру css, палітра html, css html колеру, html колеру палітра, палітра кветак',
+        donateButtonLabel: 'Падтрымаць',
+        descriptionArticle: `<p>
+        HTML CSS Палітра колераў дапамагае падабраць тэкст у выглядзе HEX, RGB, РДБ, ВПГ і CMYK графічнай мадэлі. Націскайце на палі выбару колеру, а для больш дакладнага выбару, перамяшчайце курсор з заціснутай левай кнопкай мышы. Змяняйце параметры колеру праз палі ўводу.
+    </p>
+    <p>
+        Акрамя таго, вы можаце <b>спампаваць абраны колер</b>. Націсніце на кнопку «Спампаваць колер», якая з'явіцца ў полі налад. Вы можаце выбраць фармат (SVG, PNG, JPEG або GIF) і памер малюнка. Звярніце ўвагу, што паўперманентны колер можна спампаваць толькі ў фарматах SVG і PNG.
+    </p>`,
+        cancel: 'Адмяніць',
+        donateLabel: 'Калі ласка, не саромейцеся рабіць ахвяраванні',
+        gitlab: `<p><b>CSSCOLOR.RU</b> - праект з адкрытым зыходным кодам. Спасылка на рэпазітар: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
+    },
+    {
         langCode: 'ua',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
@@ -350,6 +400,51 @@ dataSets.langs = [
         cancel: 'Скасувати',
         donateLabel: 'Будь ласка, зробіть пожертву',
         gitlab: `<p><b>CSSCOLOR.RU</b> є проектом з відкритим кодом. Посилання на репозиторій: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
+    },
+    {
+        langCode: 'sr',
+        ...dataSets.productionPresets,
+        ...dataSets.productionWesternPresets,
+        title: 'HTML CSS Бирач боја',
+        twitterTitle: 'HTML CSS Бирач боја',
+        twitterDescription: 'HTML CSS Бирач боја',
+        applicationName: 'HTML CSS Бирач боја',
+        descriptionArticle: 'Програм за избор боја за вас! Ради са ХСВ, РГБ, ХЕКС, ЦМИК и транспарент форматима. Одабрану боју можете преузети у СВГ, ПНГ, ЈПЕГ и ГИФ формату. То је одличан алат за избор!',
+        seoKeywords: 'css paleta, css boje, html paleta, css html boje, html boja paleta, birac boja, css палета, css боје, html палета, css html боје, html боја палета, бирач боја',
+        donateButtonLabel: 'Жртвовање',
+        descriptionArticle: `<p>
+        <b>HTML CSS Бирач боја</b> помаже да се изабере <b>боја</b> у облику <b>HEX, RGB, RGB, HSV и CMYK</b> записа модела боја. Кликните на поља за избор боја, а за прецизнији избор померите курсор левим кликом миша. Промените опције боја кроз поља за унос.
+    </p>
+    <p>
+        Такође можете преузети изабрану боју. Кликните на дугме <b>"Преузми боју" </b>, појавиће се поље са опцијама. Можете одабрати формат (SVG, PNG, JPEG или GIF) и величину слике. Имајте на уму да се прозирне боје могу преузети само у SVG и PNG форматима.
+    </p>`,
+        cancel: 'Откажи',
+        donateLabel: 'Слободно дајте донацију',
+        gitlab: `<p>Изворни код проjекта <b>CSSCOLOR.RU</b> је отворен. Линк ка репозиториjуму: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`,
+        authorName: 'Александр Волков',
+    },
+    {
+        langCode: 'ka',
+        ...dataSets.productionPresets,
+        ...dataSets.productionWesternPresets,
+        title: 'HTML CSS ფერის ამომრჩევი',
+        twitterDescription: 'HTML CSS ფერის ამომრჩევი',
+        applicationName: 'HTML CSS ფერის ამომრჩევი',
+        descriptionArticle: 'ფერის ამომრჩევი თქვენთვის! მუშაობს HSV, RGB, HEX, CMYK და გამჭვირვალე. თქვენ შეგიძლიათ ჩამოტვირთოთ შერჩეული ფერი, როგორც SVG, PNG, JPEG და GIF სურათი. ეს კარგი ამომრჩევია!',
+        seoKeywords: 'ფერის ამომრჩევი, ფერის ამომრჩევი, პალიტრა css, ფერები css, ფერები css, პალიტრა html, css html ფერები, css html ფერები, html ფერების პალიტრა, html ფერთა პალიტრა, ფერთა პალიტრა, ფერთა პალიტრა',
+        donateButtonLabel: 'შემოწირულობა',
+        descriptionArticle: `<p>
+        <b>ფერების ამომრჩევი</b> გეხმარებათ აირჩიოთ <b>ფერი</b> HEX, RGB, RGBA, CMYK და HSV ფერის მოდელის ჩანაწერში. დააწკაპუნეთ ფერის შერჩევის ველზე და უფრო ზუსტი შერჩევისთვის გადაიტანეთ კურსორი მაუსის მარცხენა ღილაკზე დაჭერით. შეცვალეთ ფერის პარამეტრები შეყვანის ველების საშუალებით.
+    </p>
+    <p>
+        ასევე, შეგიძლიათ <b>ჩამოტვირთოთ შერჩეული ფერი</b>. დააჭირეთ ღილაკს "ჩამოტვირთეთ ფერი", რომელიც გამოჩნდება პარამეტრების ველში. თქვენ შეგიძლიათ აირჩიოთ ფორმატი (SVG, PNG, JPEG ან GIF) და სურათის ზომა. გთხოვთ გაითვალისწინოთ, რომ ნახევრად მუდმივი ფერის ჩამოტვირთვა შესაძლებელია მხოლოდ SVG და PNG ფორმატში.
+    </p>
+    <p>
+        შენი კომენტარი კარგი იქნება :)
+    </p>`,
+        cancel: 'გაუქმება',
+        donateLabel: 'გთხოვთ თავისუფლად გააკეთოთ შემოწირულობა',
+        gitlab: `<p><b>CSSCOLOR.RU</b> არის ღია კოდის პროექტი. ბმული საცავთან: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'en',
@@ -372,6 +467,50 @@ dataSets.langs = [
         cancel: 'Cancel',
         donateLabel: 'Please feel free to make a donation',
         gitlab: `<p><b>CSSCOLOR.RU</b> is open-source project. Link to repository: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
+    },
+    {
+        langCode: 'zh',
+        ...dataSets.productionPresets,
+        ...dataSets.productionWesternPresets,
+        title: 'HTML CSS 颜色选择器',
+        twitterDescription: 'HTML CSS 颜色选择器',
+        applicationName: 'HTML CSS 颜色选择器',
+        descriptionArticle: '适合您的颜色选择器！ 适用于 HSV、RGB、HEX、CMYK 和透明。 您可以将选定的颜色下载为 SVG、PNG、JPEG 和 GIF 图片。 这是一个不错的选择器！',
+        seoKeywords: '颜色选择器, 颜色选择器, 调色板 css, 颜色 css, 颜色 css, 调色板 html, css html 颜色, css html 颜色, html 调色板, html 调色板, 调色板, 调色板',
+        donateButtonLabel: '捐',
+        descriptionArticle: `<p>
+        <b>颜色选择器</b>帮助您在HEX、RGB、RGBA、CMYK和HSV颜色模型记录中选择<b>颜色</b>。 单击颜色选择字段，要进行更精确的选择，请在按住鼠标左键的同时移动光标。 通过输入字段更改颜色设置。
+    <p>
+        此外，您还可以<b>下载所选颜色</b>。 单击设置框中出现的“下载颜色”按钮。 您可以选择格式（SVG、PNG、JPEG 或 GIF）和图像大小。 请注意，半永久颜色只能以 SVG 和 PNG 格式下载。
+    </p>
+    <p>
+        你的评论会很好:)
+    </p>`,
+        cancel: '取消',
+        donateLabel: '请随时捐款',
+        gitlab: `<p><b>CSSCOLOR.RU</b> 是开源项目。 链接到存储库：<a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
+    },
+    {
+        langCode: 'kk',
+        ...dataSets.productionPresets,
+        ...dataSets.productionWesternPresets,
+        title: 'HTML CSS Түс таңдау құралы',
+        twitterDescription: 'HTML CSS Түс таңдау құралы',
+        applicationName: 'HTML CSS Түс таңдау құралы',
+        descriptionArticle: 'Сіз үшін түс таңдау құралы! HSV, RGB, HEX, CMYK және мөлдір жұмыс істейді. Таңдалған түсті SVG, PNG, JPEG және GIF суреті ретінде жүктеп алуға болады. Бұл жақсы таңдаушы!',
+        seoKeywords: 'түс таңдау құралы, түс таңдау құралы, палитра css, түстер css, түстер css, палитра html, css html түстері, css html түстері, html түстер палитрасы, html түстер палитрасы, түстер палитрасы, түстер палитрасы',
+        donateButtonLabel: 'Садақа беру',
+        descriptionArticle: `<p>
+        <b>Түс таңдау құралы</b> HEX, RGB, RGBA, CMYK және HSV түс үлгісі жазбаларында <b>түс</b> таңдауға көмектеседі. Түс таңдау өрісін нұқыңыз және дәлірек таңдау үшін тінтуірдің сол жақ түймешігін басып тұрып курсорды жылжытыңыз. Түс параметрлерін енгізу өрістері арқылы өзгертіңіз.
+    <p>
+        Сондай-ақ, таңдалған түсті <b>жүктеп алуға</b> болады. Параметрлер жолағында пайда болатын «Түсті жүктеп алу» түймесін басыңыз. Пішімді (SVG, PNG, JPEG немесе GIF) және кескін өлшемін таңдауға болады. Жартылай тұрақты түсті тек SVG және PNG пішімінде жүктеп алуға болатынын ескеріңіз.
+    </p>
+    <p>
+        Пікіріңіз жақсы болар еді :)
+    </p>`,
+        cancel: 'Болдырмау',
+        donateLabel: 'Садақа беруіңізді өтінемін',
+        gitlab: `<p><b>CSSCOLOR.RU</b> - ашық бастапқы жоба. Репозиторийге сілтеме: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
     {
         langCode: 'de',

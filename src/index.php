@@ -48,6 +48,10 @@
 
 	$langList = array(
 		'' => 'Русский',
+		'sr' => 'Српски',
+		'ka' => 'ქართული',
+		'kk' => 'Қазақша',
+		'be' => 'Беларуская',
 		'ua' => 'Українська',
 		'en' => 'English',
 		'de' => 'Deutsch',
@@ -55,7 +59,8 @@
 		'hi' => 'हिंदी',
 		'fr' => 'Français',
 		'eo' => 'Esperanto',
-		'sw' => 'Kiswahili'
+		'sw' => 'Kiswahili',
+		'zh' => '中文'
 	);
 	
 	$helloTextArray = array(
