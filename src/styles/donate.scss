@@ -1,0 +1,40 @@
+$a: 5;
+
+.donate-popup {
+  display: none;
+  z-index: 100;
+  //width: 100px;
+  //height: 200px;
+
+  margin: auto;
+
+  &.visible {
+    display: block;
+    //background: rgba(0, 0, 0, 0.3);
+  }
+
+  .popup {
+    z-index: 5;
+    position: fixed;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: max-content;
+    height: 310px;
+    //height: max-content;
+
+    padding: 10px;
+
+    border-radius: 5px;
+    background: white;
+    box-shadow: black 0 20px 100px -15px;
+
+    h2 {
+      font-size: 24px;
+      font-weight: lighter;
+      padding: 4px 0 8px;
+    }
+  }
+}

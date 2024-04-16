@@ -1,0 +1,6 @@
+node_modules
+.idea
+putin
+.htaccess
+.DS_Store
+dist

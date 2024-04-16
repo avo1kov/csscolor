@@ -1,10 +1,13 @@
-const $dwnldBtn = document.getElementById('dwnld-btn');
+const $langsBtn = document.getElementById('dwnld-btn');
+const $dwnldPopupWrapper = document.getElementById('dwnld-popup-wrapper');
 const $dwnldPopup = document.getElementById('dwnld-popup');
 const $darkBckgr = document.getElementById('dark-bckgr');
 const $dwnldCancelBtn = document.getElementById('dwnld-cancel');
 const $rect = document.getElementById('rect');
 const $imgWidth = document.getElementById('img-width');
 const $imgHeight = document.getElementById('img-height');
+
+// const $donatePopup = document.getElementById('donate-popup');
 
 const $gifLink = document.getElementById('gif-link'),
     $jpgLink = document.getElementById('jpg-link'),
@@ -24,7 +27,8 @@ refreshLinks = () => {
     $svgLink.setAttribute('href', link + '.svg' + size + alpha);
 };
 
-$dwnldBtn.addEventListener('click', () => {
+$langsBtn.addEventListener('click', () => {
+    $darkBckgr.classList.add('visible');
     $rect.style.background = `rgba(${palette.currentColor.rgb.r}, ${palette.currentColor.rgb.g}, ${palette.currentColor.rgb.b}, ${palette.currentColor.alpha})`;
     const readableColor = ui.getReadableColorOverAlpha();
     $rect.style.color = readableColor;
@@ -37,7 +41,7 @@ $dwnldBtn.addEventListener('click', () => {
     }
     refreshLinks();
 
-    $dwnldPopup.classList.add('visible');
+    $dwnldPopupWrapper.classList.add('visible');
 });
 
 $imgHeight.addEventListener('change', refreshLinks);
@@ -45,10 +49,18 @@ $imgWidth.addEventListener('change', refreshLinks);
 $imgHeight.addEventListener('keyup', refreshLinks);
 $imgWidth.addEventListener('keyup', refreshLinks);
 
-$darkBckgr.addEventListener('click', () => {
-    $dwnldPopup.classList.remove('visible');
+$dwnldPopupWrapper.addEventListener('click', () => {
+    $dwnldPopupWrapper.classList.remove('visible');
+    $darkBckgr.classList.remove('visible');
+});
+
+$dwnldPopup.addEventListener('click', (e) => {
+    e.stopPropagation();
 });
 
 $dwnldCancelBtn.addEventListener('click', () => {
-    $dwnldPopup.classList.remove('visible');
+    $dwnldPopupWrapper.classList.remove('visible');
+    $darkBckgr.classList.remove('visible');
 });
+
+$langsBtn.style.display = 'flex';
