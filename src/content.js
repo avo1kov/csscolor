@@ -631,24 +631,26 @@ dataSets.langs = [
         langCode: 'sw',
         ...dataSets.productionPresets,
         ...dataSets.productionWesternPresets,
-        title: 'Chombo cha rangi ya wavuti',
+        title: 'Kiteuo Rangi cha HTML CSS',
+        twitterTitle: 'Kiteuo Rangi cha HTML CSS',
         twitterDescription: 'Chombo cha rangi ya wavuti',
         applicationName: 'Chombo cha rangi ya wavuti',
         descriptionArticle: 'Mchoraji wa rangi kwako! Inafanya kazi na HSV, RGB, HEX, CMYK na uwazi. Unaweza kupakua rangi iliyochaguliwa kama SVG, PNG, JPEG na picha ya GIF. Huyu ni kachumbari mzuri!',
-        seoKeywords: 'rangi ya kuchagua, rangi ya kuchagua, pausi css, rangi ya CSS, rangi ya CSS, rangi ya html, rangi ya css html, rangi ya css html, rangi ya html rangi, rangi ya html',
+        seoKeywords: 'kiteuo rangi, palette css, rangi css, palette html, rangi za css html, palette ya rangi ya html, palette ya rangi',
         donateButtonLabel: 'Toa',
         descriptionArticle: `<p>
-        Chombo cha rangi husaidia kuchagua rangi katika HEX, RGB, RGBA, HSV, CMYK na rekodi ya mfano wa rangi. Bonyeza kwenye uwanja wa chaguo la rangi, na kwa uteuzi sahihi zaidi, uhamishe mshale wakati unashikilia kitufe cha kushoto cha panya. Badilisha mipangilio ya rangi kupitia sehemu za pembejeo.
+        Kiteua  rangi  kitakusaidia kuchagua rangi katika mifano ya rangi yaliyo recodiwa ya HEX, RGB, RGBA, HSV, CMYK na HSV.
+Bonyeza kwenye uwanja wa chaguo la rangi, na kwa uteuzi sahihi zaidi, uhamishe mshale wakati unashikilia kitufe cha kushoto cha panya. Badilisha mipangilio ya rangi kupitia sehemu za pembejeo.
     </p>
     <p>
-        Pia, unaweza <b> kupakua rangi </b> iliyochaguliwa. Bonyeza kifungo "Pakua rangi", ambayo itaonekana kwenye sanduku la mipangilio. Unaweza kuchagua fomati (SVG, PNG, JPEG au GIF), na saizi ya picha. Tafadhali kumbuka kuwa rangi isiyo na kipimo inaweza kupakuliwa tu katika muundo wa SVG na PNG.
+        Pia, unaweza kupakua rangi iliyochaguliwa. Bonyeza kifungo "Pakua rangi", ambayo itaonekana kwenye sanduku la mipangilio. Unaweza kuchagua fomati (SVG, PNG, JPEG au GIF), na saizi ya picha. Tafadhali kumbuka kuwa rangi ambayo ni nusu ya kudumu inaweza kupakuliwa tu katika muundo wa SVG na PNG.
     </p>
     <p>
         Maoni yako itakuwa nzuri :)
     </p>`,
         cancel: 'Ghairi',
         donateLabel: 'Tafadhali jisikie huru kutoa mchango',
-        gitlab: `<p><b>CSSCOLOR.RU</b> ni mradi wa chanzo-wazi. Unganisha kwa uwekaji: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
+        gitlab: `<p><b>CSSCOLOR.RU</b> ni mradi wa chanzo wazi. Kiungo cha hifadhi: <a href="https://gitlab.com/avo1kov/csscolor" target="_blink">https://gitlab.com/avo1kov/csscolor</a></p>`
     },
 ]
 
