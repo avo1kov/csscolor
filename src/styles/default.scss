@@ -394,6 +394,12 @@ article.article {
   }
 }
 
+#tshirts_btn {
+  svg * {
+    fill: rgba(0, 0, 0, 0.15);
+  }
+}
+
 .dark-bckgr {
   z-index: 3;
   display: none;
@@ -547,6 +553,17 @@ article.article {
       &:hover svg {
         fill: rgba(255, 255, 255, 0.5);
       }
+    }
+  }
+  #tshirts-btn {
+    background: black;
+
+    svg * {
+      fill: rgba(255, 255, 255, 0.16);
+    }
+
+    &:hover svg * {
+      fill: rgba(255, 255, 255, 0.3);
     }
   }
 
