@@ -1,0 +1,68 @@
+name: "[testing] Release"
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Telegram notification
+      run: |
+        curl --location --request GET 'https://api.telegram.org/bot${{ secrets.TG_DEPLOYMENTS_BOT_TOKEN }}/sendMessage' \
+          --header 'Content-Type: application/json' \
+          --data '{
+              "chat_id": "${{ secrets.TG_DEPLOYMENTS_CHANNEL_ID }}",
+              "text": "🎬, `🐴`: csscolor.ru testing [action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) started",
+              "parse_mode": "MarkdownV2"
+          }'
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install dependencies
+      run: npm i
+
+    - name: Build project
+      run: npm run build
+
+    - name: Telegram notification
+      run: |
+        curl --location --request GET 'https://api.telegram.org/bot${{ secrets.TG_DEPLOYMENTS_BOT_TOKEN }}/sendMessage' \
+          --header 'Content-Type: application/json' \
+          --data '{
+              "chat_id": "${{ secrets.TG_DEPLOYMENTS_CHANNEL_ID }}",
+              "text": "📤, `🐴`: csscolor.ru testing [deploy](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) started",
+              "parse_mode": "MarkdownV2"
+          }'
+
+    - name: Deploy
+      uses: sand4rt/ftp-deployer@v1.8
+      with:
+        sftp: false
+        host: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local_folder: ./dist/
+        remote_folder: /domains/csscolor.ru/public_html/test/
+
+    - name: Telegram notification
+      run: |
+        curl --location --request GET 'https://api.telegram.org/bot${{ secrets.TG_DEPLOYMENTS_BOT_TOKEN }}/sendMessage' \
+          --header 'Content-Type: application/json' \
+          --data '{
+              "chat_id": "${{ secrets.TG_DEPLOYMENTS_CHANNEL_ID }}",
+              "text": "🏁, `🐴`: csscolor.ru testing [action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) finished",
+              "parse_mode": "MarkdownV2"
+          }'
+
+    - name: Link to instance
+      run: echo "http://volkov.media/test/geodarts/"
