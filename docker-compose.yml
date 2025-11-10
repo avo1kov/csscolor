@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dist:/var/www/html/dist
+      - ./src:/var/www/html/src
+    depends_on:
+      - node
+    restart: unless-stopped
+
+  node:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    command: sh -c "npm install && npm run build"
+    environment:
+      - NODE_ENV=development
+    restart: "no"
+
+volumes:
+  node_modules:
+
